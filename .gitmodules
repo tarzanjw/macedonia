@@ -1,0 +1,6 @@
+[submodule "yii"]
+	path = yii
+	url = https://github.com/yiisoft/yii.git
+[submodule "protected/extensions/common"]
+	path = protected/extensions/common
+	url = https://github.com/tarzanjw/yii-common-ext.git
