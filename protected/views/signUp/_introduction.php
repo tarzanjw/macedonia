@@ -1,3 +1,12 @@
+<?php if (!empty($this->pageHeader) || !empty($this->pageHeaderSubtext)): ?>
+<div class="page-header redtext">
+    <h1>
+        <?php if (!empty($this->pageHeader)): ?><?php echo $this->pageHeader; ?><?php endif; ?>
+	    <?php if (!empty($this->pageHeaderSubtext)): ?><small><?php echo $this->pageHeaderSubtext; ?></small><?php endif; ?>
+    </h1>
+</div>
+<?php endif; ?>
+
 <div class="row-fluid">
 	<div class="span4">
 		<img src="/images/logo.png" style="margin-top:35px;">

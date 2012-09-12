@@ -14,3 +14,16 @@ body {position:absolute; height:100%; min-height:100%;width: 100%;}
 
 .body-wrp .header-bar{height:71px; background:#F1F1F1; border-bottom:1px solid #E5E5E5; overflow:hidden;}
 .header img{width:180px; margin-top:14px; float:left;}
+
+.redtext {color:#DD4B39}
+.page-header {border:none; margin:0 0 15px; padding:0}
+.page-header h1 {font-weight:normal !important; font-size: 1.8em !important; margin:0; padding:0; line-height:normal;}
+
+h2 {font-weight:normal; font-size:1.4em; line-height:normal; margin:0 0}
+.page-header h2 {font-size:1.2em;}
+
+.signup,.signin {padding-top:20px;}
+
+.signin .product .page-header h2 {margin-top:0.4em;}
+.signin .signin-box h2 {margin-bottom:1em;}
+.signin-box input[type=text] {margin-bottom:1.5em;}

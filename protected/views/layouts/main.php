@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<!--<link rel="icon" type="image/png" href="/images/favicon.png">-->
 
-	<link rel="stylesheet" type="text/css" href="/css/screen.css">
+	<?php Yii::app()->clientScript->registerCssFile('/css/screen.css'); ?>
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
@@ -17,15 +17,6 @@
 	</div>
 
     <div class="container" style="padding-bottom: 100px;">
-    	<?php if (!empty($this->pageHeader) || !empty($this->pageHeaderSubtext)): ?>
-    	<div class="page-header redtext">
-    		<h1>
-           		<?php if (!empty($this->pageHeader)): ?><?php echo $this->pageHeader; ?><?php endif; ?>
-	            <?php if (!empty($this->pageHeaderSubtext)): ?><small><?php echo $this->pageHeaderSubtext; ?></small><?php endif; ?>
-    		</h1>
-    	</div>
-    	<?php endif; ?>
-
     	<?php if(isset($this->breadcrumbs)):?>
 			<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 				'homeLink'=>array('label'=>'Home', 'url'=>array('/')),

@@ -9,6 +9,8 @@
 $this->pageHeader = Yii::t('view', 'Tạo mới tài khoản Vật Giá');
 ?>
 
+<div class="signup-box">
+
 <div class="row-fluid">
 <?php /** @var TbActiveForm */$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'acc-form',
@@ -154,3 +156,5 @@ jQuery(function($) {
 });
 //-->
 </script>
+
+</div>
