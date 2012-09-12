@@ -1,112 +1,156 @@
 <?php
 /* @var $this SignUpController */
-/* @var $acc Acc */
+/* @var $model SignUpForm */
+
+//$this->breadcrumbs=array(
+//	'Sign Up',
+//);
+
+$this->pageHeader = Yii::t('view', 'Tạo mới tài khoản Vật Giá');
 ?>
 
+<div class="row-fluid">
 <?php /** @var TbActiveForm */$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-    'id'=>'acc-form',
-    'enableAjaxValidation'=>false,
-    'htmlOptions'=>array(
-    	'class'=>'well',
-    ),
+	'id'=>'acc-form',
+	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
+	'htmlOptions'=>array(
+		'class'=>'well',
+	),
 )); ?>
 
-    <!--<p class="help-block">Fields with  are required.</p>-->
+	<!--<p class="help-block">Fields with  are required.</p>-->
 
-    <?php echo $form->errorSummary($acc); ?>
-    <?php echo $form->errorSummary($f); ?>
+	<?php #echo $form->errorSummary($model); ?>
 
-    <label>Họ và tên</label>
-    <div class="row-fluid">
-    	<div class="span6">
-	    <?= $form->textField($acc, 'first_name', array(
-    		'placeholder'=>'Họ đệm',
-    		'class'=>'span12',
-	    )); ?>
-	    </div>
-	    <div class="span6">
-	    <?= $form->textField($acc, 'last_name', array(
-    		'placeholder'=>'Tên',
-    		'class'=>'span12',
-	    )); ?>
-	    </div>
-    </div>
+	<label><?= Yii::t('view', 'Họ và tên'); ?> <span class="required">*</span></label>
+	<div class="controls controls-rows">
+		<?= $form->textField($model, 'first_name', array(
+			'placeholder'=>Yii::t('view', 'Họ Đệm'),
+			'class'=>'span7 pull-left',
+		)); ?>
+		<?= $form->textField($model, 'last_name', array(
+			'placeholder'=>Yii::t('view', 'Tên'),
+			'class'=>'span5 pull-right',
+		)); ?>
+		<?= $form->hiddenField($model, 'name', array(
+			'class'=>'span5 pull-right',
+		)); ?>
 
-    <label>Email</label>
-    <div class="row-fluid">
-    <?php echo $form->textField($acc,'email',
-    	array(
-    		'class'=>'span5',
-    		'maxlength'=>255,
-    		'placeholder'=>'Email của bạn',
-    		'class'=>'span12'
-    )); ?>
-    </div>
-
-    <label>Điện thoại di động</label>
-    <div class="row-fluid">
-    <?php echo $form->textField($acc,'phone',array(
-    	'class'=>'span5',
-    	'maxlength'=>255,
-    	'placeholder'=>'Số điện thoại di động của bạn',
-    	'class'=>'span12',
-    )); ?>
+		<?= $form->error($model, 'name'); ?>
 	</div>
 
-    <?php #echo $form->textAreaRow($acc,'avatar',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
+	<?php echo $form->textFieldRow($model,'email', array(
+			'class'=>'span12',
+			'maxlength'=>255,
+			'placeholder'=>Yii::t('view', 'Email của bạn'),
+	)); ?>
 
-    <label>Giới tính</label>
-    <div class="row-fluid">
-    <?php echo $form->dropDownList($acc,'gender',
-    	array(
-    		''=>'Tôi là ...',
-    		Acc::GENDER_MALE=>'Nam',
-    		Acc::GENDER_FEMALE=>'Nữ',
-    		Acc::GENDER_OTHER=>'Khác',
-    	),
-    	array('class'=>'span12','maxlength'=>6));
-    ?>
-    </div>
+	<?php echo $form->textFieldRow($model,'phone', array(
+		'class'=>'span12',
+		'maxlength'=>255,
+		'placeholder'=>Yii::t('view', 'Số điện thoại di động của bạn'),
+	)); ?>
 
-    <label>Ngày sinh</label>
-    <?php echo $form->textField($acc,'dob',array(
-    	'class'=>'span5 datepicker',
-    	'placeholder'=>'Tôi sinh ngày'
-    	));
-    ?>
+	<?php echo $form->textFieldRow(	$model,'password', array(
+		'class'=>'span12',
+		'maxlength'=>255,
+		'placeholder'=>Yii::t('view', 'Mật khẩu'),
+	)); ?>
 
-    <label>Địa chỉ</label>
-    <div class="row-fluid">
-    <?php echo $form->textArea($acc,'address',array(
-    	'rows'=>2,
-    	'cols'=>50,
-    	'class'=>'span12',
-    	'placeholder'=>'Địa chỉ nơi bạn sinh sống',
-    )); ?>
-    </div>
+	<?php echo $form->textFieldRow($model,'confirmed_password', array(
+		'class'=>'span12',
+		'maxlength'=>255,
+		'placeholder'=>Yii::t('view', 'Gõ lại mật khẩu'),
+	)); ?>
 
-    <label>Thành phố</label>
-    <div class="row-fluid">
-    <?php echo $form->dropDownList($acc,'city_id', CHtml::listData(City::model()->findAll(), 'id', 'name'), array(
-    	'class'=>'span5',
-    	'placeholder'=>'Thành phố nơi bạn sinh sống',
-    )); ?>
-    </div>
+	<?php #echo $form->textAreaRow($model,'avatar',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-    <label class="checkbox">
-    	<?= $form->checkBox($f, 'agreeToS'); ?>
-        Tôi đồng ý với <a href="#" target="_blank">Điều khoản dịch vụ</a> và <a href="#" target="_blank">Chính sách bảo mật</a> của Vật Giá.
-  	</label>
+	<?php echo $form->dropDownListRow($model,'gender',
+		array(
+			''=>'Tôi là ...',
+			Acc::GENDER_MALE=>'Nam',
+			Acc::GENDER_FEMALE=>'Nữ',
+			Acc::GENDER_OTHER=>'Khác',
+		),
+		array('class'=>'span12'));
+	?>
 
-    <div class="form-actions">
-        <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'buttonType'=>'submit',
-            'type'=>'primary',
-            'htmlOptions'=>array(
-            	'class'=>'pull-right',
-            ),
-            'label'=>'Bước tiếp theo',
-        )); ?>
-    </div>
+	<?= $form->label($model, 'dob'); ?>
+	<div class="controls controls-rows">
+		<?php echo $form->textField($model,'dobD',array(
+			'class'=>'span3',
+			'style'=>'text-align: right;',
+			'placeholder'=>Yii::t('view', 'Ngày')
+			));
+		?>
+		<?php echo $form->textField($model,'dobM',array(
+			'class'=>'span4',
+			'style'=>'text-align: right;',
+			'placeholder'=>Yii::t('view', 'Tháng')
+			));
+		?>
+		<?php echo $form->textField($model,'dobY',array(
+			'class'=>'span5 pull-right',
+			'style'=>'text-align: right;',
+			'placeholder'=>Yii::t('view', 'Năm')
+			));
+		?>
+		<?= $form->error($model, 'dob'); ?>
+	</div>
 
+	<?php echo $form->textAreaRow($model,'address',array(
+		'rows'=>2,
+		'cols'=>50,
+		'class'=>'span12',
+		'placeholder'=>Yii::t('view', 'Địa chỉ nơi bạn sinh sống'),
+	)); ?>
+
+	<?php echo $form->dropDownListRow($model,'city_id', array(''=>'Tôi sống ở ...')+CHtml::listData(City::model()->findAll(), 'id', 'name'), array(
+		'class'=>'span12',
+		'placeholder'=>Yii::t('view', 'Thành phố nơi bạn sinh sống'),
+	)); ?>
+
+	<?php echo $form->label($model, 'captcha'); ?>
+	<?php $this->widget('ext.common.recaptcha.EReCaptcha', array(
+		'model'=>$model,
+		'attribute'=>'captcha',
+		'theme'=>'custom',
+		'language'=>Yii::app()->language,
+		'publicKey'=>'6Lc_YNYSAAAAAEEDPneMru1h_OQrrtQAcFrmBcOy'
+	));
+	?>
+	<?php echo CHtml::error($model, 'captcha'); ?>
+
+	<?= $form->checkBoxRow($model, 'agreeTermOfService'); ?>
+
+	<div class="form-actions controls controls-row" style="padding-right: 0;">
+		 <button type="submit" name="btnNextStep" class="btn btn-primary pull-right">Bước tiếp theo</button>
+	</div>
 <?php $this->endWidget(); ?>
+</div>
+
+<script language="JavaScript">
+<!--
+jQuery(function($) {
+	var iName = $("#<?php $attr='name'; echo CHtml::getIdByName(CHtml::resolveName($model, $attr)); ?>");
+	var iFirstName = $("#<?php $attr='first_name'; echo CHtml::getIdByName(CHtml::resolveName($model, $attr)); ?>");
+	var iLastName = $("#<?php $attr='last_name'; echo CHtml::getIdByName(CHtml::resolveName($model, $attr)); ?>");
+
+	onNamesChange = function() {
+		iName.val(iFirstName.val() + ' ' + iLastName.val());
+		iName.trigger('change');
+	};
+
+	onNamesBlur = function() {
+		iName.trigger('blur');
+	}
+
+	iFirstName.change(onNamesChange);
+	iLastName.change(onNamesChange);
+
+	iFirstName.blur(onNamesBlur);
+	iLastName.blur(onNamesBlur);
+});
+//-->
+</script>
