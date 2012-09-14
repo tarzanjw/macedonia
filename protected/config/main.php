@@ -72,11 +72,16 @@ $cfg = array(
 			}
 		),
 
+		'user'=>array(
+			'allowAutoLogin'=>true,
+		),
+
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'showScriptName'=>false,
 			'rules'=>array(
 				'dang-nhap'=>'/signIn/',
+				'dang-nhap'=>'/signIn/index',
 				'dang-ky'=>'/signUp/',
 
 				'<_c:\w+>/'=>'<_c>/',

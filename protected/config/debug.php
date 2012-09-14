@@ -7,6 +7,10 @@
 // CWebApplication properties can be configured here.
 return array(
 	'components'=>array(
+		'db'=>array(
+			'enableProfiling'=>true,
+			'enableParamLogging'=>true,
+		),
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
@@ -14,6 +18,10 @@ return array(
 					'class'=>'CFileLogRoute',
 					'categories'=>'dev.email dev.sms',
 					'logFile'=>'email.log',
+				),
+				array(
+					'class'=>'CProfileLogRoute',
+					'categories'=>'',
 				),
 			),
 		),

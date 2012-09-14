@@ -37,6 +37,10 @@ class Acc extends CActiveRecord
     const SOURCE_GOOGLE = 'GOOGLE';
     const SOURCE_FACEBOOK = 'FACEBOOK';
 
+    const STATUS_NORMAL='NORMAL';
+    const STATUS_LOCKED='LOCKED';
+    const STATUS_NOT_ACTIVATED_YET='NOT ACTIVATED YET';
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -66,7 +70,8 @@ class Acc extends CActiveRecord
 			array('first_name, last_name', 'required'),
 			array('first_name, last_name, email, phone', 'length', 'max'=>255),
 			array('gender', 'length', 'max'=>6),
-			array('status', 'length', 'max'=>17),
+//			array('status', 'length', 'max'=>17),
+			array('status', 'in', 'range'=>array(self::STATUS_NORMAL, self::STATUS_LOCKED, self::STATUS_NOT_ACTIVATED_YET)),
 //			array('sources', 'length', 'max'=>8),
 			array('avatar, dob, address, created_time, last_modified_time', 'safe'),
 			// The following rule is used by search().

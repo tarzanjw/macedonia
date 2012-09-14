@@ -18,8 +18,10 @@ class SignInForm extends CFormModel
 	function rules()
 	{
 		return array(
-			array('username, password', 'required'),
 			array('username', 'filter', 'filter'=>'trim'),
+			array('username, password', 'required',
+				'message'=>Yii::t('view', 'Bạn chưa nhập {attribute}.'),
+			),
 		);
 	}
 }

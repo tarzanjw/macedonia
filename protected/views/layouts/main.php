@@ -13,6 +13,11 @@
 	<div class="header-bar">
     	<div class="header content">
         	<img src="/images/logo.png" alt="Vật Giá">
+        	<?php if (isset($customButtons)): ?>
+        	<div class="pull-right">
+				<?= $customButtons; ?>
+        	</div>
+        	<?php endif; ?>
     	</div>
 	</div>
 

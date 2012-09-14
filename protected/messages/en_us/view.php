@@ -7,6 +7,14 @@ return array(
 
 	'Tạo mới tài khoản Vật Giá'=>'Create new Vat Gia account',
 
-	'Tôi đồng ý với <a href=":tosHref" target="_blank">Điều khoản dịch vụ</a> và <a href=":ppHref" target="_blank">Chính sách bảo mật</a> của Vật Giá.'=>'I agree with the <a href=":tosHref" target="_blank">Terms of Services</a> and <a href=":ppHref" target="_blank">Privacy Policy</a> of Vat Gia.'
+	'Tôi đồng ý với <a href=":tosHref" target="_blank">Điều khoản dịch vụ</a> và <a href=":ppHref" target="_blank">Chính sách bảo mật</a> của Vật Giá.'=>'I agree with the <a href=":tosHref" target="_blank">Terms of Services</a> and <a href=":ppHref" target="_blank">Privacy Policy</a> of Vat Gia.',
+
+	/** SIGN IN */
+	'Đăng nhập'=>'Sign in',
+	'Email / Số điện thoại'=>'Email / Mobile number',
+	'Mật khẩu'=>'Password',
+	'Nhớ thái đăng nhập'=>'Stay signed in',
+	'Không truy cập được tài khoản?'=>"Cann't access account?",
+	'Thông tin đăng nhập không đúng.'=>'The username or password you entered is incorrect.',
 );
 ?>
