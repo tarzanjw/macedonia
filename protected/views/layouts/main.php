@@ -12,20 +12,14 @@
 	<?php #include '_global_bar.php'; ?>
 	<div class="header-bar">
     	<div class="header content">
-        	<img src="/images/logo.png" alt="Vật Giá">
+        	<img class="logo" src="/images/logo.png" alt="Vật Giá">
+
+        	<?php include '_member.php'; ?>
     	</div>
 	</div>
 
     <div class="container" style="padding-bottom: 100px;">
-    	<?php if(isset($this->breadcrumbs)):?>
-			<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
-				'homeLink'=>array('label'=>'Home', 'url'=>array('/')),
-				'links'=>$this->breadcrumbs,
-			)); ?><!-- breadcrumbs -->
-		<?php endif?>
-
 		<?php echo $content; ?>
-
 	</div>
 
 	<?php include '_footer.php'; ?>

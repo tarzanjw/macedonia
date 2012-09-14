@@ -13,17 +13,42 @@ body {position:absolute; height:100%; min-height:100%;width: 100%;}
 .footer form .lang-chooser{max-width:20%; font-size:inherit; font-family:inherit; width:150px; padding:2px; height:auto; margin-top:-3px;}
 
 .body-wrp .header-bar{height:71px; background:#F1F1F1; border-bottom:1px solid #E5E5E5; overflow:hidden;}
-.header img{width:180px; margin-top:14px; float:left;}
+.header .logo{width:180px; margin-top:14px; float:left;}
+
+.account-box {float:right; padding-top:22px; width:350px; overflow:hidden;}
+.account-box .btn-signin {float:right;}
+.account-box .name {margin-top:3px; float:right;}
+.account-box .avatar {width:25px; height:25px; float:right; margin-left:5px;}
+.account-box .caret {float:right; margin:10px 0 0 5px;}
+.account-box .account-popover {float:right; cursor:pointer}
+.account-board {width:350px;}
+.account-board.popover.bottom {margin-top:15px;}
+.account-board.popover .arrow {right:18px; left:auto;}
+.account-board .name {font-weight:bold;}
+.account-board .email, .account-board .phone{color:gray;}
+.account-board .info {margin-bottom:5px;}
+.account-board .commands {border-top:solid 1px #eee; margin-top:8px; padding:10px 0}
 
 .redtext {color:#DD4B39}
-.page-header {border:none; margin:0 0 15px; padding:0}
-.page-header h1 {font-weight:normal !important; font-size: 1.8em !important; margin:0; padding:0; line-height:normal;}
+.page-header {margin:10px 0 20px;}
+.signin .page-header, .signup .page-header {border:none; margin:0 0 15px; padding:0}
+.page-header h1 {font-weight:normal; font-size: 1.8em; margin:0; padding:0; line-height:normal;}
 
 h2 {font-weight:normal; font-size:1.4em; line-height:normal; margin:0 0}
 .page-header h2 {font-size:1.2em;}
 
-.signup,.signin {padding-top:20px;}
+.signup,.signin {padding-top:2.5em;}
 
 .signin .product .page-header h2 {margin-top:0.4em;}
 .signin .signin-box h2 {margin-bottom:1em;}
-.signin-box input[type=text] {margin-bottom:1.5em;}
+.signin-box form .row-fluid {margin-bottom:0.5em;}
+.signin-box span.reauth {margin-bottom:9px; display:block; font-weight: bold;}
+.signin-box ul {list-style:none; margin:0;}
+.signin-box ul li {margin-bottom:5px;}
+
+.btn-red {border:1px solid transparent; color:white; text-shadow:0 1px rgba(0, 0, 0, 0.1); text-transform:uppercase; background-color:#D14836; background-image:-webkit-gradient(linear,left top,left bottom,from(#DD4B39),to(#D14836)); background-image:-webkit-linear-gradient(top,#DD4B39,#D14836); background-image:-moz-linear-gradient(top,#DD4B39,#D14836); background-image:-ms-linear-gradient(top,#DD4B39,#D14836); background-image:-o-linear-gradient(top,#DD4B39,#D14836); background-image:linear-gradient(top,#DD4B39,#D14836);}
+
+i.icon-baokim {background-image:url('images/icon-baokim-gray.png'); background-position:0 0;}
+.active a i.icon-baokim {background-image:url('images/icon-baokim-white.png') !important;}
+
+/*.nav-pills .active a, .nav-pills .active a:hover {background-color:#DD4B39;}*/
