@@ -14,9 +14,12 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl.'/css/sig
 
 <div class="row-fluid">
 <?php /** @var TbActiveForm */$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'acc-form',
-	'enableAjaxValidation'=>false,
+	'id'=>'signUp-form',
+	'enableAjaxValidation'=>true,
 	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
 	'htmlOptions'=>array(
 		'class'=>'well',
 	),
@@ -55,13 +58,14 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl.'/css/sig
 		'placeholder'=>Yii::t('view', 'Số điện thoại di động của bạn'),
 	)); ?>
 
-	<?php echo $form->textFieldRow(	$model,'password', array(
+	<?php echo $form->passwordFieldRow(	$model,'password', array(
+		'Autocomplete'=>'Off',
 		'class'=>'span12',
 		'maxlength'=>255,
 		'placeholder'=>Yii::t('view', 'Mật khẩu'),
 	)); ?>
 
-	<?php echo $form->textFieldRow($model,'confirmed_password', array(
+	<?php echo $form->passwordFieldRow($model,'confirmed_password', array(
 		'class'=>'span12',
 		'maxlength'=>255,
 		'placeholder'=>Yii::t('view', 'Gõ lại mật khẩu'),
@@ -123,10 +127,10 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl.'/css/sig
 		'publicKey'=>'6Lc_YNYSAAAAAEEDPneMru1h_OQrrtQAcFrmBcOy'
 	));
 	?>
-	<?php echo CHtml::error($model, 'captcha'); ?>
+	<?= $form->error($model, 'captcha'); ?>
 
 	<?= $form->checkBoxRow($model, 'agreeTermOfService'); ?>
-
+    <div id="notification_submit"></div>
 	<div class="form-actions controls controls-row" style="padding-right: 0;">
 		 <button type="submit" name="btnNextStep" class="btn btn-primary pull-right">Bước tiếp theo</button>
 	</div>
@@ -159,3 +163,4 @@ jQuery(function($) {
 </script>
 
 </div>
+

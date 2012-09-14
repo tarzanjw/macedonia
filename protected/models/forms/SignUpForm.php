@@ -103,7 +103,53 @@ JS;
 
 		return $js;
 	}
+	
+	function validateConfirmedPassword($field, $params)
+	{
+		if ($this->password != $this->confirmed_password) {
+			$this->addError('confirmed_password', $params['invalidMessage']);
+			return;
+		}
 
+	}
+	
+	function clientValidateConfirmedPassword()
+	{
+		$password = get_class($this).'_password';
+		$rePassword = get_class($this).'_confirmed_password';
+		$invalidMessage=Yii::t('view', 'Bạn cần nhập lại đúng mật khẩu.');
+
+		$js = <<<JS
+var password = $('#{$password}').val();
+var rePassword = $('#{$rePassword}').val();
+
+if (password != rePassword) messages.push('{$invalidMessage}');
+JS;
+
+		return $js;
+	}
+
+	function validatePassword($field,$params)
+	{
+		if(strlen($this->password) < 8){
+			$this->addError('password',$params['invalidMessage']);
+			return;
+		}
+	}
+	
+	function clientValidatePassword()
+	{
+		$password = get_class($this).'_password';
+		$invalidMessage=Yii::t('view', 'Mật khẩu ít nhất 8 ký tự.');
+		$js = <<<JS
+var password = $('#{$password}').val();
+
+if (password.length < 8) messages.push('{$invalidMessage}');
+JS;
+
+		return $js;		
+	}
+	
 	function validateDate()
 	{
 		if (empty($this->dobD) || empty($this->dobM) || empty($this->dobY)) {
@@ -114,11 +160,16 @@ JS;
 
 	function rules()
 	{
-		return array(
+		$captchaRule = array(
+				array('captcha', 'ext.common.recaptcha.EReCaptchaValidator', 
+               		'privateKey'=>'6Lc_YNYSAAAAADl9meEKpYWaA2RRrhaZG2sVUQwV')
+               	);
+		
+		$rule = array(
 			array('first_name, last_name, email, phone, address', 'filter', 'filter'=>'trim'),
 			array('phone, email', 'unique', 'className'=>'Acc'),
 			array('email', 'email', 'checkMX'=>true,),
-			array('email, phone, address, city_id', 'required',
+			array('email, phone, address, city_id, password, confirmed_password', 'required',
 				'message'=>Yii::t('view', 'Bạn không thể để trống {attribute}'),
 			),
 			array('gender', 'in', 'range'=>array(Acc::GENDER_MALE, Acc::GENDER_FEMALE, Acc::GENDER_OTHER), 'allowEmpty'=>false,
@@ -135,6 +186,14 @@ JS;
         	array('agreeTermOfService', 'required', 'requiredValue'=>1,
             	'message'=>Yii::t('message', 'Để sử dụng dịch vụ, bạn cần đồng ý với điều khoản dịch vụ của chúng tôi.'),
         	),
+        	
+            array('password','validatePassword','clientValidate'=>'clientValidatePassword',
+            			'invalidMessage'=>Yii::t('view', 'Mật khẩu ít nhất 8 ký tự.'),),
+            array('confirmed_password','validateConfirmedPassword','clientValidate'=>'clientValidateConfirmedPassword',
+            		'invalidMessage'=>Yii::t('view', 'Bạn cần nhập lại đúng mật khẩu.')),
 		);
+		if(!(isset($_POST['ajax']) && $_POST['ajax']==='signUp-form'))
+			$rule = CMap::mergeArray($rule, $captchaRule);
+		return $rule;
 	}
 }
