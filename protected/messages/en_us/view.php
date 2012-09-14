@@ -16,5 +16,14 @@ return array(
 	'Nhớ thái đăng nhập'=>'Stay signed in',
 	'Không truy cập được tài khoản?'=>"Cann't access account?",
 	'Thông tin đăng nhập không đúng.'=>'The username or password you entered is incorrect.',
+
+	/** SETTING */
+	'Thiết lập tài khoản'=>'Account\'s settings',
+	'Tài khoản'=>'Account',
+	'Thông tin'=>'Profile',
+	'Bảo mật'=>'Security',
+	'Bảo Kim'=>'Bao Kim Wallet',
+	'Sản phẩm'=>'Products',
+	'Trang này đang được xây dựng. Mời bạn quay lại sau.'=>'This page is under construction. Please come back later.',
 );
 ?>

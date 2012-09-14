@@ -53,4 +53,14 @@ class Controller extends CController
 
 		return $this->_lastUrl;
 	}
+
+	function createUrl($route, $params=array(),$ampersand='&')
+	{
+		if (!isset($params['_l'])) {
+			$l = Yii::app()->getRequest()->getQuery('_l');
+			if (!empty($l)) $params['_l'] = $l;
+		}
+
+		return parent::createUrl($route, $params, $ampersand);
+	}
 }

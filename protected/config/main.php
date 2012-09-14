@@ -80,9 +80,13 @@ $cfg = array(
 			'urlFormat'=>'path',
 			'showScriptName'=>false,
 			'rules'=>array(
-				'dang-nhap'=>'/signIn/',
-				'dang-nhap'=>'/signIn/index',
-				'dang-ky'=>'/signUp/',
+				'dang-nhap'=>'/SignIn',
+				'dang-nhap'=>'/SignIn/index',
+				'dang-nhap/<_a:\w+>'=>'/SignIn/<_a>',
+
+				'dang-ky/<_a:\w+>'=>'/SignUp/<_a>',
+
+				'dang-xuat/<_a:\w+>'=>'/SignOut/<_a>',
 
 				'<_c:\w+>/'=>'<_c>/',
 				'<_c:\w+>/<_a:\w+>'=>'<_c>/<_a>',
