@@ -27,6 +27,7 @@ $cfg = array(
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
+		'OpenID',
 
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',

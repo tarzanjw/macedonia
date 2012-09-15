@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<!--<link rel="icon" type="image/png" href="/images/favicon.png">-->
+	<link rel="icon" type="image/png" href="/images/favicon.png">
 
 	<?php Yii::app()->clientScript->registerCssFile('/css/screen.css'); ?>
 
