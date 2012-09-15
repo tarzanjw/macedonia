@@ -2,7 +2,7 @@
 		echo Yii::t('view','Kích hoạt tài khoản');
 	?></h2>
 	<h4><?php
-			echo Yii::t('view', 'Nhập mã kích hoạt để kích hoạt tài khoản');
+			echo Yii::t('view', 'Nhập mã kích hoạt để xác minh số email');
 		?></h4> 
 		<?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
@@ -14,7 +14,7 @@
     ));
  ?>
 <form action="" method="post">
-	<input type="text" class="input-sms-code" name="sms_code"/>
+	<input type="text" class="input-sms-code" name="code"/>
 								
 	<button class="btn btn-primary" type="submit"><i class="icon-ok"></i><?php
 									echo Yii::t('view', 'Kích hoạt');

@@ -54,7 +54,7 @@ class SignUpController extends Controller
 			$model->setAttributes($_POST['SignUpForm'], false);
 
 			if ($model->validate()) {
-				if ($acc = $this->doCreateAccount($model)) $this->redirect(array('/activate', 'id'=>$acc->id));
+				if ($acc = $this->doCreateAccount($model)) $this->redirect(array('activate/verifyPhone', 'id'=>$acc->id));
 			}
 		}
 

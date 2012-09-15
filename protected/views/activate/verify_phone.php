@@ -2,7 +2,7 @@
 		echo Yii::t('view','Kích hoạt tài khoản');
 	?></h2>
 	<h4><?php
-			echo Yii::t('view', 'Nhập mã kích hoạt để kích hoạt tài khoản');
+			echo Yii::t('view', 'Nhập mã kích hoạt để xác minh số điện thoại');
 		?></h4> 
 		<?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?

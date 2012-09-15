@@ -8,8 +8,12 @@
 class VerifySMSComponent extends CApplicationComponent
 {
 	public static function verifySMS($sms_id,$sms_code)
-	{
-		return true;				
+	{   
+		$smsModel = SmsVerify::model()->findByPk($sms_id);
+		if(empty($smsModel)) return false;
+		if($sms_code == $smsModel->acc_id)
+			return true;				
+		else return false;
 	}
 }
 

@@ -50,5 +50,5 @@ h2 {font-weight:normal; font-size:1.4em; line-height:normal; margin:0 0}
 
 i.icon-baokim {background-image:url('images/icon-baokim-gray.png'); background-position:0 0;}
 .active a i.icon-baokim {background-image:url('images/icon-baokim-white.png') !important;}
-
+.input-sms-code{margin-top:10px;}
 /*.nav-pills .active a, .nav-pills .active a:hover {background-color:#DD4B39;}*/
