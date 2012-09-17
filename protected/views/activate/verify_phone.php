@@ -20,6 +20,3 @@
 									echo Yii::t('view', 'Kích hoạt');
 								?></button>
 </form>
-<?php
-  
-?>

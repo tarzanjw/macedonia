@@ -7,7 +7,6 @@
 //);
 
 $this->pageHeader = Yii::t('view', 'Tạo mới tài khoản Vật Giá');
-Yii::app()->clientScript->registerCssFile(Yii::app()->request->baseUrl.'/css/signUp.css');
 ?>
 
 <div class="signup-box">
