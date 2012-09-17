@@ -49,17 +49,28 @@ class SignUpController extends Controller
 	public function actionIndex()
 	{
 		$model = new SignUpForm();
-
+      	$this->performAjaxValidation($model);
 		if (isset($_POST['SignUpForm'])) {
 			$model->setAttributes($_POST['SignUpForm'], false);
 
 			if ($model->validate()) {
-				if ($acc = $this->doCreateAccount($model)) $this->redirect(array('/activate', 'id'=>$acc->id));
+				if ($acc = $this->doCreateAccount($model)) $this->redirect(array('activate/verifyPhone', 'id'=>$acc->id));
 			}
 		}
 
 		$this->render('index', array(
 			'model'=>$model,
 		));
+	}
+	
+	protected function performAjaxValidation($model)
+	{
+	    if(isset($_POST['ajax']) && $_POST['ajax']==='signUp-form')
+	    {
+	       	unset($_POST['SignUpForm']['name']);
+	        echo CActiveForm::validate($model);
+	     	
+	        Yii::app()->end();
+	    }
 	}
 }
