@@ -72,6 +72,29 @@ $cfg = array(
 			}
 		),
 
+		'otpCentral'=>array(
+			'class'=>'ext.common.OTPCentralComponent',
+			'callers'=>array(
+				'send'=>array(
+					'class' => 'RESTCaller',
+					'url'=>'http://otp.x.baokim.vn/otpREST/send',
+
+					'httpUsername'=>'single_sign_on',
+					'httpPassword'=>'123456',
+
+//					'logRequest'=>true,
+//					'logModelClass'=>'OtpApiLog',
+				),
+				'check'=>array(
+					'class' => 'RESTCaller',
+					'url'=>'http://otp.x.baokim.vn/otpREST/check',
+
+					'httpUsername'=>'single_sign_on',
+					'httpPassword'=>'123456',
+				),
+			),
+		),	
+		
 		'user'=>array(
 			'allowAutoLogin'=>true,
 		),

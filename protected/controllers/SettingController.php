@@ -85,9 +85,9 @@ class SettingController extends Controller
 			/**
 			* @var SmsVerify
 			*/
-			$smsVerifyModel = SmsVerify::model()->findByAttributes(array('acc_id'=>$accModel->id));
-        	if(!empty($smsVerifyModel)){
-				$check = VerifySMSComponent::verifySMS($smsVerifyModel->id,$sms_code);
+//			$smsVerifyModel = SmsVerify::model()->findByAttributes(array('acc_id'=>$accModel->id));
+//        	if(!empty($smsVerifyModel)){
+				$check = VerifySMSComponent::verifySMS($accModel->id,$sms_code);
 				if($check){
 						Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực số điện thoại thành công'));
 						$accModel->status = 'NORMAL';
@@ -99,7 +99,7 @@ class SettingController extends Controller
 					 Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt'));
 				}        			
         		
-        	} else  Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt'));
+//        	} else  Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt'));
         	
 	}
 	
@@ -114,7 +114,7 @@ class SettingController extends Controller
 			$this->redirect('/setting');	
 		}
 		// check xem đã verify chưa
-				$check = VerifyEmailComponent::verifyEmail('test',$code);
+				$check = VerifyEmailComponent::verifyEmail($accModel->id,$code);
 				if($check){
 						Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email thành công'));
 						$accModel->status = 'NORMAL';

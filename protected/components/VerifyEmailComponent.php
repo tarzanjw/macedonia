@@ -7,11 +7,11 @@
 */
 class VerifyEmailComponent extends CApplicationComponent
 {
-	public static function verifyEmail($email_id,$code)
+	public static function verifyEmail($acc_id,$code)
 	{   
-		if(!empty($code))
-			return true;
-		return false;
+    	$item_id = 'account_id_'.$acc_id;
+		$result = Yii::app()->otpCentral->check(19,$item_id,$code);
+		return $result;
 	}
 }
 
