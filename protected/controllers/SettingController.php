@@ -54,7 +54,7 @@ class SettingController extends Controller
 					else Yii::app()->user->setFlash('error-email', Yii::t('view','Gửi email lỗi'));	
 				}
 					
-			}else {
+			}else{
 				$captcha_error = true;
 			}
 		}
@@ -104,7 +104,7 @@ class SettingController extends Controller
 			}
 			$check_email = $this->verifyEmail($acc_id,$code);
 			if($check_email) {
-				die('tự động đăng nhập cho account');
+				die('tu dong dang nhap cho account');
 				//tự động đăng nhập
 				Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email thành công'));	
 				$this->redirect('/setting/activate');	
@@ -114,6 +114,8 @@ class SettingController extends Controller
 			}
 		}
 	}
+	
+	
 	
 	public function verifySMS($acc_id,$sms_code)
 	{
@@ -127,8 +129,10 @@ class SettingController extends Controller
 			*/
 		$check = VerifySMSComponent::verifySMS($accModel->id,$sms_code);
 		if($check){
-				$accModel->status = 'NORMAL';
+				
 				$accModel->is_phone_verified = 1;
+				if($accModel->is_email_verified == 1)
+					$accModel->status = 'NORMAL';
 				$accModel->save();
 				return true;
 				$this->redirect('/setting/activate');
@@ -152,8 +156,9 @@ class SettingController extends Controller
 		// check xem đã verify chưa
 		$check = VerifyEmailComponent::verifyEmail($accModel->id,$code);
 		if($check){
-				$accModel->status = 'NORMAL';
 				$accModel->is_email_verified = 1;
+				if($accModel->is_phone_verified == 1)
+					$accModel->status = 'NORMAL';
 				$accModel->save();
 				return true;
         	}

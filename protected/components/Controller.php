@@ -32,6 +32,14 @@ class Controller extends CController
 	{
 		return Yii::app()->getRequest()->getHostInfo().Yii::app()->getRequest()->getRequestUri();
 	}
+	
+	public function getCureentUser()
+	{
+		$user_id = Yii::app()->user->id; 
+		if(empty($user_id))  return null;
+		$userModel = Acc::model()->findByPk($user_id);
+		return $userModel;
+	}
 
 	private $_lastUrl;
 	function getLastUrl()
