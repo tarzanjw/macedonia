@@ -43,12 +43,12 @@ class SettingController extends Controller
 			$captchaModel->setAttributes($_POST['CaptchaForm'], false);
 			if ($captchaModel->validate()){
 				if($kind == 'sms'){
-					if($this->resendSMS())
+					if($this->resendSMS($accModel->id,$accModel->phone))
 						Yii::app()->user->setFlash('success-sms', Yii::t('view','Gửi lại mã kích hoạt sms thành công'));	
 					else Yii::app()->user->setFlash('error-sms', Yii::t('view','Gửi tin nhắn lỗi'));	
 				}else{
 					$kind = 'email';
-					if($this->resendSMS())
+					if($this->resendEmail($accModel->id,$accModel->email))
 						Yii::app()->user->setFlash('success-email', Yii::t('view','Gửi lại mã kích hoạt email thành công'));	
 					else Yii::app()->user->setFlash('error-email', Yii::t('view','Gửi email lỗi'));	
 				}
@@ -126,13 +126,15 @@ class SettingController extends Controller
 					 Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt'));
 	}
 	
-	public function resendSMS()
+	public function resendSMS($acc_id,$phone)
 	{
+		Yii::app()->otpCentral->send(18,'account_id_'.$acc_id,$phone,array(),false,true);
 		return true;	
 	}
 	
-	public function resendEmail()
+	public function resendEmail($acc_id,$email)
 	{
+		Yii::app()->otpCentral->send(19,'account_id_'.$acc_id,$email,array(),false,true);
 		return true;	
 	}
 	

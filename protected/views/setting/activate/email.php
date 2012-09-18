@@ -34,8 +34,11 @@
 jQuery(function($) {
 		$('#resend_email_label').click(function(e) {
         	$('#kind').val('email');
+        	$('#captcha-form').fadeOut(200);
         	$('#captcha-form').hide();
-        	$('#captcha-form').addClass('email');
+        	if($('#div_activate_sms').length>0){
+				$('#captcha-form').addClass('email');	
+        	}
         	$('#captcha-form').fadeIn(200);
         	});
 		});

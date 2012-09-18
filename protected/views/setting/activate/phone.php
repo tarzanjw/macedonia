@@ -34,6 +34,7 @@
 jQuery(function($) {
 		$('#resend_sms_label').click(function(e) {
         	$('#kind').val('sms');
+        	$('#captcha-form').fadeOut(200);
         	$('#captcha-form').hide();
         	$('#captcha-form').removeClass('email');
         	$('#captcha-form').fadeIn(200);

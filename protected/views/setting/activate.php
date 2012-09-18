@@ -43,7 +43,7 @@
 		if($accModel->is_phone_verified != 1):
 	?>
 	
-	<div class="span6">
+	<div class="span6" id="div_activate_sms">
 		<?php include 'activate/phone.php'; ?>
 	</div>
 	<?php
@@ -52,7 +52,7 @@
 	<?php
 		if($accModel->is_email_verified != 1):
 	?>
-	<div class="span6">
+	<div class="span6" id="div_activate_email">
 		<?php include 'activate/email.php'; ?>
 	</div>
 	<?php
