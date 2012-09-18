@@ -29,10 +29,11 @@ class SettingController extends Controller
 	{
 		$this->render('security');
 	}
+	
 	public function actionActivate()
 	{
-		$user_id = Yii::app()->user->id;
-		$accModel = $this->loadAccModel($user_id);
+		$acc_id = Yii::app()->user->id;
+		$accModel = $this->loadAccModel($acc_id);
 		
 		$captchaModel = new CaptchaForm();
 		$captcha_error = false;
@@ -59,11 +60,19 @@ class SettingController extends Controller
 		}
 		
 		if(isset($_POST['sms_code'])){
-			$this->verifySMS($accModel,$_POST['sms_code']);	
+			$check_phone = $this->verifySMS($acc_id,$_POST['sms_code']);	
+			if($check_phone){
+				Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực số điện thoại thành công'));
+				$this->redirect('/setting/activate');
+			}else Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt'));
 		}
 		
 		if(isset($_POST['email_code'])){
-			$this->verifyEmail($accModel,$_POST['email_code']);
+			$check_email = $this->verifyEmail($acc_id,$_POST['email_code']);
+			if($check_email){
+				Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email thành công'));	
+				$this->redirect('/setting/activate');
+			}else Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt')); 
 		}
 		
 		$this->render('activate',array(
@@ -74,56 +83,82 @@ class SettingController extends Controller
 						));
 	}
 	
-	public function verifySMS($accModel,$sms_code)
+	public function actionVerifyEmailByUrl($acc_id=null,$code=null)
 	{
-		
+		// case: chưa đăng nhập => tự động đăng nhập
+		// đã đăng nhập với tài khoản khác -> logout -> đăng nhập
+		$currenAccId = Yii::app()->user->id; 
+		if(!empty($currenAccId) && ($acc_id == $currenAccId)){
+			$check_email = $this->verifyEmail($acc_id,$code);
+			if($check_email){
+				Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email thành công'));	
+				$this->redirect('/setting/activate');	
+			}else {
+				Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt')); 	
+				$this->redirect('/setting/activate');
+			}
+		}
+		else{
+			if(!empty($currenAccId)){
+				Yii::app()->user->logout();	
+			}
+			$check_email = $this->verifyEmail($acc_id,$code);
+			if($check_email) {
+				die('tự động đăng nhập cho account');
+				//tự động đăng nhập
+				Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email thành công'));	
+				$this->redirect('/setting/activate');	
+			}else{
+				Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt')); 	
+				$this->redirect('/setting/activate');
+			}
+		}
+	}
+	
+	public function verifySMS($acc_id,$sms_code)
+	{
+		$accModel = $this->loadAccModel($acc_id);
 		if($accModel->status == 'NORMAL' && $accModel->is_phone_verified == 1){
 			Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực số điện thoại trước đó'));
 			$this->redirect('/setting');	
 		}
-		
 			/**
 			* @var SmsVerify
 			*/
-//			$smsVerifyModel = SmsVerify::model()->findByAttributes(array('acc_id'=>$accModel->id));
-//        	if(!empty($smsVerifyModel)){
-				$check = VerifySMSComponent::verifySMS($accModel->id,$sms_code);
-				if($check){
-						Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực số điện thoại thành công'));
-						$accModel->status = 'NORMAL';
-						$accModel->is_phone_verified = 1;
-						$accModel->save();
-						$this->redirect('/setting/activate');
-        			}
-				else{
-					 Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt'));
-				}        			
-        		
-//        	} else  Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt'));
-        	
+		$check = VerifySMSComponent::verifySMS($accModel->id,$sms_code);
+		if($check){
+				$accModel->status = 'NORMAL';
+				$accModel->is_phone_verified = 1;
+				$accModel->save();
+				return true;
+				$this->redirect('/setting/activate');
+        	}
+		else{
+			return false;
+		}        			
 	}
 	
-	public function verifyEmail($accModel,$code)
+	public function verifyEmail($acc_id,$code)
 	{
 		/**
 		* 
 		* @var Acc
 		*/
+		$accModel = $this->loadAccModel($acc_id);
 		if($accModel->status == 'NORMAL' && $accModel->is_email_verified == 1){
 			Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email trước đó'));
 			$this->redirect('/setting');	
 		}
 		// check xem đã verify chưa
-				$check = VerifyEmailComponent::verifyEmail($accModel->id,$code);
-				if($check){
-						Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email thành công'));
-						$accModel->status = 'NORMAL';
-						$accModel->is_email_verified = 1;
-						$accModel->save();
-						$this->redirect('/setting/activate');
-        			}
-				else
-					 Yii::app()->user->setFlash('warning', Yii::t('view','Sai mã kích hoạt'));
+		$check = VerifyEmailComponent::verifyEmail($accModel->id,$code);
+		if($check){
+				$accModel->status = 'NORMAL';
+				$accModel->is_email_verified = 1;
+				$accModel->save();
+				return true;
+        	}
+		else
+			return false;
 	}
 	
 	public function resendSMS($acc_id,$phone)

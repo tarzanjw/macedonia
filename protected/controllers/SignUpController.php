@@ -43,18 +43,13 @@ class SignUpController extends Controller
 //		Yii::app()->email->sendVerifyEmail($acc);
 //		Yii::app()->sms->sendVerifySMS($acc);
 		Yii::app()->otpCentral->send(18,'account_id_'.$acc->id,$acc->phone);
-		Yii::app()->otpCentral->send(19,'account_id_'.$acc->id,$acc->email);
+		Yii::app()->otpCentral->send(19,'account_id_'.$acc->id,$acc->email,array('account_id'=>$acc->id));
 
 		return $acc;
     }
 
 	public function actionIndex()
 	{
-		
-//		$id = 20;
-//		Yii::app()->otpCentral->send(19,'acc_id'.$id,'hanv9488@gmail.com');
-//		$test = Yii::app()->otpCentral->check(18,20,'YTYUZ');
-//		echo '<pre>', print_r($test, true), '</pre>';
 		$model = new SignUpForm();
       	$this->performAjaxValidation($model);
 		if (isset($_POST['SignUpForm'])) {
