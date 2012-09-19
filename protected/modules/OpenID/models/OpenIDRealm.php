@@ -22,7 +22,7 @@ class OpenIDRealm extends CActiveRecord
 			'CTimestampBehavior' => array(
 				'class' => 'zii.behaviors.CTimestampBehavior',
 				'createAttribute' => 'created_time',
-//				'updateAttribute' => 'update_time_attribute',
+				'updateAttribute' => null,
 			)
 		);
 	}
@@ -53,7 +53,7 @@ class OpenIDRealm extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('realm, created_time', 'required'),
+			array('realm, type, enable', 'required'),
 			array('enable', 'numerical', 'integerOnly'=>true),
 			array('realm', 'length', 'max'=>255),
 			// The following rule is used by search().
@@ -69,7 +69,7 @@ class OpenIDRealm extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'realm' => 'realm',
+			'realm' => 'Realm',
 			'enable' => 'Enable',
 			'created_time' => 'Created Time',
 			'last_modified_time' => 'Last Modified Time',

@@ -26,41 +26,35 @@ class Controller extends CController
 	public $breadcrumbs=array();
 
 	public $pageHeader='Page header';
-	public $pageHeaderSubtext='';
 
 	function getCurrentUrl()
 	{
 		return Yii::app()->getRequest()->getHostInfo().Yii::app()->getRequest()->getRequestUri();
 	}
 
-	private $_lastUrl;
-	function getLastUrl()
+	function getContUrl($defaultCont='')
 	{
-		if (!isset($this->_lastUrl)) {
-			$ru = Yii::app()->getRequest()->getQuery('_ru');
-			if (empty($ru)) {
-				$ru = Yii::app()->getRequest()->getUrlReferrer();
-				if (empty($ru)) {
-					$ru = Yii::app()->user->getReturnUrl('@');
-					if ($ru == '@') $ru = '';
-				}
-			}
-
-			if (strpos($ru, 'http') !== 0) $ru = Yii::app()->getRequest()->getHostInfo().$ru;
-			if ($ru == $this->getCurrentUrl()) $this->_lastUrl = '';
-			else $this->_lastUrl = $ru;
-		}
-
-		return $this->_lastUrl;
+        return Yii::app()->getRequest()->getQuery('_cont', $defaultCont);
 	}
 
-	function createUrl($route, $params=array(),$ampersand='&')
+	function doContinue($defaultUrl='')
 	{
-		if (!isset($params['_l'])) {
-			$l = Yii::app()->getRequest()->getQuery('_l');
-			if (!empty($l)) $params['_l'] = $l;
+        $this->redirect($this->getContUrl());
+	}
+
+	private $_currentAccount;
+
+	/**
+	* @return Acc
+	*/
+	function getCurrentAccount()
+	{
+		if (!isset($this->_currentAccount)) {
+    		$id = Yii::app()->user->id;
+    		if (empty($id)) $this->_currentAccount = null;
+    		else $this->_currentAccount = Acc::model()->findByPk($id);
 		}
 
-		return parent::createUrl($route, $params, $ampersand);
+    	return $this->_currentAccount;
 	}
 }

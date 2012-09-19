@@ -1,4 +1,4 @@
 <a class="btn btn-danger btn-small" style="margin-top:22px;"
-	href="<?= $this->createUrl('/signUp', array('_ru'=>$this->createUrl('', array('_ru'=>$this->getLastUrl())))); ?>">
+	href="<?= $this->createUrl('/signUp', array('_cont'=>$this->createUrl('', array('_cont'=>$this->getCurrentUrl())))); ?>">
 	<?= Yii::t('label', 'ĐĂNG KÝ MỚI'); ?>
 </a>

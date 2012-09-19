@@ -17,6 +17,9 @@ return array(
 	'Không truy cập được tài khoản?'=>"Cann't access account?",
 	'Thông tin đăng nhập không đúng.'=>'The username or password you entered is incorrect.',
 
+	/** SSO */
+	'Xin đợi một lát ...'=>'Please wait ...',
+
 	/** SETTING */
 	'Thiết lập tài khoản'=>'Account\'s settings',
 	'Tài khoản'=>'Account',

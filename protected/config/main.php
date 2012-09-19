@@ -27,7 +27,13 @@ $cfg = array(
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-		'OpenID',
+		'OpenID'=>array(
+			'class'=>'application.modules.OpenID.OpenIDModule',
+			'modules'=>array(
+				'hq'=>array(
+				),
+			),
+		),
 
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
@@ -52,7 +58,7 @@ $cfg = array(
 		'bootstrap'=>array(
             'class'=>'ext.common.bootstrap.components.Bootstrap',
             #'responsiveCss'=>true,
-            #'yiiCss'=>true,
+            'yiiCss'=>false,
 		),
 
 		'email'=>array(

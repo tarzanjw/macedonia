@@ -21,7 +21,7 @@ class ServerController extends Controller
     	'namePerson/last'			=> 'last_name',
         'contact/email'				=> 'email',
         'contact/phone'				=> 'phone',
-        'media/image'				=> 'avatar',
+        'media/image/default'		=> 'avatar',
         'person/gender'				=> 'gender',
         'birthDate'					=> 'dob',
         'contact/postaladdress'		=>	'address',
@@ -37,7 +37,7 @@ class ServerController extends Controller
     		'namePerson/last'			=> Yii::t('view', 'Tên'),
 	        'contact/email'				=> Yii::t('view', 'Email'),
 	        'contact/phone'				=> Yii::t('view', 'Điện thoại di động'),
-	        'media/image'				=> Yii::t('view', 'Avatar'),
+	        'media/image/default'		=> Yii::t('view', 'Avatar'),
 	        'person/gender'				=> Yii::t('view', 'Giới tính'),
 	        'birthDate'					=> Yii::t('view', 'Ngày sinh'),
 	        'contact/postaladdress'		=> Yii::t('view', 'Địa chỉ'),
@@ -64,19 +64,24 @@ class ServerController extends Controller
     {
         $c = new CDbCriteria();
         $c->compare('realm', $realm);
-//        $c->addCondition('enable');
 
 		/**
 		* @var OpenIDRealm
 		*/
 		$r = OpenIDRealm::model()->find($c);
 
+		if (is_null($r)) {
+			$x = new OpenIDRealm();
+			$x->realm = $realm;
+			$x->save();
+		}
+
         return is_null($r) ? OpenIDRealm::TYPE_DEPEND_ON_ACCOUNT
         	: ($r->enable ? $r->type : OpenIDRealm::TYPE_DENY);
     }
 
 	/**
-	 * Checks whether an user is authenticated.
+	 * Checks whether an user is authenti`ted.
 	 * The function should determine what fields it wants to send to the RP,
 	 * and put them in the $attributes array.
 	 * @param Array $attributes
@@ -94,7 +99,7 @@ class ServerController extends Controller
 
         $approved = null;
 
-        switch ($this->getRealmType($realm)) {
+        switch ($realmType = $this->getRealmType($realm)) {
         	case OpenIDRealm::TYPE_ALLOW:
         		$approved = true;
         		break;
@@ -156,16 +161,18 @@ class ServerController extends Controller
     function setup($identity, $realm, $assoc_handle, $attributes)
     {
     	if (Yii::app()->user->isGuest) {
-			$this->redirect($this->createUrl('/SignIn', array('_ru'=>$this->currentUrl)));
+			$this->redirect($this->createUrl('/SignIn', array('_cont'=>$this->currentUrl)));
 			return;
     	}
 
-        $this->render('setup', array(
+    	$this->getOpenIDProvider()->denyAccessing();
+    	return;
+        /*$this->render('setup', array(
         	'realm'=>$realm,
         	'assocHandle'=>$assoc_handle,
         	'requiredAttrs'=>$this->refineAttributes($attributes['required']),
         	'optionalAttrs'=>$this->refineAttributes($attributes['optional']),
-        ));
+        ));*/
     }
 
 

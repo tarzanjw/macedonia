@@ -50,7 +50,7 @@
 
 <ul>
 	<li><a href="#" style="margin-bottom:0.5em;"><?= Yii::t('view', 'Không truy cập được tài khoản?'); ?></a></li>
-	<li><a href="<?= $this->createUrl('/signOut',array('_ru'=>$this->createUrl(''))); ?>" style="margin-bottom:0.5em;"><?= Yii::t('view', 'Đăng nhập bằng tài khoản khác'); ?></a></li>
+	<li><a href="<?= $this->createUrl('/signOut',array('_cont'=>$this->createUrl(''))); ?>" style="margin-bottom:0.5em;"><?= Yii::t('view', 'Đăng nhập bằng tài khoản khác'); ?></a></li>
 </ul>
 
 </div></div>

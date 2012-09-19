@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= Yii::app()->language; ?>">
 <head>
 	<meta charset="utf-8">
 	<link rel="icon" type="image/png" href="/images/favicon.png">
-
 	<?php Yii::app()->clientScript->registerCssFile('/css/screen.css'); ?>
-
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 <body><div class="body-wrp">

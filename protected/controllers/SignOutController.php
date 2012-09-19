@@ -7,6 +7,6 @@ class SignOutController extends Controller
 	public function actionIndex()
 	{
 		Yii::app()->user->logout();
-		$this->redirect($this->getLastUrl());
+		$this->redirect($this->createUrl('/sso/signOut', array('_cont'=>$this->getContUrl($this->createUrl('/signIn')))));
 	}
 }

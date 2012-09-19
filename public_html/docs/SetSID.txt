@@ -1,0 +1,22 @@
+URL : SetSID
+URL này cho phép các dịch vụ thành viên tham gia vào SSO được thông báo khi có người sử dụng login.
+
+Yêu cầu :
+INPUT (QueryString)
+	- sid: 1 xâu được mã hóa để thể hiện thông tin của user
+	- timestamp
+
+OUTPUT
+	- Set cookie để đánh dấu là người dùng đã đăng nhập
+	- Lưu lại gsn vào cookie
+	- Trả về 1 ảnh, mime bất kỳ, size = 1x1 pixel.
+
+PROCESS:
+	- Kiểm tra từ timestamp xem expire hay chưa? Nếu expire rồi thì fail
+	- Kiểm tra referer, nếu là từ 1 nơi khác ngoài http://id.vatgia.com/sso thì fail
+	- Giải mã sid sử dụng public-key, nếu fail cho fail luôn.
+	- Sau khi giải mã sẽ có 'token'
+	- Từ token sẽ có được các thông tin:
+		- Email của người đã đăng nhập
+		- gsn
+	- Nếu gsn và email trùng với session hiện tại, bỏ qua
