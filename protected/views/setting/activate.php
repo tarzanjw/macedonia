@@ -20,7 +20,6 @@
     margin-left: 0px;
 }
 </style>
-<h2 class="redtext activate-label"><?= Yii::t('view', 'Kích hoạt tài khoản.'); ?></h2>
 		<?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
         'fade'=>true, // use transitions?

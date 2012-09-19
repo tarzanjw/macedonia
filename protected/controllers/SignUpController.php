@@ -50,6 +50,7 @@ class SignUpController extends Controller
 
 	public function actionIndex()
 	{
+//		Yii::app()->otpCentral->send(18,'account_id_'.'sadf98098','0976048033');
 		$model = new SignUpForm();
       	$this->performAjaxValidation($model);
 		if (isset($_POST['SignUpForm'])) {

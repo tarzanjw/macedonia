@@ -132,4 +132,72 @@ i.icon-activate {background-image: url('images/verify.jpg') !important;backgroun
     border-color: #EED3D7;
     color: #B94A48;
 }
-/*.nav-pills .active a, .nav-pills .active a:hover {background-color:#DD4B39;}*/
+.btn-change-pass{
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+.page-header h1.redtext{
+	float:left;
+}
+.page-header div.icon-chevron-right{
+	float:left;
+	margin:7px;
+}
+.page-header{
+	float: left;
+	width: 100%;
+}
+.form-change-pass{
+	float: left;
+	background: #EEE;
+	border-radius: 4px;
+	padding-top: 15px;
+}
+.form-horizontal .control-label {
+	text-align: left;
+	padding-left: 13px;
+	position:relative;
+	padding-right: 5px;
+}
+.radio-method-pass{
+	position: absolute;
+	left: 15px;
+	top: 18px;
+	z-index: 999;
+}
+.radio-method-question{
+	position: absolute;
+	left: 15px;
+	top: 69px;
+	z-index: 999;
+}
+.control-disable{
+	color:#999;
+}
+.control-disable .success .control-label{
+	color:#999;
+}
+.control-disable .control-label .radio{
+	color:#999;
+}
+.control-disable .controls input{
+	border-color:#999;
+}
+label.label_or{
+	margin-top: -17px;
+	margin-left: 35px;
+	font-weight: bold;
+}
+.form-change-pass{
+	position:relative;
+}
+.form-change-pass .control-label{
+	width: 345px;
+	padding-right: 5px;
+}
+.form-change-pass .radio{
+	margin-left: -19px;
+}
+.form-change-pass span.error{
+	margin-left:178px;
+}

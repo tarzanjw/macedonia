@@ -27,7 +27,27 @@ class SettingController extends Controller
 
 	public function actionSecurity()
 	{
-		$this->render('security');
+		$secretQuestions = SecretQuestion::model()->findAll();
+		$acc_id = Yii::app()->user->id;
+		$accModel = Acc::model()->with('auth')->findByPk($acc_id);
+		
+		$changePassFormModel = new ChangePassForm();
+		$changePassFormModel->question_content=$accModel->auth->secret_question;
+		$changePassFormModel->accModel = $accModel;
+//      	$this->performAjaxValidation($changePassFormModel);
+		if (isset($_POST['ChangePassForm'])) {
+			$changePassFormModel->setAttributes($_POST['ChangePassForm'], false);
+
+			if ($changePassFormModel->validate()) {
+            	
+			}
+		}
+		
+		$this->render('security',array(
+			'changePassFormModel' => $changePassFormModel,
+			'accModel' => $accModel,
+			'secretQuestions' => $secretQuestions,
+		));
 	}
 	
 	public function actionActivate()
