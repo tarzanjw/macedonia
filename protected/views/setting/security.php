@@ -18,12 +18,12 @@
 </div>
 
 <div class="btn-change-pass page-header row-fluid">
-	<?php
-		if(empty($accModel->auth->secret_answer)):
-	?>
+	<?php 	if(empty($accModel->auth->secret_answer)): 	?>
 		Bạn chưa có câu hỏi bảo mật.
 		<label class="change_pass_label" id="create_question_label"><?= Yii::t('view', 'Tạo câu hỏi bảo mật'); ?></label>
-		
+	<?php else: ?>
+		<label class="change_pass_label" id="create_question_label"><?= Yii::t('view', 'Sửa câu hỏi bảo mật'); ?></label>
+	<?php endif; ?>
 		<?php $this->widget('bootstrap.widgets.TbAlert', array(
 			'block'=>true, // display a larger alert block?
 			'fade'=>true, // use transitions?
@@ -34,14 +34,8 @@
 		));?>
 			
 		<div class="span11 row-fluid" style="min-height:0">
-			<?php include 'security/create_question_form.php'; ?>
+			<?php include 'security/update_question_form.php'; ?>
 		</div>	
-	<?php
-		else:
-	?>
-	<?php
-		endif;
-	?>
 
 </div>
 

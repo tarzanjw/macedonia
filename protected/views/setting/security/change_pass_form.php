@@ -120,7 +120,6 @@
 		
 		$('#change_pass_label').click(function(e) {
         	$('#changePass-form').toggle('fast');
-	
 		});
 	});
 	    /*jQuery(function($) {

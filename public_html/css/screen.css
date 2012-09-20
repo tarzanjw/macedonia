@@ -152,6 +152,7 @@ i.icon-activate {background-image: url('images/verify.jpg') !important;backgroun
 	background: #EEE;
 	border-radius: 4px;
 	padding-top: 15px;
+	margin-left:0 !important; 
 }
 .form-horizontal .control-label {
 	text-align: left;
@@ -208,8 +209,13 @@ input.change-pass-radio{
 	position:relative;
 }
 .form-change-pass .controls span.error{
-	  font-size: 12px;
+	font-size: 12px;
     left: 0;
+    position: absolute;
+    top: 30px;
+}
+.form-change-pass .another-question span.error{
+    left: -183px;
     position: absolute;
     top: 30px;
 }
@@ -219,4 +225,20 @@ input.change-pass-radio{
 }
 .btn-change-pass{
 	margin-bottom:10px;
+}
+select.select-question{
+	width: 300px;
+	margin-left: -81px;
+}
+select.select-question :first-child{
+	font-style: italic;
+}
+.form-change-pass .another-question{
+	margin-left: 283px;
+	margin-top: -15px;
+	margin-bottom: 20px;
+	display: none;
+}
+.another-question .another-question-input{
+	width:286px;
 }

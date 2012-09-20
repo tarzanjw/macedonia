@@ -83,4 +83,16 @@ class SecretQuestion extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function getAllQuestionAsArray()
+	{
+		$secretQuestionModels = SecretQuestion::model()->findAll();
+		$secretQuestions = array();
+		if(!empty($secretQuestionModels)){
+			foreach($secretQuestionModels as $value){
+				$secretQuestions[$value->question_content] = $value->question_content;
+			}
+		}
+		return $secretQuestions;
+	}
 }

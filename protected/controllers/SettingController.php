@@ -27,18 +27,20 @@ class SettingController extends Controller
 
 	public function actionSecurity()
 	{
-		$secretQuestions = SecretQuestion::model()->findAll();
+		$secretQuestions = SecretQuestion::model()->getAllQuestionAsArray();
 		$acc_id = Yii::app()->user->id;
 		$accModel = Acc::model()->with('auth')->findByPk($acc_id);
-		$is_validate_pass = true;
-		
-		
 		$changePassFormModel = new ChangePassForm();
+		$createQuestionFormModel = new CreateSecretQuestionForm();
+		$is_validate_pass = true;
+		$is_validate_create_question = true;
+		
+		
 		if (isset($_POST['ChangePassForm'])) {
         		$changePassFormModel->setAttributes($_POST['ChangePassForm'], false);
 
 			if ($changePassFormModel->validate()) {
-				$changePass = $this->changePassword($changePassFormModel,$accModel,$_POST['ChangePassForm']);        		    
+				$changePass = $this->changePassword($changePassFormModel,$accModel);        		    
 				
 				if($changePass == true){
 					Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã thay đổi mật khẩu thành công'));	
@@ -50,15 +52,30 @@ class SettingController extends Controller
         	
 		}
 		
+		if(isset($_POST['CreateSecretQuestionForm'])){
+			$createQuestionFormModel->setAttributes($_POST['CreateSecretQuestionForm'], false);
+			if ($createQuestionFormModel->validate()) {
+					$createQuesstionResult = $this->updateQuestion($createQuestionFormModel,$accModel);
+            		if($createQuesstionResult == true){
+						Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã cập nhật câu hỏi bảo mật thành công'));	
+						$this->redirect('/setting/security');	
+					}
+				}else {
+					$is_validate_create_question = false;
+				}
+		}
+		
 		$this->render('security',array(
 			'changePassFormModel' => $changePassFormModel,
+			'createQuestionFormModel' => $createQuestionFormModel,
 			'accModel' => $accModel,
 			'secretQuestions' => $secretQuestions,
 			'is_validate_pass' => $is_validate_pass,
+			'is_validate_create_question' => $is_validate_create_question,
 		));
 	}
 	
-	public function changePassword($changePassFormModel,$accModel,$post)
+	public function changePassword($changePassFormModel,$accModel)
 	{
 		/**
 		* @var AccAuth
@@ -77,6 +94,33 @@ class SettingController extends Controller
 		if($accAuth->save()) return true;
 		
 		return false;
+	}
+	
+	public function updateQuestion($createQuestionFormModel,$accModel)
+	{
+		/**
+		* @var AccAuth
+		*/
+		if($createQuestionFormModel->secret_answer =='******' && $createQuestionFormModel->secret_question != '0')
+			return true;
+		$accAuth = $accModel->auth;
+		if($accAuth->password != SecurityHelper::hashPassword($createQuestionFormModel->password, $accAuth->password_salt)){
+				return false;	
+		}
+		if($createQuestionFormModel->secret_question == '0'){
+			$accAuth->secret_question = null;
+			$accAuth->secret_answer = null;		
+		}else if($createQuestionFormModel->secret_question == '1'){
+			$accAuth->secret_question = $createQuestionFormModel->another_question;
+			$accAuth->importAnswer($createQuestionFormModel->secret_answer);	
+		}else{
+			$accAuth->secret_question = $createQuestionFormModel->secret_question;
+			$accAuth->importAnswer($createQuestionFormModel->secret_answer);	
+		}
+		
+		if($accAuth->save()) return true;
+		return false;
+		
 	}
 	
 	public function actionActivate()

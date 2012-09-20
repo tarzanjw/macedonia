@@ -61,6 +61,17 @@ class AccAuth extends CActiveRecord
 	{
 		$this->password_salt = SecurityHelper::generateSalt(6);
 		$this->password = SecurityHelper::hashPassword($plainPassword, $this->password_salt);
+	}	
+	
+	/**
+	* Import a plain secret answer and then generate a salt, hash it by HMAC
+	*
+	* @param string $plainPassword
+	*/
+	function importAnswer($plainAnswer)
+	{
+		$this->secret_answer_salt = SecurityHelper::generateSalt(6);
+		$this->secret_answer = SecurityHelper::hashPassword($plainAnswer, $this->secret_answer_salt);
 	}
 
 	/**
