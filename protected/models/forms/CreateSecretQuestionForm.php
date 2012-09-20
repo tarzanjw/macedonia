@@ -78,7 +78,7 @@ JS;
 	{
 		$secret_question = get_class($this).'_secret_question';
 		$secret_answer = get_class($this).'_secret_answer';
-		$invalidMessage=Yii::t('view', 'Bạn cần nhập câu trả lời ==.');
+		$invalidMessage=Yii::t('view', 'Bạn cần nhập câu trả lời.');
 
 		$js = <<<JS
 var secret_question = $('#{$secret_question}').val();

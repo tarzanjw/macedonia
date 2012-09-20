@@ -32,8 +32,11 @@ class SettingController extends Controller
 		$accModel = Acc::model()->with('auth')->findByPk($acc_id);
 		$changePassFormModel = new ChangePassForm();
 		$createQuestionFormModel = new CreateSecretQuestionForm();
+		$changePhoneFormModel = new ChangePhoneForm();
+		$changePhoneFormModel->phone = $accModel->phone;
 		$is_validate_pass = true;
 		$is_validate_create_question = true;
+		$is_validate_phone = true;
 		
 		
 		if (isset($_POST['ChangePassForm'])) {
@@ -65,13 +68,28 @@ class SettingController extends Controller
 				}
 		}
 		
+		if(isset($_POST['ChangePhoneForm'])){
+			$changePhoneFormModel->setAttributes($_POST['ChangePhoneForm'],false);
+			if ($changePhoneFormModel->validate()) {
+				 $changePhoneResult = $this->changePhone($changePhoneFormModel,$accModel);
+				if($changePhoneResult == true){
+					Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã cập nhật số điện thoại thành công'));	
+					$this->redirect('/setting/security');	
+				}
+			}else{
+					$is_validate_phone = false;
+			}
+		}
+		
 		$this->render('security',array(
 			'changePassFormModel' => $changePassFormModel,
 			'createQuestionFormModel' => $createQuestionFormModel,
+			'changePhoneFormModel' => $changePhoneFormModel,
 			'accModel' => $accModel,
 			'secretQuestions' => $secretQuestions,
 			'is_validate_pass' => $is_validate_pass,
 			'is_validate_create_question' => $is_validate_create_question,
+			'is_validate_phone' => $is_validate_phone,
 		));
 	}
 	
@@ -101,7 +119,7 @@ class SettingController extends Controller
 		/**
 		* @var AccAuth
 		*/
-		if($createQuestionFormModel->secret_answer =='******' && $createQuestionFormModel->secret_question != '0')
+		if($createQuestionFormModel->secret_answer == '******')
 			return true;
 		$accAuth = $accModel->auth;
 		if($accAuth->password != SecurityHelper::hashPassword($createQuestionFormModel->password, $accAuth->password_salt)){
@@ -121,6 +139,17 @@ class SettingController extends Controller
 		if($accAuth->save()) return true;
 		return false;
 		
+	}
+	
+	public function changePhone($changePhoneFormModel,$accModel)
+	{
+		$accAuth = $accModel->auth;
+		if($accAuth->password != SecurityHelper::hashPassword($changePhoneFormModel->password, $accAuth->password_salt)){
+				return false;	
+		}
+		$accModel->phone = $changePhoneFormModel->phone;
+		if($accModel->save()) return true;
+		return false;
 	}
 	
 	public function actionActivate()
