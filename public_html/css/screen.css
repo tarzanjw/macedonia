@@ -134,7 +134,7 @@ i.icon-activate {background-image: url('images/verify.jpg') !important;backgroun
 }
 .btn-change-pass{
 	margin-top: 0;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 }
 .page-header h1.redtext{
 	float:left;
@@ -200,4 +200,23 @@ label.label_or{
 }
 .form-change-pass span.error{
 	margin-left:178px;
+}
+input.change-pass-radio{
+	margin-top:3px;
+}
+.form-change-pass .controls{
+	position:relative;
+}
+.form-change-pass .controls span.error{
+	  font-size: 12px;
+    left: 0;
+    position: absolute;
+    top: 30px;
+}
+.change_pass_label{
+	cursor: pointer;
+	color: #08C;
+}
+.btn-change-pass{
+	margin-bottom:10px;
 }

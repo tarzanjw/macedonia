@@ -9,8 +9,12 @@
 		public $secretQuestion;
 		public $newPassword;
 		public $confirmed_password;
-		public $question_content='';
-		public $accModel;
+		public $_accModel;
+		
+		function init()
+		{
+			$this->getAccModel();
+		}
 		
 		function attributeLabels()
 		{
@@ -18,8 +22,21 @@
 				'oldPassword'=>Yii::t('view', 'Mật khẩu hiện tại').':',
 				'newPassword'=>Yii::t('view', 'Mật khẩu mới').':',
 				'confirmed_password'=>Yii::t('view', 'Xác nhận Mật khẩu').':',
-				'secretQuestion'=>$this->question_content.":",
+				'secretQuestion'=>$this->accModel->auth->secret_question.":",
 			);
+		}
+		
+		public function getAccModel()
+		{
+			
+			if (!isset($this->_accModel)) {
+				$acc_id = Yii::app()->user->id;
+				$this->_accModel = Acc::model()->with('auth')->findByPk($acc_id); 
+				if(empty($this->_accModel))
+					throw new CHttpException(403,'Not authorize.');
+			}
+
+			return $this->_accModel;
 		}
 		
 		function validatePassword($field,$params)
@@ -28,7 +45,10 @@
 				$this->addError('newPassword',$params['invalidMessage']);
 				return;
 			}
-			
+			if($this->accModel->auth->password == SecurityHelper::hashPassword($this->newPassword, $this->accModel->auth->password_salt)){
+				$this->addError('newPassword',Yii::t('view','Mật khẩu mới trùng mật khẩu cũ'));
+				return;		
+			}
 		}
 		
 		
@@ -77,13 +97,18 @@ JS;
 					$this->addError('secretQuestion',Yii::t('view', 'Bạn phải nhập câu hỏi bảo mật'));
 					return;
 				}
-				if($this->secretQuestion != $this->accModel->auth->secret_answer){
+				if($this->accModel->auth->secret_answer != SecurityHelper::hashPassword($this->secretQuestion, $this->accModel->auth->secret_answer_salt)){
 					$this->addError('secretQuestion',Yii::t('view', 'Trả lời sai câu hỏi bảo mật'));
 					return;	
 				}		
 			}else{
 				if (empty($this->oldPassword)){
 					$this->addError('oldPassword',Yii::t('view', 'Bạn phải nhập mật khẩu cũ'));
+					return;
+				}
+				if($this->accModel->auth->password !== SecurityHelper::hashPassword($this->oldPassword, $this->accModel->auth->password_salt))
+				{
+					$this->addError('oldPassword',Yii::t('view',Yii::t('view', 'Mật khẩu cũ không chính xác')));
 					return;
 				}		
 			}

@@ -11,8 +11,9 @@
 	} */
 </style>
 <?php
-	/** @var ChangePassForm $model */
-	$model = $changePassFormModel;
+	/** @var ChangePassForm $modelPass */
+	$modelPass = $changePassFormModel;
+	$style = ($is_validate_pass == true)?'display:none':'';
 ?>
 <?php /** @var TbActiveForm */$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'changePass-form',
@@ -24,6 +25,7 @@
 	),
 	'htmlOptions'=>array(
 		'class'=>'well form-horizontal form-change-pass span12',
+		'style'=>$style,
 	),
 )); ?>
 	<legend><?= Yii::t('view', 'Đổi mật khẩu'); ?></legend>
@@ -32,22 +34,23 @@
 		<div class="control-label control-label-change-pass">
 			<label class="radio">
 			<?php if(!empty($accModel->auth->secret_question)):?> 
-		 	<?= $form->radioButton($model, 'verifyMethod', array(
+		 	<?= $form->radioButton($modelPass, 'verifyMethod', array(
 		 		'value'=>ChangePassForm::VERIFY_METHOD__PASSWORD,
 		 		'id'=>'ChangePassForm_verifyMethod_'.ChangePassForm::VERIFY_METHOD__PASSWORD,
 		 		'checked'=>'checked',
+		 		'class'=>'change-pass-radio',
 		 	)); ?>
 		 	<?php
 		 		endif;
 		 	?>
-		 	<?= $model->getAttributeLabel('oldPassword'); ?>
+		 	<?= $modelPass->getAttributeLabel('oldPassword'); ?>
 			</label> 
 		 	
 		</div>
 		<div class="controls">
-			<?= $form->passwordField($model, 'oldPassword',array(
+			<?= $form->passwordField($modelPass, 'oldPassword',array(
 			'placeholder'=>Yii::t('view', 'Mật khẩu hiện tại'), )); ?>	
-			<?php echo $form->error($model,'oldPassword'); ?>
+			<?php echo $form->error($modelPass,'oldPassword'); ?>
 		</div>
 		
 	</div>
@@ -56,29 +59,30 @@
 	<div id="divQuestion" class="controls-row control-group control-label-change-pass control-disable">
 		<div class="control-label">
 			<label class="radio">
-		 	<?= $form->radioButton($model, 'verifyMethod', array(
+		 	<?= $form->radioButton($modelPass, 'verifyMethod', array(
 		 		'value'=>ChangePassForm::VERIFY_METHOD__QUESTION,
 		 		'id'=>'ChangePassForm_verifyMethod_'.ChangePassForm::VERIFY_METHOD__QUESTION,
+		 		'class'=>'change-pass-radio',
 		 	)); ?>
-		 	<?= $model->getAttributeLabel('secretQuestion'); ?>
+		 	<?= $modelPass->getAttributeLabel('secretQuestion'); ?>
 			</label>
 		 	
 		</div>
 		<div class="controls">
-			<?= $form->textField($model, 'secretQuestion',array(
+			<?= $form->textField($modelPass, 'secretQuestion',array(
 					'disabled'=>'disabled',
 					'placeholder'=>Yii::t('view', 'Câu hỏi bảo mật'),
 			)); ?>
-			<?php echo $form->error($model,'secretQuestion'); ?>
+			<?php echo $form->error($modelPass,'secretQuestion'); ?>
 		</div>
 	</div>
     <?php endif; ?>
 	
-		<?php echo $form->passwordFieldRow($model,'newPassword', array(
+		<?php echo $form->passwordFieldRow($modelPass,'newPassword', array(
 			'maxlength'=>255,
 			'placeholder'=>Yii::t('view', 'Mật khẩu mới'),)); ?>	
 	
-	<?php echo $form->passwordFieldRow($model,'confirmed_password', array(
+	<?php echo $form->passwordFieldRow($modelPass,'confirmed_password', array(
 			'maxlength'=>255,
 			'placeholder'=>Yii::t('view', 'Xác nhận mật khẩu mới'), )); ?>	
   
@@ -114,6 +118,10 @@
 			$('#ChangePassForm_'+this.value).focus();
 		});
 		
+		$('#change_pass_label').click(function(e) {
+        	$('#changePass-form').toggle('fast');
+	
+		});
 	});
 	    /*jQuery(function($) {
 					$('#ChangePassForm_secretQuestion').attr('disabled','disabled');
@@ -137,5 +145,6 @@
 			}
 		} */
 	//-->
+
 </script>
 

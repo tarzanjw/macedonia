@@ -30,24 +30,53 @@ class SettingController extends Controller
 		$secretQuestions = SecretQuestion::model()->findAll();
 		$acc_id = Yii::app()->user->id;
 		$accModel = Acc::model()->with('auth')->findByPk($acc_id);
+		$is_validate_pass = true;
+		
 		
 		$changePassFormModel = new ChangePassForm();
-		$changePassFormModel->question_content=$accModel->auth->secret_question;
-		$changePassFormModel->accModel = $accModel;
-//      	$this->performAjaxValidation($changePassFormModel);
 		if (isset($_POST['ChangePassForm'])) {
-			$changePassFormModel->setAttributes($_POST['ChangePassForm'], false);
+        		$changePassFormModel->setAttributes($_POST['ChangePassForm'], false);
 
 			if ($changePassFormModel->validate()) {
-            	
+				$changePass = $this->changePassword($changePassFormModel,$accModel,$_POST['ChangePassForm']);        		    
+				
+				if($changePass == true){
+					Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã thay đổi mật khẩu thành công'));	
+					$this->redirect('/setting/security');	
+				}
+			}else {
+				$is_validate_pass = false;
 			}
+        	
 		}
 		
 		$this->render('security',array(
 			'changePassFormModel' => $changePassFormModel,
 			'accModel' => $accModel,
 			'secretQuestions' => $secretQuestions,
+			'is_validate_pass' => $is_validate_pass,
 		));
+	}
+	
+	public function changePassword($changePassFormModel,$accModel,$post)
+	{
+		/**
+		* @var AccAuth
+		*/
+		$accAuth = $accModel->auth;
+		if($changePassFormModel->verifyMethod == 'secretQuestion'){
+			if($accAuth->secret_answer != SecurityHelper::hashPassword($changePassFormModel->secretQuestion, $accAuth->secret_answer_salt)){
+				return false;	
+			}
+		}else{
+			if($accAuth->password != SecurityHelper::hashPassword($changePassFormModel->oldPassword, $accAuth->password_salt)){
+				return false;	
+			}
+		}
+		$accAuth->password = SecurityHelper::hashPassword($changePassFormModel->newPassword,$accAuth->password_salt);
+		if($accAuth->save()) return true;
+		
+		return false;
 	}
 	
 	public function actionActivate()
