@@ -1,15 +1,23 @@
 <?php
-/**
- * This is the bootstrap file for test application.
- * This file should be removed when the application is deployed for production.
- */
 
-// change the following paths if necessary
-$yii=dirname(__FILE__).'/yii/framework/yii.php';
-$config=dirname(__FILE__).'/protected/config/test.php';
+echo '<pre>',print_r($_SERVER, true),'</pre>';
+die;
 
-// remove the following line when in production mode
-defined('YII_DEBUG') or define('YII_DEBUG',true);
+require '../protected/extensions/common/helpers/RestHelper.php';
 
-require_once($yii);
-Yii::createWebApplication($config)->run();
+echo '<pre>',print_r($_GET, true),'</pre>';
+
+$data = array(
+	'ab'=>'c d',
+	'arr'=>array(
+		'subArr'=>array(
+			'item0','item1',
+		),
+		'def'=>'atk',
+		2=>'x',
+	),
+);
+
+echo '<pre>',print_r(http_build_query($data), true),'</pre>';
+
+echo '<pre>',print_r(RestHelper::normalizeArrayToString($data), true),'</pre>';

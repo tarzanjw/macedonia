@@ -1,10 +1,14 @@
 URL : SetSID
+
 URL này cho phép các dịch vụ thành viên tham gia vào SSO được thông báo khi có người sử dụng login.
 
 Yêu cầu :
 INPUT (QueryString)
-	- sid: 1 xâu được mã hóa để thể hiện thông tin của user
-	- timestamp
+	- token: giải mã sẽ được
+		- GSN: Global Session Nounce
+		- Timestamp
+		- Email
+
 
 OUTPUT
 	- Set cookie để đánh dấu là người dùng đã đăng nhập
@@ -18,5 +22,6 @@ PROCESS:
 	- Sau khi giải mã sẽ có 'token'
 	- Từ token sẽ có được các thông tin:
 		- Email của người đã đăng nhập
+		- Thông tin của người đã đăng nhập
 		- gsn
 	- Nếu gsn và email trùng với session hiện tại, bỏ qua

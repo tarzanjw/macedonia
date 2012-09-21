@@ -15,7 +15,7 @@ $cfg = array(
 	'language'=>isset($_GET['_l']) ? $_GET['_l'] : 'vi',
 
 	// preloading 'log' component
-	'preload'=>array('log', 'bootstrap'),
+	'preload'=>array('log'),
 
 	// autoloading model and component classes
 	'import'=>array(

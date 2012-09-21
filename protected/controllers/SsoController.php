@@ -5,6 +5,7 @@
 */
 class SsoController extends Controller
 {
+	public $loadGUI = false;
     public $layout = false;
 
 	public $ssoSites = array(
@@ -32,10 +33,8 @@ class SsoController extends Controller
 
 	function actionSignIn($_cont)
 	{
-		$token = json_encode(array(
-			'gsn'=>$this->getGsn(),
-          	'account'=>$this->getCurrentAccount()->getAttributes(),
-		));
+		$data = $this->getCurrentAccount()->getAttributes();
+        $token = SSOHelper::encryptSetSIDRequest($data['email'], $this->getGsn(), $data['last_modified_time']);
 
         $this->render('signin', array(
         	'cont'=>$_cont,

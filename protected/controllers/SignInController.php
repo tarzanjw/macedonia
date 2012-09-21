@@ -41,6 +41,7 @@ class SignInController extends Controller
 	public function actionIndex()
 	{
 		/** @var CWebUser */$user = Yii::app()->user;
+		if (!$user->isGuest) return $this->onSignedIn();
 
 		if (!$user->getIsGuest()) return $this->_reauthenticate();
 		else return $this->_authenticate();

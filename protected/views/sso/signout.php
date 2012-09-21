@@ -15,11 +15,16 @@
 	<script language="JavaScript">
 	<!--
 	function doRedirect() {
+//		console.log('done');
+//		return;
 		location.replace(<?= CJavaScript::encode($cont); ?>);
     }
 	//-->
 	</script>
 	<?= Yii::t('view', 'Xin đợi một lát ...'); ?>
+
+	<br>
+	<?= CHtml::link('Continue', $cont); ?>
 
     <?php foreach ($this->ssoSites as $site): ?>
     <img src="<?= $site['clearSID']; ?>?gsn=<?= rawurlencode($gsn); ?>" width="0" height="0" />
