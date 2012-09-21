@@ -167,6 +167,7 @@ JS;
 		
 		$rule = array(
 			array('first_name, last_name, email, phone, address', 'filter', 'filter'=>'trim'),
+			array('phone', 'filter', 'filter'=>array('TextHelper','normalizePhoneNumber')),
 			array('phone, email', 'unique', 'className'=>'Acc'),
 			array('email', 'email', 'checkMX'=>true,),
 			array('email, phone, address, city_id, password, confirmed_password', 'required',

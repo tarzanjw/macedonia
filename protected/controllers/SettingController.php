@@ -33,10 +33,13 @@ class SettingController extends Controller
 		$changePassFormModel = new ChangePassForm();
 		$createQuestionFormModel = new CreateSecretQuestionForm();
 		$changePhoneFormModel = new ChangePhoneForm();
+		$verifyOtpChangePhoneForm = new VerifyOtpChangePhoneForm();
+		$captchaModel = new CaptchaForm();
 		$changePhoneFormModel->phone = $accModel->phone;
 		$is_validate_pass = true;
 		$is_validate_create_question = true;
 		$is_validate_phone = true;
+		$show_verify_otp = false;
 		
 		
 		if (isset($_POST['ChangePassForm'])) {
@@ -69,15 +72,38 @@ class SettingController extends Controller
 		}
 		
 		if(isset($_POST['ChangePhoneForm'])){
+			// TODO : -o nhập captcha
 			$changePhoneFormModel->setAttributes($_POST['ChangePhoneForm'],false);
+			echo '<pre>', print_r($_POST, true), '</pre>';die;
 			if ($changePhoneFormModel->validate()) {
-				 $changePhoneResult = $this->changePhone($changePhoneFormModel,$accModel);
-				if($changePhoneResult == true){
-					Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã cập nhật số điện thoại thành công'));	
+//				 $changePhoneResult = $this->changePhone($changePhoneFormModel,$accModel);
+//				if($changePhoneResult == true){
+//					Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã cập nhật số điện thoại thành công'));	
+//					$this->redirect('/setting/security');	
+//				}
+				$phone_no = $changePhoneFormModel->phone;
+				Yii::app()->otpCentral->send(KIND_CHANGE_PHONE,'change_phone_'.$acc_id.'_'.$phone_no,$phone_no);
+				$show_verify_otp = true;
+				$verifyOtpChangePhoneForm->phone = $phone_no;
+			}else{
+					$is_validate_phone = false;
+			}
+		}
+		
+		if(isset($_POST['VerifyOtpChangePhoneForm'])){
+			$phone = $_POST['VerifyOtpChangePhoneForm']['phone'];
+			$sms_code = $_POST['VerifyOtpChangePhoneForm']['otp'];
+			$item_id = 'change_phone_'.$acc_id.'_'.$phone;
+			$check = VerifySMSComponent::verifyPhone($item_id,KIND_CHANGE_PHONE,$sms_code);
+			if($check == true){
+				if($this->changePhone($accModel,$phone) == true){
+					Yii::app()->user->setFlash('success', Yii::t('view','Thay đổi số điện thoại thành công'));	
 					$this->redirect('/setting/security');	
 				}
 			}else{
-					$is_validate_phone = false;
+				$verifyOtpChangePhoneForm->phone = $phone;
+				$show_verify_otp = true;
+				Yii::app()->user->setFlash('warning', Yii::t('view','Nhập sai mã kích hoạt'));	
 			}
 		}
 		
@@ -85,11 +111,14 @@ class SettingController extends Controller
 			'changePassFormModel' => $changePassFormModel,
 			'createQuestionFormModel' => $createQuestionFormModel,
 			'changePhoneFormModel' => $changePhoneFormModel,
+			'verifyOtpChangePhoneForm' => $verifyOtpChangePhoneForm,
+			'captchaModel' => $captchaModel,
 			'accModel' => $accModel,
 			'secretQuestions' => $secretQuestions,
 			'is_validate_pass' => $is_validate_pass,
 			'is_validate_create_question' => $is_validate_create_question,
 			'is_validate_phone' => $is_validate_phone,
+			'show_verify_otp' => $show_verify_otp,
 		));
 	}
 	
@@ -141,13 +170,9 @@ class SettingController extends Controller
 		
 	}
 	
-	public function changePhone($changePhoneFormModel,$accModel)
+	public function changePhone($accModel,$new_phone)
 	{
-		$accAuth = $accModel->auth;
-		if($accAuth->password != SecurityHelper::hashPassword($changePhoneFormModel->password, $accAuth->password_salt)){
-				return false;	
-		}
-		$accModel->phone = $changePhoneFormModel->phone;
+		$accModel->phone = $new_phone;
 		if($accModel->save()) return true;
 		return false;
 	}
@@ -227,7 +252,7 @@ class SettingController extends Controller
 			$check_email = $this->verifyEmail($acc_id,$code);
 			if($check_email) {
 				die('tu dong dang nhap cho account');
-				//tự động đăng nhập
+				// TODO : -o Hocdt tự động đăng nhập khi verify email = url
 				Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email thành công'));	
 				$this->redirect('/setting/activate');	
 			}else{
@@ -236,7 +261,6 @@ class SettingController extends Controller
 			}
 		}
 	}
-	
 	
 	
 	public function verifySMS($acc_id,$sms_code)
@@ -249,7 +273,8 @@ class SettingController extends Controller
 			/**
 			* @var SmsVerify
 			*/
-		$check = VerifySMSComponent::verifySMS($accModel->id,$sms_code);
+		$item_id = 'account_id_'.$acc_id;			
+		$check = VerifySMSComponent::verifyPhone($item_id,KIND_SIGNUP,$sms_code);
 		if($check){
 				
 				$accModel->is_phone_verified = 1;
@@ -290,13 +315,13 @@ class SettingController extends Controller
 	
 	public function resendSMS($acc_id,$phone)
 	{
-		Yii::app()->otpCentral->send(18,'account_id_'.$acc_id,$phone,array(),false,true);
+		Yii::app()->otpCentral->send(KIND_SIGNUP,'account_id_'.$acc_id,$phone,array(),false,true);
 		return true;	
 	}
 	
 	public function resendEmail($acc_id,$email)
 	{
-		Yii::app()->otpCentral->send(19,'account_id_'.$acc_id,$email,array(),false,true);
+		Yii::app()->otpCentral->send(KIND_SIGNUP_EMAIL,'account_id_'.$acc_id,$email,array(),false,true);
 		return true;	
 	}
 	

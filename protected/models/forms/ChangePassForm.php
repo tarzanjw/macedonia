@@ -22,7 +22,7 @@
 				'oldPassword'=>Yii::t('view', 'Mật khẩu hiện tại').':',
 				'newPassword'=>Yii::t('view', 'Mật khẩu mới').':',
 				'confirmed_password'=>Yii::t('view', 'Xác nhận Mật khẩu').':',
-				'secretQuestion'=>$this->accModel->auth->secret_question.":",
+				'secretQuestion'=>$this->accModel->auth->secret_question."?:",
 			);
 		}
 		
@@ -116,6 +116,7 @@ JS;
 	
 		function clientRequiredWithCondition($field)
 		{
+			/*
 			if($field == 'oldPassword'){
 				$input_id= 'ChangePassForm_verifyMethod_oldPassword';
 				$text_id='ChangePassForm_oldPassword';
@@ -135,6 +136,7 @@ var text = $('#{$text_id}').val();
 if(text.length < 1)
 messages.push('{$invalidMessage}');
 JS;
+		*/
 		}
 	
 

@@ -4,6 +4,7 @@
   	public $_accModel;
   	public $password;
   	public $phone;
+  	public $otp;
   	
   	function init()
 	{
@@ -15,6 +16,7 @@
 		return array(
 			'password'=>Yii::t('view', 'Mật khẩu').':',
 			'phone'=>Yii::t('view', 'Số điện thoại').':',
+			'otp'=>Yii::t('view', 'Mã xác minh số điện thoại').':',
 		);
 	}
 	
@@ -39,36 +41,33 @@
 		}
 	}
 	
-	function checkPhone($field,$params)
-	{
-		$phoneNumber = TextHelper::normalizePhoneNumber($this->phone);
-		if($phoneNumber == null){
-			$this->addError('phone',$params['invalidMessage']);
-			return;		
-		}else{
-			$this->phone = $phoneNumber;		
-		}
-		if($this->accModel->phone != $this->phone){
-			$acc = Acc::model()->findByAttributes(array('phone'=>$this->phone));
-			if(!empty($acc)){
-				$this->addError('phone',Yii::t('view','Số điện thoại đã sử dụng cho tài khoản khác'));
-				return;		
-			}
-		}
-		
-	}
-	
+//	function checkPhone($field,$params)
+//	{
+
+//		if($this->accModel->phone != $this->phone){
+//			$acc = Acc::model()->findByAttributes(array('phone'=>$this->phone));
+//			if(!empty($acc)){
+//				$this->addError('phone',Yii::t('view','Số điện thoại đã sử dụng cho tài khoản khác'));
+//				return;		
+//			}
+//		}else{
+//			$this->addError('phone',yii::t('view','Số điện thoại trùng số điện thoại cũ'));
+//		}
+//		
+//		
+//	}
 	
 	function rules()
 	{
 		return array(
 			array('password', 'required',
 					'message'=>Yii::t('view', 'Bạn phải nhập mật khẩu'),),
+			array('phone','filter','filter'=>array('TextHelper','normalizePhoneNumber'),),
 			array('phone', 'required',
 					'message'=>Yii::t('view', 'Bạn phải nhập số điện thoại'),),
 			array('password', 'checkPassword','invalidMessage'=>Yii::t('view','Sai mật khẩu'),),
-			array('phone', 'checkPhone','invalidMessage'=>Yii::t('view','Số điện thoại không đúng'),),
-//			array('phone', 'unique', 'className'=>'Acc'),
+//			array('phone', 'checkPhone','invalidMessage'=>Yii::t('view','Số điện thoại không đúng'),),
+			array('phone','unique','className'=>'Acc')
 		);
 	} 
 	 
