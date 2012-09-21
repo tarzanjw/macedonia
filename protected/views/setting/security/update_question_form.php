@@ -52,7 +52,7 @@
 			)); ?>	
     
     <div class="controls">
-      <button type="submit" class="btn"><?= Yii::t('view','Cập nhật'); ?></button>
+      <button type="submit" class="btn btn-primary"><?= Yii::t('view','Cập nhật'); ?></button>
     </div>
 <?php $this->endWidget(); ?>   
 
@@ -93,6 +93,7 @@
 		});	
 		$('#create_question_label').click(function(e) {
         	$('#create-question-form').toggle('fast');
+        	return false;
 		});			
 	});
 		

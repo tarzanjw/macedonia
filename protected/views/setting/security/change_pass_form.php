@@ -56,6 +56,7 @@
 	</div>
 	
 	<?php if(!empty($accModel->auth->secret_question)):?> 
+	<label class="label_or"><?= Yii::t('view', 'Hoặc'); ?></label>
 	<div id="divQuestion" class="controls-row control-group control-label-change-pass control-disable">
 		<div class="control-label">
 			<label class="radio">
@@ -87,7 +88,7 @@
 			'placeholder'=>Yii::t('view', 'Xác nhận mật khẩu mới'), )); ?>	
   
     <div class="controls">
-      <button type="submit" class="btn">Đổi mật khẩu</button>
+      <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
     </div>
 
 <?php $this->endWidget(); ?>
@@ -99,6 +100,7 @@
 		$(document).ready(function() {
 			if($('#ChangePassForm_verifyMethod_secretQuestion').attr('checked')=='checked') { 
 				$('#ChangePassForm_verifyMethod_secretQuestion').trigger('click');
+				return false;
 			}
 		});
 		$('#changePass-form input[type=radio]').click(function(){
