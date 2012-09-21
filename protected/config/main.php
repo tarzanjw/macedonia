@@ -48,6 +48,12 @@ $cfg = array(
 	),
 
 	'controllerMap'=>array(
+		'docs'=>array(
+			'class'=>'ext.common.StaticArticleController.StaticArticleController',
+			'rootPath'=>CODE_PATH.'/data/docs',
+			'title'=>'VatGia SSO Documentations',
+		),
+
     	'user'=>array(
         	'class'=>'ext.common.OpenIDUser.OpenIDUserController',
     	),
@@ -94,6 +100,8 @@ $cfg = array(
 				'dang-ky/<_a:\w+>'=>'/SignUp/<_a>',
 
 				'dang-xuat/<_a:\w+>'=>'/SignOut/<_a>',
+
+				'docs/<file:.*>'=>'/docs',
 
 				'<_c:\w+>/'=>'<_c>/',
 				'<_c:\w+>/<_a:\w+>'=>'<_c>/<_a>',
