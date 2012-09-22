@@ -1,5 +1,4 @@
 <?php
-
 define('ROOT_PATH', realpath(__DIR__.'/..'));
 define('HOME_PATH', ROOT_PATH.'/public_html');
 define('CODE_PATH', ROOT_PATH.'/protected');

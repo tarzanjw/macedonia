@@ -32,8 +32,16 @@ class ActivateController extends Controller
 	
 	public function actionverifyPhone($id)
 	{
+		/**
+		* 
+		* @var Acc
+		*/
 		$accModel = $this->loadAccModel($id);
-		// check xem đã verify chưa
+		if($accModel->status == 'NORMAL' && $accModel->is_phone_verified == 1){
+			Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực số điện thoại trước đó'));
+			$this->redirect('/setting');	
+		}
+		
 		if (isset($_POST['sms_code'])) {
 			$sms_code = $_POST['sms_code'];
 			/**
@@ -45,6 +53,7 @@ class ActivateController extends Controller
 				if($check){
 						Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực số điện thoại thành công'));
 						$accModel->status = 'NORMAL';
+						$accModel->is_phone_verified = 1;
 						$accModel->save();
 						$this->redirect('/setting');
         			}
@@ -60,13 +69,22 @@ class ActivateController extends Controller
 	
 	public function actionVerifyEmail($id,$code = null)
 	{
+		/**
+		* 
+		* @var Acc
+		*/
 		$accModel = $this->loadAccModel($id);
+		if($accModel->status == 'NORMAL' && $accModel->is_email_verified == 1){
+			Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email trước đó'));
+			$this->redirect('/setting');	
+		}
 		// check xem đã verify chưa
 		if(isset($_POST['code']))	$code = $_POST['code'];
 				$check = VerifyEmailComponent::verifyEmail('test',$code);
 				if($check){
 						Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email thành công'));
 						$accModel->status = 'NORMAL';
+						$accModel->is_email_verified = 1;
 						$accModel->save();
 						$this->redirect('/setting');
         			}

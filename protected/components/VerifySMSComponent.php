@@ -7,13 +7,11 @@
 */
 class VerifySMSComponent extends CApplicationComponent
 {
-	public static function verifySMS($sms_id,$sms_code)
+	public static function verifySMS($acc_id,$sms_code)
 	{   
-		$smsModel = SmsVerify::model()->findByPk($sms_id);
-		if(empty($smsModel)) return false;
-		if($sms_code == $smsModel->acc_id)
-			return true;				
-		else return false;
+		$item_id = 'account_id_'.$acc_id;
+		$result = Yii::app()->otpCentral->check(18,$item_id,$sms_code);
+		return $result;
 	}
 }
 

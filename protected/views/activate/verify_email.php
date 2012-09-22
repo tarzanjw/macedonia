@@ -9,7 +9,7 @@
         'fade'=>true, // use transitions?
         'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
         'alerts'=>array( // configurations per alert type
-            'warning'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
         ),
     ));
  ?>

@@ -50,5 +50,195 @@ h2 {font-weight:normal; font-size:1.4em; line-height:normal; margin:0 0}
 
 i.icon-baokim {background-image:url('images/icon-baokim-gray.png'); background-position:0 0;}
 .active a i.icon-baokim {background-image:url('images/icon-baokim-white.png') !important;}
+i.icon-activate {background-image: url('images/verify.jpg') !important;background-position: 0 0;}
 .input-sms-code{margin-top:10px;}
-/*.nav-pills .active a, .nav-pills .active a:hover {background-color:#DD4B39;}*/
+.bluetext{color:#005580;}
+.resend_sms_label{color: blue;cursor: pointer;}
+.verify_phone{margin:0}
+.captcha-form{width:350px;}
+
+#recaptcha_widget{
+  background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E5E5E5;
+    width: 100%;
+}
+#recaptcha_image{
+ 	 height: 57px;
+ 	 margin-left: 20px;
+}
+.recaptcha-main{
+   padding:13px 13px 17px;
+    position: relative;
+}
+.recaptcha_only_if_image{
+    display: block;
+    margin: 0 0 2px;
+}
+.recaptcha_image_cover{
+	border-bottom: 1px solid #E5E5E5;
+   
+    padding: 5px 0;
+    text-align: center;
+    width: 100%;
+}
+#recaptcha_response_field{
+	float:left;
+}
+.recaptcha-widget #recaptcha_reload_btn {
+    background: url("images/recaptcha-sprite.png") repeat scroll -63px center transparent;
+}
+.recaptcha-widget .recaptcha-buttons a {
+    background: none no-repeat scroll center center #FFFFFF;
+    display: inline-block;
+    height: 21px;
+    line-height: 0;
+    margin-left: 2px;
+    opacity: 0.55;
+    width: 21px;
+}
+.recaptcha-widget #recaptcha_whatsthis_btn {
+    background: url("images/recaptcha-sprite.png") repeat scroll 0 0 transparent;
+}
+.recaptcha-widget .recaptcha-buttons a {
+    background: none no-repeat scroll center center #FFFFFF;
+    display: inline-block;
+    height: 21px;
+    line-height: 0;
+    margin-left: 2px;
+    opacity: 0.55;
+    width: 21px;
+}
+.recaptcha-widget .recaptcha-buttons a:hover{
+	opacity: 0.8;
+}
+.recaptcha-buttons{
+	padding-top:2px;
+}
+.checkbox{
+	margin-top:10px;
+}
+.btn-resend-sms{margin-top:10px;}
+.activate-label{margin-bottom: 10px;text-align: center;}
+.tbAlert-email{
+	margin-left:300px;
+}
+.success-sms .alert-block, .success-email .alert-block{
+	background-color: #DFF0D8;
+    border-color: #D6E9C6;
+    color: #468847;
+}
+.error-sms .alert-block, .error-email .alert-block{
+	background-color: #F2DEDE;
+    border-color: #EED3D7;
+    color: #B94A48;
+}
+.btn-change-pass{
+	margin-top: 0;
+	margin-bottom: 0px;
+}
+.page-header h1.redtext{
+	float:left;
+}
+.page-header div.icon-chevron-right{
+	float:left;
+	margin:7px;
+}
+.page-header{
+	float: left;
+	width: 100%;
+}
+.form-change-pass{
+	float: left;
+	background: #EEE;
+	border-radius: 4px;
+	padding-top: 15px;
+	margin-left:0 !important; 
+}
+.form-horizontal .control-label {
+	text-align: left;
+	padding-left: 13px;
+	position:relative;
+	padding-right: 5px;
+}
+.radio-method-pass{
+	position: absolute;
+	left: 15px;
+	top: 18px;
+	z-index: 999;
+}
+.radio-method-question{
+	position: absolute;
+	left: 15px;
+	top: 69px;
+	z-index: 999;
+}
+.control-disable{
+	color:#999;
+}
+.control-disable .success .control-label{
+	color:#999;
+}
+.control-disable .control-label .radio{
+	color:#999;
+}
+.control-disable .controls input{
+	border-color:#999;
+}
+label.label_or{
+	margin-top: -17px;
+	margin-left: 35px;
+	font-weight: bold;
+}
+.form-change-pass{
+	position:relative;
+}
+.form-change-pass .control-label{
+	width: 345px;
+	padding-right: 5px;
+}
+.form-change-pass .radio{
+	margin-left: -19px;
+}
+.form-change-pass span.error{
+	margin-left:178px;
+}
+input.change-pass-radio{
+	margin-top:3px;
+}
+.form-change-pass .controls{
+	position:relative;
+}
+.form-change-pass .controls span.error{
+	font-size: 12px;
+    left: 0;
+    position: absolute;
+    top: 30px;
+}
+.form-change-pass .another-question span.error{
+    left: -183px;
+    position: absolute;
+    top: 30px;
+}
+.change_pass_label{
+	cursor: pointer;
+	color: #08C;
+}
+.btn-change-pass{
+	margin-bottom:10px;
+}
+select.select-question{
+	width: 300px;
+	margin-left: -81px;
+}
+select.select-question :first-child{
+	font-style: italic;
+}
+.form-change-pass .another-question{
+	margin-left: 283px;
+	margin-top: -15px;
+	margin-bottom: 20px;
+	display: none;
+}
+.another-question .another-question-input{
+	width:286px;
+}

@@ -186,8 +186,7 @@ class EReCaptcha extends CInputWidget
    {
       $customthemewidget = (($w = $this->customThemeWidget) != '') ? "'{$w}'" : 'null';
       $cs = Yii::app()->getClientScript();
-
-      if (!$cs->isScriptRegistered(get_class($this).'_options')) {
+  if (!$cs->isScriptRegistered(get_class($this).'_options')) {
          $script =<<<EOP
 var RecaptchaOptions = {
    theme : '{$this->theme}',
