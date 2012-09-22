@@ -16,7 +16,7 @@ class VerifySMSComponent extends CApplicationComponent
 	
 	public static function verifyPhone($item_id,$kind_id,$sms_code)
 	{
-		$result = Yii::app()->otpCentral->check($kind_id,$item_id,$sms_code);
+		$result = Yii::app()->otpCentral->check($kind_id,$item_id,$sms_code,1);
 		return $result;
 	}
 }

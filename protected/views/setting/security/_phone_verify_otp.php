@@ -16,18 +16,18 @@
 )); ?>
 
    <legend><?= Yii::t('view', 'Nhập mã xác minh số điện thoại mới'); ?></legend>
-	<?php echo $form->textFieldRow($verifyOtpChangePhoneForm,'phone', array(
+	<?php echo $form->textFieldRow($formModel,'phone', array(
 			'maxlength'=>255,
 //			'name'=>'VerifyPhone[phone-show]',
 			'placeholder'=>Yii::t('view', 'Số điện thoại mới'),
 			'disabled' => 'disabled',
 			)); ?>
-	<?php echo $form->hiddenField($verifyOtpChangePhoneForm,'phone', array(
+	<?php echo $form->hiddenField($formModel,'phone', array(
 			'maxlength'=>255,
 //			'name'=>'VerifyPhone[phone]',
 			'placeholder'=>Yii::t('view', 'Số điện thoại mới'),
 			)); ?>	
-	<?php echo $form->textFieldRow($verifyOtpChangePhoneForm,'otp', array(
+	<?php echo $form->textFieldRow($formModel,'otp', array(
 			'maxlength'=>255,
 //			'name'=>'VerifyPhone[otp]',
 			'placeholder'=>Yii::t('view', 'mã xác minh'),

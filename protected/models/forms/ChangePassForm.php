@@ -147,6 +147,8 @@ JS;
             		'invalidMessage'=>Yii::t('view', 'Bạn phải nhập mật khẩu hiện tại hoặc câu hỏi bảo mật'),),
 				array('newPassword', 'required',
 						'message'=>Yii::t('view', 'Bạn phải nhập mật khẩu mới'),),
+				array('oldPassword', 'required',
+						'message'=>Yii::t('view', 'Bạn phải nhập mật khẩu cũ'),),
 				array('confirmed_password', 'required',
 						'message'=>Yii::t('view', 'Bạn phải nhập xác nhận mật khẩu'),),
 				array('newPassword','validatePassword','clientValidate'=>'clientValidatePassword',

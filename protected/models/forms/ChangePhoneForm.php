@@ -4,6 +4,7 @@
   	public $_accModel;
   	public $password;
   	public $phone;
+  	public $captcha;
   	public $otp;
   	
   	function init()
@@ -67,7 +68,10 @@
 					'message'=>Yii::t('view', 'Bạn phải nhập số điện thoại'),),
 			array('password', 'checkPassword','invalidMessage'=>Yii::t('view','Sai mật khẩu'),),
 //			array('phone', 'checkPhone','invalidMessage'=>Yii::t('view','Số điện thoại không đúng'),),
-			array('phone','unique','className'=>'Acc')
+			array('phone','unique','className'=>'Acc'),
+			array('captcha', 'ext.common.recaptcha.EReCaptchaValidator',
+               		'privateKey'=>'6Lc_YNYSAAAAADl9meEKpYWaA2RRrhaZG2sVUQwV',
+               	),
 		);
 	} 
 	 

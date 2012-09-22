@@ -1,4 +1,7 @@
 body {position:absolute; height:100%; min-height:100%;width: 100%;}
+body{
+	font-family:arial;
+}
 .body-wrp {min-height: 100%; position: relative;}
 
 .body-wrp .content {padding:0 44px}
@@ -229,7 +232,6 @@ input.change-pass-radio{
 }
 select.select-question{
 	width: 300px;
-	margin-left: -81px;
 }
 select.select-question :first-child{
 	font-style: italic;
@@ -244,4 +246,13 @@ select.select-question :first-child{
 	width:286px;
 }
 a.change_pass_label{
+}
+.phone-captcha{
+	width:320px;
+}
+.phone-captcha #recaptcha_widget{
+	border-radius:3px;
+}
+.form-change-pass1 .error{
+	color: #B94A48;
 }

@@ -1,6 +1,3 @@
- <?php
- 	$style = ($is_validate_phone == true)?'display:none':'';
- ?>
  <?php /** @var TbActiveForm */$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'change-phone-form',
 	'type'=>'horizontal',
@@ -10,27 +7,32 @@
 		'validateOnSubmit'=>true,
 	),
 	'htmlOptions'=>array(
-		'class'=>'well form-horizontal form-change-pass span12',
-		'style'=>$style,
+		'class'=>'well form-change-pass1',
 	),
 )); ?>
  <legend><?= Yii::t('view', 'Đổi số điện thoại'); ?></legend>
-    <?php echo $form->passwordFieldRow($changePhoneFormModel,'password', array(
+    <?php echo $form->passwordFieldRow($formModel,'password', array(
 		'maxlength'=>255,
 		'placeholder'=>Yii::t('view', 'Mật khẩu của bạn'),)); ?>	
-	<?php echo $form->textFieldRow($changePhoneFormModel,'phone', array(
+	<?php echo $form->textFieldRow($formModel,'phone', array(
 			'maxlength'=>255,
 			'placeholder'=>Yii::t('view', 'Số điện thoại mới'), 
 			)); ?>	
-	<?php echo $form->label($captchaModel, 'captcha'); ?>
-	<?php $this->widget('ext.common.recaptcha.EReCaptcha', array(
-		'model'=>$captchaModel,
-		'attribute'=>'captcha',
-		'theme'=>'custom',
-		'language'=>Yii::app()->language,
-		'publicKey'=>'6LddktYSAAAAAPzr2SXhxl5dJvKcQsW_zFn3Orp2',
-	));?>
-	<?= $form->error($captchaModel, 'captcha'); ?>
+	
+	<div class="control-group">
+	<?php echo $form->label($formModel, 'captcha',array('class'=>'control-label  required')); ?>
+		<div class="controls phone-captcha">
+		<?php $this->widget('ext.common.recaptcha.EReCaptcha', array(
+			'model'=>$formModel,
+			'attribute'=>'captcha',
+			'theme'=>'custom',
+			'language'=>Yii::app()->language,
+			'publicKey'=>'6Lc_YNYSAAAAAEEDPneMru1h_OQrrtQAcFrmBcOy'
+		));
+		?>
+		<?= $form->error($formModel, 'captcha'); ?>
+		</div>
+	</div>
     <div class="controls">
       <button type="submit" class="btn btn-primary"><?= Yii::t('view','Cập nhật'); ?></button>
     </div>
