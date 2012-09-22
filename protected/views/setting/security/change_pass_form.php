@@ -1,15 +1,4 @@
-<style>
-	/*.controls{
-		position: relative;
-	}
-	span.help-inline{
-		font-size: 12px;
-		position: absolute;
-		width: 238px;
-		top: 31px;
-		left: -5px;
-	} */
-</style>
+
 <?php
 	/** @var ChangePassForm $modelPass */
 	$modelPass = $changePassFormModel;

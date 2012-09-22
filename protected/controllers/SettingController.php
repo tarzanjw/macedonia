@@ -4,6 +4,15 @@ class SettingController extends Controller
 {
 	public $layout = '//setting/_layout';
 	public $defaultAction = 'index';
+	
+	function actions()
+	{
+		return array(
+			'security'=>array(
+				'class'=>'application.controllers.setting.SecurityAction',
+			),
+		);
+	}
 
 	public function actionBaokim()
 	{
@@ -21,16 +30,15 @@ class SettingController extends Controller
 	}
 
 	public function actionInfo()
-	{
+	{               
 		$this->render('info');
 	}
 
-	public function actionSecurity()
+	public function actionSecurity1()
 	{
 		$secretQuestions = SecretQuestion::model()->getAllQuestionAsArray();
 		$acc_id = Yii::app()->user->id;
 		$accModel = Acc::model()->with('auth')->findByPk($acc_id);
-		$changePassFormModel = new ChangePassForm();
 		$createQuestionFormModel = new CreateSecretQuestionForm();
 		$changePhoneFormModel = new ChangePhoneForm();
 		$verifyOtpChangePhoneForm = new VerifyOtpChangePhoneForm();
@@ -40,24 +48,7 @@ class SettingController extends Controller
 		$is_validate_create_question = true;
 		$is_validate_phone = true;
 		$show_verify_otp = false;
-		
-		
-		if (isset($_POST['ChangePassForm'])) {
-        		$changePassFormModel->setAttributes($_POST['ChangePassForm'], false);
-
-			if ($changePassFormModel->validate()) {
-				$changePass = $this->changePassword($changePassFormModel,$accModel);        		    
 				
-				if($changePass == true){
-					Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã thay đổi mật khẩu thành công'));	
-					$this->redirect('/setting/security');	
-				}
-			}else {
-				$is_validate_pass = false;
-			}
-        	
-		}
-		
 		if(isset($_POST['CreateSecretQuestionForm'])){
 			$createQuestionFormModel->setAttributes($_POST['CreateSecretQuestionForm'], false);
 			if ($createQuestionFormModel->validate()) {
@@ -119,28 +110,8 @@ class SettingController extends Controller
 			'is_validate_create_question' => $is_validate_create_question,
 			'is_validate_phone' => $is_validate_phone,
 			'show_verify_otp' => $show_verify_otp,
+			'tab'=>'general',
 		));
-	}
-	
-	public function changePassword($changePassFormModel,$accModel)
-	{
-		/**
-		* @var AccAuth
-		*/
-		$accAuth = $accModel->auth;
-		if($changePassFormModel->verifyMethod == 'secretQuestion'){
-			if($accAuth->secret_answer != SecurityHelper::hashPassword($changePassFormModel->secretQuestion, $accAuth->secret_answer_salt)){
-				return false;	
-			}
-		}else{
-			if($accAuth->password != SecurityHelper::hashPassword($changePassFormModel->oldPassword, $accAuth->password_salt)){
-				return false;	
-			}
-		}
-		$accAuth->password = SecurityHelper::hashPassword($changePassFormModel->newPassword,$accAuth->password_salt);
-		if($accAuth->save()) return true;
-		
-		return false;
 	}
 	
 	public function updateQuestion($createQuestionFormModel,$accModel)
@@ -169,13 +140,7 @@ class SettingController extends Controller
 		return false;
 		
 	}
-	
-	public function changePhone($accModel,$new_phone)
-	{
-		$accModel->phone = $new_phone;
-		if($accModel->save()) return true;
-		return false;
-	}
+
 	
 	public function actionActivate()
 	{

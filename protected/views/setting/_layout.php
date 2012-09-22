@@ -36,4 +36,5 @@
 		<div class="span9"><?= $content; ?></div>
 	</div>
 </div><!-- content -->
+
 <?php $this->endContent(); ?>
