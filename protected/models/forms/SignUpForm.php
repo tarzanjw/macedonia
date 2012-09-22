@@ -103,7 +103,7 @@ JS;
 
 		return $js;
 	}
-	
+
 	function validateConfirmedPassword($field, $params)
 	{
 		if ($this->password != $this->confirmed_password) {
@@ -112,7 +112,7 @@ JS;
 		}
 
 	}
-	
+
 	function clientValidateConfirmedPassword()
 	{
 		$password = get_class($this).'_password';
@@ -136,7 +136,7 @@ JS;
 			return;
 		}
 	}
-	
+
 	function clientValidatePassword()
 	{
 		$password = get_class($this).'_password';
@@ -147,9 +147,9 @@ var password = $('#{$password}').val();
 if (password.length < 8) messages.push('{$invalidMessage}');
 JS;
 
-		return $js;		
+		return $js;
 	}
-	
+
 	function validateDate()
 	{
 		if (empty($this->dobD) || empty($this->dobM) || empty($this->dobY)) {
@@ -161,10 +161,10 @@ JS;
 	function rules()
 	{
 		$captchaRule = array(
-				array('captcha', 'ext.common.recaptcha.EReCaptchaValidator', 
+				array('captcha', 'ext.common.recaptcha.EReCaptchaValidator',
                		'privateKey'=>'6Lc_YNYSAAAAADl9meEKpYWaA2RRrhaZG2sVUQwV')
                	);
-		
+
 		$rule = array(
 			array('first_name, last_name, email, phone, address', 'filter', 'filter'=>'trim'),
 			array('phone', 'filter', 'filter'=>array('TextHelper','normalizePhoneNumber')),
@@ -187,7 +187,7 @@ JS;
         	array('agreeTermOfService', 'required', 'requiredValue'=>1,
             	'message'=>Yii::t('message', 'Để sử dụng dịch vụ, bạn cần đồng ý với điều khoản dịch vụ của chúng tôi.'),
         	),
-        	
+
             array('password','validatePassword','clientValidate'=>'clientValidatePassword',
             			'invalidMessage'=>Yii::t('view', 'Mật khẩu ít nhất 8 ký tự.'),),
             array('confirmed_password','validateConfirmedPassword','clientValidate'=>'clientValidateConfirmedPassword',

@@ -1,0 +1,15 @@
+URL : SetSID
+URL này cho phép các dịch vụ thành viên tham gia vào SSO được thông báo khi có người sử dụng logout.
+
+Yêu cầu :
+INPUT
+	gsn: Global session nounce
+
+OUTPUT
+	- Set cookie để đánh dấu là người dùng đã đăng xuất
+	- Xóa gsn trên cookie
+	- Trả về 1 ảnh, mime bất kỳ, size = 1x1 pixel.
+
+PROCESS:
+	- Kiểm tra referer, nếu là từ 1 nơi khác ngoài http://id.vatgia.com/sso thì fail
+	- Kiểm tra gsn trên query với gsn ở cookie, nếu khác thì fail

@@ -19,10 +19,10 @@ return array(
 					'categories'=>'dev.email dev.sms',
 					'logFile'=>'email.log',
 				),
-				array(
+				/*array(
 					'class'=>'CProfileLogRoute',
 					'categories'=>'',
-				),
+				),*/
 			),
 		),
 	),

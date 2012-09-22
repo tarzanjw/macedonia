@@ -15,7 +15,7 @@ $cfg = array(
 	'language'=>isset($_GET['_l']) ? $_GET['_l'] : 'vi',
 
 	// preloading 'log' component
-	'preload'=>array('log', 'bootstrap'),
+	'preload'=>array('log'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -27,6 +27,13 @@ $cfg = array(
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
+		'OpenID'=>array(
+			'class'=>'application.modules.OpenID.OpenIDModule',
+			'modules'=>array(
+				'hq'=>array(
+				),
+			),
+		),
 
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
@@ -41,6 +48,12 @@ $cfg = array(
 	),
 
 	'controllerMap'=>array(
+		'docs'=>array(
+			'class'=>'ext.common.StaticArticleController.StaticArticleController',
+			'rootPath'=>CODE_PATH.'/data/docs',
+			'title'=>'VatGia SSO Documentations',
+		),
+
     	'user'=>array(
         	'class'=>'ext.common.OpenIDUser.OpenIDUserController',
     	),
@@ -51,7 +64,7 @@ $cfg = array(
 		'bootstrap'=>array(
             'class'=>'ext.common.bootstrap.components.Bootstrap',
             #'responsiveCss'=>true,
-            #'yiiCss'=>true,
+            'yiiCss'=>false,
 		),
 
 		'email'=>array(
@@ -110,6 +123,8 @@ $cfg = array(
 				'dang-ky/<_a:\w+>'=>'/SignUp/<_a>',
 
 				'dang-xuat/<_a:\w+>'=>'/SignOut/<_a>',
+
+				'docs/<file:.*>'=>'/docs',
 
 				'<_c:\w+>/'=>'<_c>/',
 				'<_c:\w+>/<_a:\w+>'=>'<_c>/<_a>',

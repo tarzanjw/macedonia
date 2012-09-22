@@ -5,7 +5,7 @@
 ?>
 <?php if ($user->getIsGuest()): ?>
 	<?php if ($this->getId() != 'SignIn'): ?>
-	<a class="btn btn-signin" href="<?= $this->createUrl('/SignIn', array('_ru'=>$this->getCurrentUrl())); ?>"><i class="icon-arrow-right"></i> <?= Yii::t('label', 'Đăng nhập'); ?></a>
+	<a class="btn btn-signin" href="<?= $this->createUrl('/SignIn', array('_cont'=>$this->getCurrentUrl())); ?>"><i class="icon-arrow-right"></i> <?= Yii::t('label', 'Đăng nhập'); ?></a>
 	<?php endif; ?>
 <?php else: ?>
 	<a id="account-popover" class="account-popover">
@@ -31,7 +31,7 @@
 			</div>
 		</div>
 		<div class="row-fluid commands">
-			<a class="btn pull-right" href="<?= $this->createUrl('/SignOut', array('_ru'=>$this->getCurrentUrl())); ?>"><i class="icon-off"></i> <?= Yii::t('view', 'Đăng xuất'); ?></a>
+			<a class="btn pull-right" href="<?= $this->createUrl('/SignOut', array('_cont'=>$this->getCurrentUrl())); ?>"><i class="icon-off"></i> <?= Yii::t('view', 'Đăng xuất'); ?></a>
 		</div>
 	<?php $board=ob_get_clean(); ?>
 
