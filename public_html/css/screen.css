@@ -1,4 +1,7 @@
 body {position:absolute; height:100%; min-height:100%;width: 100%;}
+body{
+	font-family:arial;
+}
 .body-wrp {min-height: 100%; position: relative;}
 
 .body-wrp .content {padding:0 44px}
@@ -152,6 +155,7 @@ i.icon-activate {background-image: url('images/verify.jpg') !important;backgroun
 	background: #EEE;
 	border-radius: 4px;
 	padding-top: 15px;
+	margin-top:10px;
 	margin-left:0 !important; 
 }
 .form-horizontal .control-label {
@@ -172,21 +176,17 @@ i.icon-activate {background-image: url('images/verify.jpg') !important;backgroun
 	top: 69px;
 	z-index: 999;
 }
-.control-disable{
-	color:#999;
-}
+
 .control-disable .success .control-label{
 	color:#999;
 }
-.control-disable .control-label .radio{
-	color:#999;
-}
+
 .control-disable .controls input{
 	border-color:#999;
 }
 label.label_or{
 	margin-top: -17px;
-	margin-left: 35px;
+	margin-left: 13px;
 	font-weight: bold;
 }
 .form-change-pass{
@@ -208,6 +208,9 @@ input.change-pass-radio{
 .form-change-pass .controls{
 	position:relative;
 }
+.form-change-pass .controls .btn-primary{
+	margin-left: 50px;
+}
 .form-change-pass .controls span.error{
 	font-size: 12px;
     left: 0;
@@ -219,16 +222,16 @@ input.change-pass-radio{
     position: absolute;
     top: 30px;
 }
-.change_pass_label{
+.change-phone-label{
 	cursor: pointer;
 	color: #08C;
+	margin: -6px 0 5px 15px;
 }
 .btn-change-pass{
 	margin-bottom:10px;
 }
 select.select-question{
 	width: 300px;
-	margin-left: -81px;
 }
 select.select-question :first-child{
 	font-style: italic;
@@ -241,4 +244,15 @@ select.select-question :first-child{
 }
 .another-question .another-question-input{
 	width:286px;
+}
+a.change_pass_label{
+}
+.phone-captcha{
+	width:320px;
+}
+.phone-captcha #recaptcha_widget{
+	border-radius:3px;
+}
+.form-change-pass1 .error{
+	color: #B94A48;
 }

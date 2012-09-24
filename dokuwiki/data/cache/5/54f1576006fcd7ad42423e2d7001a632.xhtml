@@ -97,7 +97,7 @@ Từ token sẽ có được các thông tin: email, gsn.
 <div class="level2">
 
 <p>
-File <a href="/wiki/doku.php?id=service:ssohelper.php" class="wikilink2" title="service:ssohelper.php" rel="nofollow">SSOHelper.php</a> được viết để hỗ trợ các dịch vụ tham gia hệ thống. Để sử dụng, cần như sau:
+File <a href="/wiki/doku.php?id=service:ssohelper.php" class="wikilink1" title="service:ssohelper.php">SSOHelper.php</a> được viết để hỗ trợ các dịch vụ tham gia hệ thống. Để sử dụng, cần như sau:
 </p>
 <pre class="code php">    <span class="kw1">if</span> <span class="br0">&#40;</span>SSOHelper<span class="sy0">::</span><span class="me2">decodeSetSIDRequest</span><span class="br0">&#40;</span><span class="re0">$email</span><span class="sy0">,</span> <span class="re0">$gsn</span><span class="sy0">,</span> <span class="re0">$data</span><span class="br0">&#41;</span> <span class="sy0">==</span> SSOHelper<span class="sy0">::</span><span class="me2">ERROR_NONE</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
       <span class="re0">$user</span> <span class="sy0">=</span> your_code_to_get_user_info_by_email<span class="br0">&#40;</span><span class="re0">$email</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co2"># Lấy thông tin của người dùng hiện tại bằng email.

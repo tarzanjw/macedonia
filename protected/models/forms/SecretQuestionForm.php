@@ -1,23 +1,27 @@
 <?php
-  class CreateSecretQuestionForm extends CFormModel
+  class SecretQuestionForm extends CFormModel
   {
   	public $_accModel;
   	public $password;
-  	public $secret_question;
+  	public $secret_question = 0;
   	public $another_question;
   	public $secret_answer;
+  	public $secret_question_list;
   	
   	function init()
-		{
-			$this->getAccModel();
-		}
+	{
+		$this->getAccModel();
+		$this->getSecretQuestionList();
+		$this->setSecret();
+	}
 		
 	function attributeLabels()
 	{
 		return array(
 			'password'=>Yii::t('view', 'Mật khẩu').':',
-			'secret_question'=>Yii::t('view', 'Câu hỏi bảo mật').':',
+			'secret_question'=>Yii::t('view', 'Chọn câu hỏi bảo mật').':',
 			'secret_answer'=>Yii::t('view', 'Trả lời câu hỏi bảo mật').':',
+			'another_question'=>Yii::t('view', 'Câu hỏi của bạn').':',
 		);
 	}
 	
@@ -32,6 +36,28 @@
 		}
 
 		return $this->_accModel;
+	}	
+  
+  	public function getSecretQuestionList()
+	{
+		$secretQuestions = SecretQuestion::model()->getAllQuestionAsArray();  
+		$secretQuestions = array_merge(array(0=>'-- không sử dụng câu hỏi bảo mật --'),$secretQuestions);
+		$secretQuestions = array_merge($secretQuestions,array(1=>'-- Viết câu hỏi khác --'));
+		$this->secret_question_list = $secretQuestions;
+	}
+	
+	public function setSecret()
+	{
+		$accModel = $this->_accModel;
+		if(!empty($accModel->auth->secret_answer)){
+			if(!in_array($accModel->auth->secret_question,$this->secret_question_list)){
+				$this->secret_question = 1;	
+				$this->another_question = $accModel->auth->secret_question;
+			}else $this->secret_question = $accModel->auth->secret_question;
+		}else{
+			$this->secret_answer = null;
+			$this->secret_question = 0;	
+		}
 	}
 	
 	function checkPassword($field,$params)
@@ -55,7 +81,7 @@
 		if($this->secret_question == '1' && empty($this->another_question)){
 			$this->addError('another_question',$params['invalidMessage']);
 			return;		
-		}				
+		}
 	}
 	
 	function clientValidateAnotherQuestion()

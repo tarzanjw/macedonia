@@ -4,6 +4,15 @@ class SettingController extends Controller
 {
 	public $layout = '//setting/_layout';
 	public $defaultAction = 'index';
+	
+	function actions()
+	{
+		return array(
+			'security'=>array(
+				'class'=>'application.controllers.setting.SecurityAction',
+			),
+		);
+	}
 
 	public function actionBaokim()
 	{
@@ -21,137 +30,10 @@ class SettingController extends Controller
 	}
 
 	public function actionInfo()
-	{
+	{               
 		$this->render('info');
 	}
 
-	public function actionSecurity()
-	{
-		$secretQuestions = SecretQuestion::model()->getAllQuestionAsArray();
-		$acc_id = Yii::app()->user->id;
-		$accModel = Acc::model()->with('auth')->findByPk($acc_id);
-		$changePassFormModel = new ChangePassForm();
-		$createQuestionFormModel = new CreateSecretQuestionForm();
-		$changePhoneFormModel = new ChangePhoneForm();
-		$changePhoneFormModel->phone = $accModel->phone;
-		$is_validate_pass = true;
-		$is_validate_create_question = true;
-		$is_validate_phone = true;
-		
-		
-		if (isset($_POST['ChangePassForm'])) {
-        		$changePassFormModel->setAttributes($_POST['ChangePassForm'], false);
-
-			if ($changePassFormModel->validate()) {
-				$changePass = $this->changePassword($changePassFormModel,$accModel);        		    
-				
-				if($changePass == true){
-					Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã thay đổi mật khẩu thành công'));	
-					$this->redirect('/setting/security');	
-				}
-			}else {
-				$is_validate_pass = false;
-			}
-        	
-		}
-		
-		if(isset($_POST['CreateSecretQuestionForm'])){
-			$createQuestionFormModel->setAttributes($_POST['CreateSecretQuestionForm'], false);
-			if ($createQuestionFormModel->validate()) {
-					$createQuesstionResult = $this->updateQuestion($createQuestionFormModel,$accModel);
-            		if($createQuesstionResult == true){
-						Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã cập nhật câu hỏi bảo mật thành công'));	
-						$this->redirect('/setting/security');	
-					}
-				}else {
-					$is_validate_create_question = false;
-				}
-		}
-		
-		if(isset($_POST['ChangePhoneForm'])){
-			$changePhoneFormModel->setAttributes($_POST['ChangePhoneForm'],false);
-			if ($changePhoneFormModel->validate()) {
-				 $changePhoneResult = $this->changePhone($changePhoneFormModel,$accModel);
-				if($changePhoneResult == true){
-					Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã cập nhật số điện thoại thành công'));	
-					$this->redirect('/setting/security');	
-				}
-			}else{
-					$is_validate_phone = false;
-			}
-		}
-		
-		$this->render('security',array(
-			'changePassFormModel' => $changePassFormModel,
-			'createQuestionFormModel' => $createQuestionFormModel,
-			'changePhoneFormModel' => $changePhoneFormModel,
-			'accModel' => $accModel,
-			'secretQuestions' => $secretQuestions,
-			'is_validate_pass' => $is_validate_pass,
-			'is_validate_create_question' => $is_validate_create_question,
-			'is_validate_phone' => $is_validate_phone,
-		));
-	}
-	
-	public function changePassword($changePassFormModel,$accModel)
-	{
-		/**
-		* @var AccAuth
-		*/
-		$accAuth = $accModel->auth;
-		if($changePassFormModel->verifyMethod == 'secretQuestion'){
-			if($accAuth->secret_answer != SecurityHelper::hashPassword($changePassFormModel->secretQuestion, $accAuth->secret_answer_salt)){
-				return false;	
-			}
-		}else{
-			if($accAuth->password != SecurityHelper::hashPassword($changePassFormModel->oldPassword, $accAuth->password_salt)){
-				return false;	
-			}
-		}
-		$accAuth->password = SecurityHelper::hashPassword($changePassFormModel->newPassword,$accAuth->password_salt);
-		if($accAuth->save()) return true;
-		
-		return false;
-	}
-	
-	public function updateQuestion($createQuestionFormModel,$accModel)
-	{
-		/**
-		* @var AccAuth
-		*/
-		if($createQuestionFormModel->secret_answer == '******')
-			return true;
-		$accAuth = $accModel->auth;
-		if($accAuth->password != SecurityHelper::hashPassword($createQuestionFormModel->password, $accAuth->password_salt)){
-				return false;	
-		}
-		if($createQuestionFormModel->secret_question == '0'){
-			$accAuth->secret_question = null;
-			$accAuth->secret_answer = null;		
-		}else if($createQuestionFormModel->secret_question == '1'){
-			$accAuth->secret_question = $createQuestionFormModel->another_question;
-			$accAuth->importAnswer($createQuestionFormModel->secret_answer);	
-		}else{
-			$accAuth->secret_question = $createQuestionFormModel->secret_question;
-			$accAuth->importAnswer($createQuestionFormModel->secret_answer);	
-		}
-		
-		if($accAuth->save()) return true;
-		return false;
-		
-	}
-	
-	public function changePhone($changePhoneFormModel,$accModel)
-	{
-		$accAuth = $accModel->auth;
-		if($accAuth->password != SecurityHelper::hashPassword($changePhoneFormModel->password, $accAuth->password_salt)){
-				return false;	
-		}
-		$accModel->phone = $changePhoneFormModel->phone;
-		if($accModel->save()) return true;
-		return false;
-	}
-	
 	public function actionActivate()
 	{
 		$acc_id = Yii::app()->user->id;
@@ -227,7 +109,7 @@ class SettingController extends Controller
 			$check_email = $this->verifyEmail($acc_id,$code);
 			if($check_email) {
 				die('tu dong dang nhap cho account');
-				//tự động đăng nhập
+				// TODO : -o Hocdt tự động đăng nhập khi verify email = url
 				Yii::app()->user->setFlash('success', Yii::t('view','Bạn đã xác thực email thành công'));	
 				$this->redirect('/setting/activate');	
 			}else{
@@ -236,7 +118,6 @@ class SettingController extends Controller
 			}
 		}
 	}
-	
 	
 	
 	public function verifySMS($acc_id,$sms_code)
@@ -249,7 +130,8 @@ class SettingController extends Controller
 			/**
 			* @var SmsVerify
 			*/
-		$check = VerifySMSComponent::verifySMS($accModel->id,$sms_code);
+		$item_id = 'account_id_'.$acc_id;			
+		$check = VerifySMSComponent::verifyPhone($item_id,KIND_SIGNUP,$sms_code);
 		if($check){
 				
 				$accModel->is_phone_verified = 1;
@@ -290,13 +172,13 @@ class SettingController extends Controller
 	
 	public function resendSMS($acc_id,$phone)
 	{
-		Yii::app()->otpCentral->send(18,'account_id_'.$acc_id,$phone,array(),false,true);
+		Yii::app()->otpCentral->send(KIND_SIGNUP,'account_id_'.$acc_id,$phone,array(),false,true);
 		return true;	
 	}
 	
 	public function resendEmail($acc_id,$email)
 	{
-		Yii::app()->otpCentral->send(19,'account_id_'.$acc_id,$email,array(),false,true);
+		Yii::app()->otpCentral->send(KIND_SIGNUP_EMAIL,'account_id_'.$acc_id,$email,array(),false,true);
 		return true;	
 	}
 	
