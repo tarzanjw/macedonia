@@ -42,10 +42,10 @@ class Controller extends CController
 	{
 		return Yii::app()->getRequest()->getHostInfo().Yii::app()->getRequest()->getRequestUri();
 	}
-	
+
 	public function getCureentUser()
 	{
-		$user_id = Yii::app()->user->id; 
+		$user_id = Yii::app()->user->id;
 		if(empty($user_id))  return null;
 		$userModel = Acc::model()->findByPk($user_id);
 		return $userModel;
@@ -75,5 +75,15 @@ class Controller extends CController
 		}
 
     	return $this->_currentAccount;
+	}
+
+	function createUrl($route, $params=array(),$ampersand='&')
+	{
+		if (!isset($params['_l'])) {
+			$l = Yii::app()->getRequest()->getQuery('_l');
+			if (!empty($l)) $params['_l'] = $l;
+		}
+
+		return parent::createUrl($route, $params, $ampersand);
 	}
 }
