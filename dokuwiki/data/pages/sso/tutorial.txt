@@ -1,0 +1,24 @@
+====== Hướng dẫn tham gia SSO ======
+
+===== Vật Giá ID =====
+
+Đây là trang cung cấp chức năng cho phép toàn bộ các dịch vụ của Vật Giá sử dụng một hệ thống tài khoản duy nhất.
+
+Khi nói //sử dụng một hệ thống tài khoản duy nhất// có nghĩa là:
+  * Đăng ký tập trung //[[SSO:SignUp|Chi tiết]]//
+  * Đăng nhập tập trung //[[SSO:SignIn|Chi tiết]]//
+  * Đăng xuất tập trung //[[SSO:SignOut|Chi tiết]]//
+  * Quản lý thông tin cơ bản của tài khoản tập trung //[[SSO:EditInfo|Chi tiết]]//
+
+===== Thông tin tài khoản =====
+Các thông tin tài khoản mà hệ thống quản lý tập trung bao gồm:
+^Tên trường^Ý nghĩa^
+|first_name|Họ đệm|
+|last_name|Tên|
+|email| |
+|phone|Được chuẩn hóa, với +84 ở đầu|
+|avatar|URL đến avatar của tài khoản|
+|gender|MALE, FEMALE, OTHER|
+|dob|Ngày sinh, format : yyyy-mm-dd|
+|address|Địa chỉ|
+|city|Thành phố|

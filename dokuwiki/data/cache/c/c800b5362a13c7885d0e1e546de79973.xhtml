@@ -1,0 +1,189 @@
+<pre class="code php"><span class="kw2">&lt;?php</span>
+&nbsp;
+<span class="co4">/**
+* Class này cho phép các website tham gia vào quá trình SSO của VatgiaID
+*
+* Các có thể thay đổi các tham số sau đây :
+* 	$gsnCookieName: tên của cookie sẽ lưu trữ _gsn, không khuyến khích thay đổi.
+* 	$gsnSalt: giá trị ngẫu nhiên, gây nhiễu cho GSN, nên thay đổi.
+* 	$validTimestamp: thời gian chênh lệch giữa 2 server (SSO và Website) + thời gian trên đường truyền. Không nên thay đổi.
+*	$publicKey: thay đổi theo yêu cầu của id.vatgia.com
+*
+* @author Tarzan &lt;hocdt85@gmail.com&gt;
+*/</span>
+<span class="kw2">class</span> SSOHelper
+<span class="br0">&#123;</span>
+    static <span class="kw2">public</span> <span class="re0">$gsnCookieName</span> <span class="sy0">=</span> <span class="st_h">'_gsn'</span><span class="sy0">;</span>
+    static <span class="kw2">public</span> <span class="re0">$gsnSalt</span> <span class="sy0">=</span> <span class="st_h">'rand-rts:*&amp;^%$#@!'</span><span class="sy0">;</span>
+	static <span class="kw2">public</span> <span class="re0">$validTimestamp</span> <span class="sy0">=</span> <span class="nu0">180</span><span class="sy0">;</span> <span class="co2"># 3 minutes
+</span>
+	static <span class="kw2">public</span> <span class="re0">$validReferer</span> <span class="sy0">=</span> <span class="st_h">'{^https?://vid\.x/sso}i'</span><span class="sy0">;</span>
+&nbsp;
+	static <span class="kw2">public</span> <span class="re0">$publicKey</span> <span class="sy0">=</span> <span class="st_h">'-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtyircuamZJJ0IM2flXVA
+nTsiAmrjavGGDQrIR91S+LyEUCUNol/JzZu3vKEDBBnylCR6cBOn74O3r4NrHeii
+0JVIC2j2HHRLiP6/VnCIlABFSpphKP6A7wTdPB2QxAvDWvItXiJu0ur0GrELIanI
+pb5GMA9yJsusY5UR40a9oFMbguNnCRuih8FRPB3O71gMWqEN8yNdjgKgpFkUIqip
+bspaVrp6IJJI6+fSWm5nm7/7x03RRYf7jUzHOg07ttp++9788bpwcdpNJW8Be1z7
+r7FE8RjV08enuwue/7GPxV0RB7x3alDD3wkA3b1QAFD0yZMak4QG1eI4DvGODFwj
+LwIDAQAB
+-----END PUBLIC KEY-----
+'</span><span class="sy0">;</span>
+&nbsp;
+	static <span class="kw2">public</span> <span class="re0">$privateKey</span> <span class="sy0">=</span> <span class="st_h">''</span><span class="sy0">;</span>
+&nbsp;
+	<span class="kw2">const</span> OPENSSL_PADDING <span class="sy0">=</span> OPENSSL_PKCS1_PADDING<span class="sy0">;</span>
+&nbsp;
+	<span class="kw2">const</span> ERROR_NONE<span class="sy0">=</span><span class="nu0">0</span><span class="sy0">;</span>
+	<span class="kw2">const</span> ERROR_INVALID_REQUEST<span class="sy0">=</span><span class="nu0">1</span><span class="sy0">;</span>
+&nbsp;
+	<span class="co4">/**
+	* Decrypt a text use RSA Public key {@link SSO::PUBLIC_KEY}
+	*
+	* @param string $cipherText the cipher text
+	*
+	* @return string FALSE if the $cipherText is invalid
+	*/</span>
+	static <span class="kw2">protected</span> <span class="kw2">function</span> decrypt<span class="br0">&#40;</span><span class="re0">$cipherText</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+        <span class="re0">$pubKey</span> <span class="sy0">=</span> <a href="http://www.php.net/openssl_pkey_get_public"><span class="kw3">openssl_pkey_get_public</span></a><span class="br0">&#40;</span><span class="kw2">self</span><span class="sy0">::</span><span class="re0">$publicKey</span><span class="br0">&#41;</span><span class="sy0">;</span>
+        <a href="http://www.php.net/assert"><span class="kw3">assert</span></a><span class="br0">&#40;</span><span class="st_h">'$pubKey !== false'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+        <span class="re0">$cipherText</span> <span class="sy0">=</span> <a href="http://www.php.net/base64_decode"><span class="kw3">base64_decode</span></a><span class="br0">&#40;</span><span class="re0">$cipherText</span><span class="sy0">,</span> <span class="kw4">true</span><span class="br0">&#41;</span><span class="sy0">;</span>
+        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="re0">$cipherText</span> <span class="sy0">===</span> <span class="kw4">false</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw4">false</span><span class="sy0">;</span>
+        <span class="re0">$x</span> <span class="sy0">=</span> <a href="http://www.php.net/openssl_public_decrypt"><span class="kw3">openssl_public_decrypt</span></a><span class="br0">&#40;</span><span class="re0">$cipherText</span><span class="sy0">,</span> <span class="re0">$plainText</span><span class="sy0">,</span> <span class="re0">$pubKey</span><span class="sy0">,</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">OPENSSL_PADDING</span><span class="br0">&#41;</span><span class="sy0">;</span>
+        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span><span class="re0">$x</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw4">false</span><span class="sy0">;</span>
+&nbsp;
+        <span class="kw1">return</span> <span class="re0">$plainText</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	static <span class="kw2">protected</span> <span class="kw2">function</span> encrypt<span class="br0">&#40;</span><span class="re0">$plainText</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+        <span class="re0">$privateKey</span> <span class="sy0">=</span> <a href="http://www.php.net/openssl_pkey_get_private"><span class="kw3">openssl_pkey_get_private</span></a><span class="br0">&#40;</span><span class="kw2">self</span><span class="sy0">::</span><span class="re0">$privateKey</span><span class="br0">&#41;</span><span class="sy0">;</span>
+        <a href="http://www.php.net/assert"><span class="kw3">assert</span></a><span class="br0">&#40;</span><span class="st_h">'$privateKey !== false'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+		<span class="re0">$x</span> <span class="sy0">=</span> <a href="http://www.php.net/openssl_private_encrypt"><span class="kw3">openssl_private_encrypt</span></a><span class="br0">&#40;</span><span class="re0">$plainText</span><span class="sy0">,</span> <span class="re0">$cipherText</span><span class="sy0">,</span> <span class="re0">$privateKey</span><span class="sy0">,</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">OPENSSL_PADDING</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<a href="http://www.php.net/assert"><span class="kw3">assert</span></a><span class="br0">&#40;</span><span class="re0">$x</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+		<span class="kw1">return</span> <a href="http://www.php.net/base64_encode"><span class="kw3">base64_encode</span></a><span class="br0">&#40;</span><span class="re0">$cipherText</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="co4">/**
+	* Kiểm tra referer của request hiện tại
+	*
+	* @return boolean
+	*/</span>
+	static <span class="kw2">protected</span> <span class="kw2">function</span> isRefererValid<span class="br0">&#40;</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span><a href="http://www.php.net/isset"><span class="kw3">isset</span></a><span class="br0">&#40;</span><span class="re0">$_SERVER</span><span class="br0">&#91;</span><span class="st_h">'HTTP_REFERER'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw4">false</span><span class="sy0">;</span>
+&nbsp;
+        <span class="kw1">return</span> <a href="http://www.php.net/preg_match"><span class="kw3">preg_match</span></a><span class="br0">&#40;</span><span class="kw2">self</span><span class="sy0">::</span><span class="re0">$validReferer</span><span class="sy0">,</span> <span class="re0">$_SERVER</span><span class="br0">&#91;</span><span class="st_h">'HTTP_REFERER'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="co4">/**
+	* Giải mã request cho SetSID. Trả lại thông tin nếu request hợp lệ
+	*
+	* @property string $email output: biến giữ giá trị của email nhận được
+	* @property array $data output: mảng các thông tin của người dùng
+	* @property string $gsn output: biến giữ giá trị của GSN nhận được
+	*
+	* @return integer 1 trong các giá trị của SSOHelper::ERROR_XXX
+	*/</span>
+	static <span class="kw2">public</span> <span class="kw2">function</span> decodeSetSIDRequest<span class="br0">&#40;</span><span class="sy0">&amp;</span><span class="re0">$email</span><span class="sy0">,</span> <span class="sy0">&amp;</span><span class="re0">$data</span><span class="sy0">,</span> <span class="sy0">&amp;</span><span class="re0">$gsn</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span><span class="kw2">self</span><span class="sy0">::</span><span class="me2">isRefererValid</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_INVALID_REQUEST</span><span class="sy0">;</span>
+&nbsp;
+        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span><a href="http://www.php.net/isset"><span class="kw3">isset</span></a><span class="br0">&#40;</span><span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st_h">'token'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_INVALID_REQUEST</span><span class="sy0">;</span>
+    	<span class="re0">$token</span> <span class="sy0">=</span> <span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st_h">'token'</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+        <span class="re0">$token</span> <span class="sy0">=</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">decrypt</span><span class="br0">&#40;</span><span class="re0">$token</span><span class="br0">&#41;</span><span class="sy0">;</span>
+        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="re0">$token</span> <span class="sy0">===</span> <span class="kw4">false</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_INVALID_REQUEST</span><span class="sy0">;</span>
+&nbsp;
+        <span class="re0">$token</span> <span class="sy0">=</span> <a href="http://www.php.net/json_decode"><span class="kw3">json_decode</span></a><span class="br0">&#40;</span><span class="re0">$token</span><span class="sy0">,</span> <span class="kw4">true</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/is_null"><span class="kw3">is_null</span></a><span class="br0">&#40;</span><span class="re0">$token</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_INVALID_REQUEST</span><span class="sy0">;</span>
+&nbsp;
+        <span class="re0">$email</span> <span class="sy0">=</span> <span class="re0">$token</span><span class="br0">&#91;</span><span class="st_h">'email'</span><span class="br0">&#93;</span><span class="sy0">;</span>
+        <span class="re0">$gsn</span> <span class="sy0">=</span> <span class="re0">$token</span><span class="br0">&#91;</span><span class="st_h">'gsn'</span><span class="br0">&#93;</span><span class="sy0">;</span>
+        <span class="re0">$data</span> <span class="sy0">=</span> <span class="re0">$token</span><span class="br0">&#91;</span><span class="st_h">'data'</span><span class="br0">&#93;</span><span class="sy0">;</span>
+        <span class="re0">$timestamp</span> <span class="sy0">=</span> <span class="re0">$token</span><span class="br0">&#91;</span><span class="st_h">'timestamp'</span><span class="br0">&#93;</span><span class="sy0">;</span>
+        <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/time"><span class="kw3">time</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="sy0">&gt;</span> <span class="re0">$timestamp</span> <span class="sy0">+</span> <span class="kw2">self</span><span class="sy0">::</span><span class="re0">$validTimestamp</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_INVALID_REQUEST</span><span class="sy0">;</span>
+&nbsp;
+        <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/empty"><span class="kw3">empty</span></a><span class="br0">&#40;</span><span class="re0">$email</span><span class="br0">&#41;</span> <span class="sy0">||</span> <a href="http://www.php.net/empty"><span class="kw3">empty</span></a><span class="br0">&#40;</span><span class="re0">$gsn</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_INVALID_REQUEST</span><span class="sy0">;</span>
+&nbsp;
+        <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_NONE</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="co4">/**
+	* Giải mã request ClearSID
+	*
+	* @return integer self::ERROR_XXX
+	*/</span>
+	static <span class="kw2">public</span> <span class="kw2">function</span> decodeClearSIDRequest<span class="br0">&#40;</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span><a href="http://www.php.net/isset"><span class="kw3">isset</span></a><span class="br0">&#40;</span><span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st_h">'gsn'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_INVALID_REQUEST</span><span class="sy0">;</span>
+&nbsp;
+        <span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span><span class="kw2">self</span><span class="sy0">::</span><span class="me2">checkGSN</span><span class="br0">&#40;</span><span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st_h">'gsn'</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_INVALID_REQUEST</span><span class="sy0">;</span>
+&nbsp;
+        <span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">ERROR_NONE</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="co4">/**
+	* Lưu lại GSN vào cookie để so sánh sau này.
+	*
+	* @param string $gsn gsn sẽ được lưu
+	*/</span>
+    static <span class="kw2">function</span> saveGSN<span class="br0">&#40;</span><span class="re0">$gsn</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+    	<span class="re0">$gsn</span> <span class="sy0">=</span> <a href="http://www.php.net/hash_hmac"><span class="kw3">hash_hmac</span></a><span class="br0">&#40;</span><span class="st_h">'md5'</span><span class="sy0">,</span> <span class="re0">$gsn</span><span class="sy0">,</span> <span class="kw2">self</span><span class="sy0">::</span><span class="re0">$gsnSalt</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    	<a href="http://www.php.net/setcookie"><span class="kw3">setcookie</span></a><span class="br0">&#40;</span><span class="kw2">self</span><span class="sy0">::</span><span class="re0">$gsnCookieName</span><span class="sy0">,</span> <span class="re0">$gsn</span><span class="sy0">,</span> <a href="http://www.php.net/time"><span class="kw3">time</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">+</span><span class="nu0">86400</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">// 1 day</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    static <span class="kw2">function</span> clearGSN<span class="br0">&#40;</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+		<a href="http://www.php.net/setcookie"><span class="kw3">setcookie</span></a><span class="br0">&#40;</span><span class="kw2">self</span><span class="sy0">::</span><span class="re0">$gsnCookieName</span><span class="sy0">,</span> <span class="kw4">null</span><span class="sy0">,</span> <span class="nu0">946659600</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co2"># 946659600 = 2000/01/01 00:00:00
+</span>    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="co4">/**
+    * Kiểm tra xem GSN có trùng với GSN đã đc lưu trên cookie hay không?
+    *
+    * @param string $gsn GSN để kiểm tra
+    *
+    * @return boolean
+    */</span>
+	static <span class="kw2">function</span> checkGSN<span class="br0">&#40;</span><span class="re0">$gsn</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+    	<span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span><a href="http://www.php.net/isset"><span class="kw3">isset</span></a><span class="br0">&#40;</span><span class="re0">$_COOKIE</span><span class="br0">&#91;</span><span class="kw2">self</span><span class="sy0">::</span><span class="re0">$gsnCookieName</span><span class="br0">&#93;</span><span class="br0">&#41;</span> <span class="sy0">||</span> <a href="http://www.php.net/empty"><span class="kw3">empty</span></a><span class="br0">&#40;</span><span class="re0">$_COOKIE</span><span class="br0">&#91;</span><span class="kw2">self</span><span class="sy0">::</span><span class="re0">$gsnCookieName</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">return</span> <span class="kw4">true</span><span class="sy0">;</span>
+&nbsp;
+    	<span class="re0">$cGsn</span> <span class="sy0">=</span> <span class="re0">$_COOKIE</span><span class="br0">&#91;</span><span class="kw2">self</span><span class="sy0">::</span><span class="re0">$gsnCookieName</span><span class="br0">&#93;</span><span class="sy0">;</span>
+    	<span class="re0">$gsn</span> <span class="sy0">=</span> <a href="http://www.php.net/hash_hmac"><span class="kw3">hash_hmac</span></a><span class="br0">&#40;</span><span class="st_h">'md5'</span><span class="sy0">,</span> <span class="re0">$gsn</span><span class="sy0">,</span> <span class="kw2">self</span><span class="sy0">::</span><span class="re0">$gsnSalt</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    	<span class="kw1">return</span> <span class="re0">$gsn</span> <span class="sy0">==</span> <span class="re0">$cGsn</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="co4">/**
+	* Encrypt data for SetSID request
+	*
+	* @param string $email
+	* @param string $gsn
+	*/</span>
+	static <span class="kw2">public</span> <span class="kw2">function</span> encryptSetSIDRequest<span class="br0">&#40;</span><span class="re0">$email</span><span class="sy0">,</span> <span class="re0">$gsn</span><span class="sy0">,</span> <span class="re0">$data</span><span class="sy0">=</span><a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+    	<span class="re0">$token</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">&#40;</span>
+        	<span class="st_h">'email'</span><span class="sy0">=&gt;</span><span class="re0">$email</span><span class="sy0">,</span>
+        	<span class="st_h">'gsn'</span><span class="sy0">=&gt;</span><span class="re0">$gsn</span><span class="sy0">,</span>
+        	<span class="st_h">'data'</span><span class="sy0">=&gt;</span><span class="re0">$data</span><span class="sy0">,</span>
+        	<span class="st_h">'timestamp'</span><span class="sy0">=&gt;</span><a href="http://www.php.net/time"><span class="kw3">time</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">,</span>
+    	<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    	<span class="kw1">return</span> <span class="kw2">self</span><span class="sy0">::</span><span class="me2">encrypt</span><span class="br0">&#40;</span><a href="http://www.php.net/json_encode"><span class="kw3">json_encode</span></a><span class="br0">&#40;</span><span class="re0">$token</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	static <span class="kw2">public</span> <span class="kw2">function</span> returnImage<span class="br0">&#40;</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<a href="http://www.php.net/header"><span class="kw3">header</span></a><span class="br0">&#40;</span><span class="st_h">'Content-Type: image/gif'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+		<span class="co2"># this is an image with 1pixel x 1pixel
+</span>		<span class="re0">$img</span> <span class="sy0">=</span> <a href="http://www.php.net/base64_decode"><span class="kw3">base64_decode</span></a><span class="br0">&#40;</span><span class="st_h">'R0lGODdhAQABAPAAAL6+vgAAACwAAAAAAQABAAACAkQBADs='</span><span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="kw1">echo</span> <span class="re0">$img</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>

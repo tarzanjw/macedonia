@@ -1,0 +1,34 @@
+====== RESTful API ======
+
+Đưa ra chuẩn, các thứ các kiểu về API RESTful.
+
+===== REQUEST =====
+
+RESTful API là một dạng API dựa trên HTTP Request. Mỗi 1 request đến REST API thường có các thành phần sau :
+  - **REQUEST METHOD**: Lệnh của request HTTP : GET, POST, PUT, DELETE. Với PHP nó là <code php>$_SERVER['REQUEST_METHOD']</code>
+  - **Request URI**: Địa chỉ của API. Với PHP nó là <code php>$_SERVER['REQUEST_URI']</code>
+  - **Data**: Phần dữ liệu trong HTTP Body được gửi lên server. Với PHP nó sẽ nằm trong mảng <code php>$_POST</code>
+
+Thông thường, các API theo RESTful được tạo ra theo các nguyên tắc cơ bản sau :
+  - Request URI đặc trưng cho đối tượng bị tác động bởi API.
+  - Query string đặc trưng cho việc tìm kiếm đối tượng bị tác động.
+  - POST data đặc trưng cho thông tin của đối tượng bị tác động trong quá trình tạo mới/sửa đổi.
+  - REQUEST METHOD sử dụng theo ý nghĩa sau:
+    * Điểm trong danh sách có thứ tựĐiểm trong danh sách không đánh số //GET// dùng cho việc tìm kiếm/lấy thông tin của đối tượng: <code sql>SELECT * FROM `object` WHERE {query string}</code>
+    * //POST// dùng cho việc sửa đổi thông tin của đối tượng: <code sql>UPDATE `object` SET {post data} WHERE {query string}</code>
+    * //PUT// dùng cho việc tạo mới đối tượng: <code sql>INSERT INTO `object` VALUES {post data}</code>
+    * //DELETE// dùng cho việc xóa đối tượng: <code sql>DELETE FROM `object`WHERE {query string}</code>
+
+===== RESPONSE =====
+
+Dữ liệu trả về của RESTful API được căn cứ vào các thông số sau:
+  - **RESPONSE CODE**: Chính là HTTP Response code. Mã này thường mang chính ý nghĩa như [[http://en.wikipedia.org/wiki/List_of_HTTP_status_codes|HTTP Status Code]] vốn có. Ví dụ: 200 "thành công" ...
+  - **RESPONSE MESSAGE**: Chính alf HTTP Response message. Thông số này có ý nghĩa với lập trình viên (để đọc hiểu) nhiều hơn là với code (vì code căn cứ vào RESPONSE CODE).
+  - **DATA**: Chính là HTTP Response Body. Thông thường dữ liệu sẽ đc truyền theo chuẩn JSON encoded, lúc này trong HTTP Headers trả về có thêm 'Content-Type: application/json' sẽ giúp các chương trình nhận ra mã JSON dễ dàng hơn.
+===== Xác thực =====
+
+RESTful API được xác thực thông qua [[http://en.wikipedia.org/wiki/Digest_access_authentication#HTTP_digest_authentication_considerations|HTTP Digest Authentication]] và IP.
+
+Để xác thực cấp cao thì cần một cớ chế checksum dữ liệu, có thể lựa chọn một trong các phương thức sau:
+  - HMAC dựa trên MD5 hoặc SHA1: key sẽ dùng chung, không có tính quy kết trách nhiệm.
+  - Digital Signature (RSA hoặc DSA): key dùng riêng, bảo mật cao, quy kết trách nhiệm tuyệt đối.

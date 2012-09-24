@@ -1,0 +1,6 @@
+====== Đăng xuất tập trung ======
+
+Cho phép các dịch vụ của Vật Giá đăng xuất tài khoản tại cùng một địa chỉ.
+<code>http://id.vatgia.vn/SignOut/?_cont={contUrl}</code>
+
+Trong đó **_cont** là tham số để chỉ định url sẽ được redirect lại sau khi quá trình đăng xuất kết thúc.

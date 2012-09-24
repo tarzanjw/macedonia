@@ -1,0 +1,1 @@
+<span class="kw1">UPDATE</span> <span class="st0">`object`</span> <span class="kw1">SET</span> <span class="br0">&#123;</span>post <span class="kw1">DATA</span><span class="br0">&#125;</span> <span class="kw1">WHERE</span> <span class="br0">&#123;</span>query string<span class="br0">&#125;</span>

@@ -1,0 +1,12 @@
+<span class="kw2">&lt;?php</span>
+&nbsp;
+<span class="coMULTI">/**
+* Class này cho phép các website tham gia vào quá trình SSO của VatgiaID
+*
+* Các có thể thay đổi các tham số sau đây :
+* &lt;code&gt;
+* 	$gsnCookieName: tên của cookie sẽ lưu trữ _gsn, không khuyến khích thay đổi.
+* 	$gsnSalt: giá trị ngẫu nhiên, gây nhiễu cho GSN, nên thay đổi.
+* 	$validTimestamp: thời gian chênh lệch giữa 2 server (SSO và Website) + thời gian trên đường truyền. Không nên thay đổi.
+*	$publicKey: thay đổi theo yêu cầu của id.vatgia.com
+* </span>

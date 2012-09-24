@@ -1,0 +1,9 @@
+    <span class="kw1">if</span> <span class="br0">&#40;</span>SSOHelper<span class="sy0">::</span><span class="me2">decodeSetSIDRequest</span><span class="br0">&#40;</span><span class="re0">$email</span><span class="sy0">,</span> <span class="re0">$gsn</span><span class="sy0">,</span> <span class="re0">$data</span><span class="br0">&#41;</span> <span class="sy0">==</span> SSOHelper<span class="sy0">::</span><span class="me2">ERROR_NONE</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+      <span class="re0">$user</span> <span class="sy0">=</span> your_code_to_get_user_info_by_email<span class="br0">&#40;</span><span class="re0">$email</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co2"># Lấy thông tin của người dùng hiện tại bằng email.
+</span>      <span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span><a href="http://www.php.net/is_null"><span class="kw3">is_null</span></a><span class="br0">&#40;</span><span class="re0">$user</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="co1">// TODO thực hiện việc login, </span>
+        SSOHelper<span class="sy0">::</span><span class="me2">saveGSN</span><span class="br0">&#40;</span><span class="re0">$gsn</span><span class="br0">&#41;</span><span class="sy0">;</span>
+      <span class="br0">&#125;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    SSOHelper<span class="sy0">::</span><span class="me2">returnImage</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>

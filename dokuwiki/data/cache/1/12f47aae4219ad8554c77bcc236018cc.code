@@ -1,0 +1,1 @@
+<span class="kw1">INSERT</span> <span class="kw1">INTO</span> <span class="st0">`object`</span> <span class="kw1">VALUES</span> <span class="br0">&#123;</span>post <span class="kw1">DATA</span><span class="br0">&#125;</span>

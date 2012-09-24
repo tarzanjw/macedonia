@@ -1,0 +1,94 @@
+
+<h1 class="sectionedit1" id="authenticate">Authenticate</h1>
+<div class="level1">
+
+<p>
+Đây là 1 <a href="/wiki/doku.php?id=rest_api" class="wikilink1" title="rest_api">RESTful API</a> cho phép id.vatgia.com thực hiện việc xác thực người dùng thông qua các dịch vụ thành viên.
+</p>
+
+<p>
+Vì quá trình đầu tiên, chưa import được toàn bộ dữ liệu nên tận dụng quá trình này để chuyển dần dữ liệu từ các dịch vụ thành viên sang hệ thống id.vatgia.com.
+</p>
+
+<p>
+<strong> <abbr title="Application Programming Interface">API</abbr> này sử dụng <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> Digest Authentication và IP block </strong>.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Authenticate" [1-462] -->
+<h2 class="sectionedit2" id="input">INPUT</h2>
+<div class="level2">
+
+<p>
+Input bao gồm thông tin định danh (email <strong>hoặc</strong> phone)
+</p>
+<div class="table sectionedit3"><table class="inline">
+	<tr class="row0">
+		<td class="col0">email</td><td class="col1">email của người dùng</td>
+	</tr>
+	<tr class="row1">
+		<td class="col0">phone</td><td class="col1">phone của người dùng</td>
+	</tr>
+</table></div>
+<!-- EDIT3 TABLE [548-617] -->
+</div>
+<!-- EDIT2 SECTION "INPUT" [463-619] -->
+<h2 class="sectionedit4" id="output">OUTPUT</h2>
+<div class="level2">
+
+<p>
+Output là thông tin của người dùng và thông tin xác thực của người dùng.
+</p>
+<div class="table sectionedit5"><table class="inline">
+	<tr class="row0">
+		<th class="col0">Response Code</th><th class="col1">Ý nghĩa</th>
+	</tr>
+	<tr class="row1">
+		<td class="col0">200</td><td class="col1">OK</td>
+	</tr>
+	<tr class="row2">
+		<td class="col0">404</td><td class="col1">Tài khoản không tìm thấy/không hợp lệ</td>
+	</tr>
+</table></div>
+<!-- EDIT5 TABLE [733-823] -->
+<p>
+Nếu status là 200, dữ liệu trả về sẽ là 1 mảng bao gồm các thông tin sau đây:
+</p>
+<div class="table sectionedit6"><table class="inline">
+	<tr class="row0">
+		<th class="col0">Field</th><th class="col1">Bắt buộc</th><th class="col2">Chuẩn</th><th class="col3">Ý nghĩa</th>
+	</tr>
+	<tr class="row1">
+		<td class="col0">first_name</td><td class="col1">Có</td><td class="col2"> </td><td class="col3">Họ đệm</td>
+	</tr>
+	<tr class="row2">
+		<td class="col0">last_name</td><td class="col1">Có</td><td class="col2"> </td><td class="col3">Tên</td>
+	</tr>
+	<tr class="row3">
+		<td class="col0">email</td><td class="col1">Có</td><td class="col2"> </td><td class="col3"></td>
+	</tr>
+	<tr class="row4">
+		<td class="col0">phone</td><td class="col1">Không</td><td class="col2"> </td><td class="col3">phone</td>
+	</tr>
+	<tr class="row5">
+		<td class="col0">avatar</td><td class="col1">Không</td><td class="col2"> </td><td class="col3">url của avatar</td>
+	</tr>
+	<tr class="row6">
+		<td class="col0">gender</td><td class="col1">Không</td><td class="col2">String: MALE, FEMALE, OTHER</td><td class="col3">giới tính</td>
+	</tr>
+	<tr class="row7">
+		<td class="col0">dob</td><td class="col1">Không</td><td class="col2">yyyy-mm-dd</td><td class="col3">ngày sinh</td>
+	</tr>
+	<tr class="row8">
+		<td class="col0">address</td><td class="col1">Không</td><td class="col2"> </td><td class="col3">địa chỉ</td>
+	</tr>
+	<tr class="row9">
+		<td class="col0">city_id</td><td class="col1">Không</td><td class="col2"><a href="/wiki/doku.php?id=city" class="wikilink2" title="city" rel="nofollow">City</a></td><td class="col3">thành phố</td>
+	</tr>
+	<tr class="row10">
+		<td class="col0">auth</td><td class="col1">Có</td><td class="col2"><em>tùy dịch vụ</em></td><td class="col3">Thông tin dùng để so sánh mật khẩu người dùng vừa nhập vào</td>
+	</tr>
+</table></div>
+<!-- EDIT6 TABLE [926-1369] -->
+</div>
+<!-- EDIT4 SECTION "OUTPUT" [620-] -->

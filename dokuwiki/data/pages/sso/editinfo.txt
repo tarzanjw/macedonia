@@ -1,0 +1,4 @@
+====== Thay đổi thông tin tài khoản tập trung ======
+
+Cho phép người sử dụng các dịch vụ của Vật Giá thay đổi thông tin tài tài khoản tại cùng một địa chỉ.
+<code>http://id.vatgia.vn/setting/</code>

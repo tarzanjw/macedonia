@@ -1,0 +1,113 @@
+
+<h1 class="sectionedit1" id="setsid">SetSID</h1>
+<div class="level1">
+
+<p>
+Đây là 1 <abbr title="Uniform Resource Locator">URL</abbr> được truy cập khi người sử dụng đăng nhập vào hệ thống.
+</p>
+
+<p>
+Khi <abbr title="Uniform Resource Locator">URL</abbr> này được request, các dịch vụ sẽ cần phải kiểm tra tính hợp lệ của request, sau đó tiến hành đánh dấu session hệ thống là đã có tài khoản đăng nhập.
+</p>
+
+<p>
+Đây là 1 Request <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> thông thường, được thực hiện từ trình duyệt của người dùng. Sẽ là 1 request của thẻ IMG.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "SetSID" [1-469] -->
+<h2 class="sectionedit2" id="chi_tiết">Chi tiết</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT2 SECTION "Chi tiết" [470-493] -->
+<h3 class="sectionedit3" id="input">Input</h3>
+<div class="level3">
+
+<p>
+Request sẽ có dạng sau:
+</p>
+<pre class="code">http://domain/path/to/api/?token=...</pre>
+
+<p>
+Trong đó <em>token</em> là tham số được mã hóa bằng RSA, sử dụng private key của id.vatgia.com. Khi giải mã các dịch vụ sẽ có:
+</p>
+<ul>
+<li class="level1"><div class="li"> gsn: mã số session chung chung cho các dịch vụ.</div>
+</li>
+<li class="level1"><div class="li"> timestamp: thời điểm mà request SetSID được tạo ra.</div>
+</li>
+<li class="level1"><div class="li"> email: email của tài khoản vừa đăng nhập.</div>
+</li>
+<li class="level1"><div class="li"> data: thông tin bổ sung của tài khoản.</div>
+</li>
+</ul>
+
+<p>
+Trong các tham số trên, timestamp là tham số dùng để kiểm tra tính hợp lệ của request thường xuyên nhất. Mỗi request thường chỉ nên hợp lệ trong vòng 1 phút, sau đó nó bị hủy.
+</p>
+
+<p>
+Tham số data chứa thông tin bổ sung cho tài khoản, do hạn chế của việc mã hóa = RSA nên số lượng thông tin chưa được nhiều. Hiện tại có ‘last_modified_time’.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Input" [494-1405] -->
+<h3 class="sectionedit4" id="output">Output</h3>
+<div class="level3">
+<ul>
+<li class="level1"><div class="li"> Ghi nhận người dùng đã đăng nhập thông qua email.</div>
+</li>
+<li class="level1"><div class="li"> Lưu lại gsn vào cookie để dùng sau này.</div>
+</li>
+<li class="level1"><div class="li"> Trả về 1 ảnh, mime bất kỳ, size = 1&times;1 pixel. Recommend ảnh có giá trị: <pre class="code">data:image/gif;base64,R0lGODdhAQABAPAAAL6+vgAAACwAAAAAAQABAAACAkQBADs=</pre>
+</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT4 SECTION "Output" [1406-1719] -->
+<h3 class="sectionedit5" id="quy_trinh">Quy trình</h3>
+<div class="level3">
+<ol>
+<li class="level1"><div class="li"> Kiểm tra từ timestamp xem expire hay chưa? Nếu expire rồi thì fail. Đến bước 6.</div>
+</li>
+<li class="level1"><div class="li"> Kiểm tra referer, nếu là từ 1 nơi khác ngoài <a href="http://id.vatgia.com/sso" class="urlextern" title="http://id.vatgia.com/sso"  rel="nofollow">http://id.vatgia.com/sso</a> thì fail. Đến bươc 6.</div>
+</li>
+<li class="level1"><div class="li"> Giải mã sid sử dụng public-key, nếu fail cho fail luôn. Đến bước 6.</div>
+</li>
+</ol>
+
+<p>
+Sau khi giải mã sẽ có &#039;token&#039;.
+Từ token sẽ có được các thông tin: email, gsn.
+</p>
+<ol>
+<li class="level1"><div class="li"> Nếu gsn và email trùng với session hiện tại, bỏ qua. Đến bước 6</div>
+</li>
+<li class="level1"><div class="li"> Đăng nhập cho email, lưu lại gsn vào cookie.</div>
+</li>
+<li class="level1"><div class="li"> Trả về ảnh.</div>
+</li>
+</ol>
+
+</div>
+<!-- EDIT5 SECTION "Quy trình" [1720-2302] -->
+<h2 class="sectionedit6" id="ứng_dụng">Ứng dụng</h2>
+<div class="level2">
+
+<p>
+File <a href="/wiki/doku.php?id=service:ssohelper.php" class="wikilink2" title="service:ssohelper.php" rel="nofollow">SSOHelper.php</a> được viết để hỗ trợ các dịch vụ tham gia hệ thống. Để sử dụng, cần như sau:
+</p>
+<pre class="code php">    <span class="kw1">if</span> <span class="br0">&#40;</span>SSOHelper<span class="sy0">::</span><span class="me2">decodeSetSIDRequest</span><span class="br0">&#40;</span><span class="re0">$email</span><span class="sy0">,</span> <span class="re0">$gsn</span><span class="sy0">,</span> <span class="re0">$data</span><span class="br0">&#41;</span> <span class="sy0">==</span> SSOHelper<span class="sy0">::</span><span class="me2">ERROR_NONE</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+      <span class="re0">$user</span> <span class="sy0">=</span> your_code_to_get_user_info_by_email<span class="br0">&#40;</span><span class="re0">$email</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co2"># Lấy thông tin của người dùng hiện tại bằng email.
+</span>      <span class="kw1">if</span> <span class="br0">&#40;</span><span class="sy0">!</span><a href="http://www.php.net/is_null"><span class="kw3">is_null</span></a><span class="br0">&#40;</span><span class="re0">$user</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <span class="co1">// TODO thực hiện việc login, </span>
+        SSOHelper<span class="sy0">::</span><span class="me2">saveGSN</span><span class="br0">&#40;</span><span class="re0">$gsn</span><span class="br0">&#41;</span><span class="sy0">;</span>
+      <span class="br0">&#125;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    SSOHelper<span class="sy0">::</span><span class="me2">returnImage</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "Ứng dụng" [2303-] -->
