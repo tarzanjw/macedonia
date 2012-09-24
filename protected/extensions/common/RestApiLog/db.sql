@@ -1,0 +1,18 @@
+CREATE TABLE rest_api_log(
+  id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  request_method VARCHAR(16) NOT NULL,
+  request_url TEXT NOT NULL,
+  response_code INT(11) NOT NULL DEFAULT 200,
+  src_ip TINYTEXT NOT NULL,
+  dst_ip TINYTEXT DEFAULT NULL,
+  request_headers TEXT NOT NULL,
+  response_headers TEXT DEFAULT NULL,
+  request_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  duration FLOAT NOT NULL COMMENT 'in second',
+  post_data TEXT DEFAULT NULL,
+  response_data TEXT DEFAULT NULL,
+  PRIMARY KEY (id)
+)
+ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;

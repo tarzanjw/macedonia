@@ -256,3 +256,9 @@ a.change_pass_label{
 .form-change-pass1 .error{
 	color: #B94A48;
 }
+.form-change-pass1 input.input-last-name{
+	margin-left:11px;
+}
+.form-change-pass1 input.input-birthday{
+	margin-left:11px;
+}

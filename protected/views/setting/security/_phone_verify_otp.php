@@ -10,7 +10,7 @@
 		'validateOnSubmit'=>true,
 	),
 	'htmlOptions'=>array(
-		'class'=>'well form-change-pass',
+		'class'=>'well form-change-pass1',
 		'style'=>$style,
 	),
 )); ?>

@@ -21,6 +21,7 @@ $cfg = array(
 	'import'=>array(
 		'application.models.*',
 		'application.models.forms.*',
+		'application.models.logs.*',
 		'application.components.*',
 		'ext.common.helpers.*',
 	),
@@ -95,13 +96,15 @@ $cfg = array(
 					'httpUsername'=>'single_sign_on',
 					'httpPassword'=>'123456',
 
-//					'logRequest'=>true,
-//					'logModelClass'=>'OtpApiLog',
+					'logRequest'=>true,
+					'logModelClass'=>'OtpApiLog',
 				),
 				'check'=>array(
 					'class' => 'RESTCaller',
 					'url'=>'http://otp.x.baokim.vn/otpREST/check',
 
+					'logRequest'=>true,
+					'logModelClass'=>'OtpApiLog',
 					'httpUsername'=>'single_sign_on',
 					'httpPassword'=>'123456',
 				),

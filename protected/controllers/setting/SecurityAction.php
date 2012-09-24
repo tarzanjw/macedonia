@@ -45,7 +45,7 @@ class SecurityAction extends CAction
 			$formModel->setAttributes($_POST['ChangePhoneForm'],false);
 			if ($formModel->validate()) {
 				$phone_no = $formModel->phone;
-				Yii::app()->otpCentral->send(KIND_CHANGE_PHONE,'change_phone_'.$accModel->id.'_'.$phone_no,$phone_no);
+				Yii::app()->otpCentral->send(KIND_CHANGE_PHONE,'change_phone_'.$accModel->id.'_'.$phone_no,$phone_no,array(),1,true);
 				$verifyOtpForm->phone = $phone_no;
 				$show_verify_otp = true;
 			}else{
@@ -110,6 +110,7 @@ class SecurityAction extends CAction
 	
 	function run($tab = 'general')
 	{
+//		Yii::app()->otpCentral->send(KIND_SIGNUP_EMAIL,'account_id_gf2121','hanv9488@gmail.com');
 		$this->controller->layout = 'application.views.setting.security._layout';
 		$this->currentTab = $tab;
 		

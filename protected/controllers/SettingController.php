@@ -29,11 +29,42 @@ class SettingController extends Controller
 		$this->render('index');
 	}
 
-	public function actionInfo()
+	public function actionInfo($action=null)
 	{               
-		$this->render('info');
+		$accModel = $this->getCurrentAccount();
+		$infoModel = new ChangeInfoForm();
+		if(!empty($action) && $action == 'edit'){
+			$this->editInfo($accModel,$infoModel);
+			return;
+		}
+		$this->render('info',array(
+			'accModel' => $accModel,
+			'infoModel' => $infoModel,
+		));
 	}
 
+	public function EditInfo(Acc $accModel,ChangeInfoForm $infoModel)
+	{
+		if(isset($_POST['ChangeInfoForm'])){
+			$infoModel->setAttributes($_POST['ChangeInfoForm'],false);
+			if ($infoModel->validate()){
+				$accModel->first_name = $infoModel->first_name;
+				$accModel->last_name = $infoModel->last_name;
+				$accModel->gender = $infoModel->gender;
+				$accModel->dob = $infoModel->dob;
+				$accModel->address = $infoModel->address;
+				$accModel->city_id = $infoModel->city_id;
+				if($accModel->save())
+					$this->redirect('/setting/info');
+			}                                                 
+		}
+		
+		$this->render('info/_change_info',array(
+			'accModel' => $accModel,
+			'infoModel' => $infoModel,	
+		));
+	}
+	
 	public function actionActivate()
 	{
 		$acc_id = Yii::app()->user->id;
