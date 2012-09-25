@@ -33,5 +33,5 @@ Nếu status là 200, dữ liệu trả về sẽ là 1 mảng bao gồm các th
 |gender|Không|String: MALE, FEMALE, OTHER|giới tính|
 |dob|Không|yyyy-mm-dd|ngày sinh|
 |address|Không| |địa chỉ|
-|city_id|Không|[[:city|City]]|thành phố|
+|city_id|Không|[[:city|City]].id|thành phố|
 |auth|Có|//tùy dịch vụ//|Thông tin dùng để so sánh mật khẩu người dùng vừa nhập vào|

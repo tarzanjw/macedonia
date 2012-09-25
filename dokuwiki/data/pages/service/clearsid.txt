@@ -1,0 +1,36 @@
+====== Clear SID ======
+
+URL này sẽ được truy cập khi người sử dụng logout khỏi hệ thống.
+
+Khi URL này được request,  các dịch vụ cần tiến hành kiểm tra tính hợp lệ của request, sau đó xóa session.
+
+Đây là 1 Request HTTP thông thường, được thực hiện từ trình duyệt của người dùng. Sẽ là 1 request của thẻ IMG.
+
+===== Chi tiết =====
+
+==== Input ====
+
+Request sẽ có dạng sau:
+<code>http://domain/path/to/api/?gsn=...</code>
+
+Trong đó //gsn// là mã số session chung chung cho các dịch vụ.
+
+==== Output ====
+
+  * Xóa session cho người dùng hiện tại (tương ứng với gsn)
+  * Trả về 1 ảnh, mime bất kỳ, size = 1x1 pixel. Recommend ảnh có giá trị: <code>data:image/gif;base64,R0lGODdhAQABAPAAAL6+vgAAACwAAAAAAQABAAACAkQBADs=</code>
+
+==== Quy trình ====
+  - Kiểm tra referer, nếu là từ 1 nơi khác ngoài http://id.vatgia.com/sso thì fail. Đến bươc 4.
+  - Kiểm tra gsn trên query với gsn ở cookie, nếu khác thì fail. Đến bước 4.
+  - Xóa session tương ứng với gsn, xóa gsn.
+  - Trả về ảnh.
+ 
+===== Triển khai =====
+
+File [[SSOHelper.php]] được viết để hỗ trợ các dịch vụ tham gia hệ thống. Để sử dụng, cần như sau:
+<code php>
+	// TODO logout here
+	SSOHelper::clearGSN();
+	SSOHelper::returnImage();
+</code>

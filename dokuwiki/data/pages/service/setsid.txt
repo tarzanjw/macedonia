@@ -39,7 +39,7 @@ Từ token sẽ có được các thông tin: email, gsn.
   - Đăng nhập cho email, lưu lại gsn vào cookie.
   - Trả về ảnh.
  
-===== Ứng dụng =====
+===== Triển khai =====
 
 File [[SSOHelper.php]] được viết để hỗ trợ các dịch vụ tham gia hệ thống. Để sử dụng, cần như sau:
 <code php>

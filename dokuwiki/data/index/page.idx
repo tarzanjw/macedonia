@@ -12,3 +12,4 @@ service
 service:authenticate
 service:setsid
 service:ssohelper.php
+service:clearsid

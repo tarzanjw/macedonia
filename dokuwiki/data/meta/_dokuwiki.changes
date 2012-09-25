@@ -19,3 +19,6 @@
 1348477101	127.0.0.1	C	service:authenticate	tarzan	được tạo ra	
 1348478483	127.0.0.1	C	service:setsid	tarzan	được tạo ra	
 1348478804	127.0.0.1	C	service:ssohelper.php	tarzan	được tạo ra	
+1348536996	127.0.0.1	E	service:setsid	tarzan	[Ứng dụng] 	
+1348537260	127.0.0.1	E	service:authenticate	tarzan	[OUTPUT] 	
+1348538873	127.0.0.1	C	service:clearsid	tarzan	được tạo ra	
