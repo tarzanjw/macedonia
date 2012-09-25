@@ -4,6 +4,7 @@
   	public $_accModel;
   	public $email;
   	public $gender;
+  	public $name;
   	public $first_name;
   	public $last_name;
   	public $dobD;
@@ -27,6 +28,11 @@
 	function getDoB()
 	{
 		return sprintf('%04d/%02d/%02d', $this->dobY, $this->dobM, $this->dobD);
+	}
+	
+	function setDoB()
+	{
+		return;
 	}
 		
 	function attributeLabels()
@@ -58,16 +64,21 @@
 	
 	public function getInfo()
 	{
-		$birthDay = strtotime($this->_accModel->dob);
-   		$birthDay = date('d-m-Y',$birthDay);
+		$dateInt = strtotime($this->_accModel->dob);
+   		$birthDay = date('d-m-Y',$dateInt);
    		$this->birthday = $birthDay;
 		$this->email = $this->_accModel->email;
+		
 		$this->first_name = $this->_accModel->first_name;
 		$this->last_name = $this->_accModel->last_name;
-		$this->city_id = $this->_accModel->city->name;
+		
+		$this->city_id = $this->_accModel->city->id;
 		$this->gender = $this->_accModel->gender;
 		$this->address = $this->_accModel->address;
 		
+		$this->dobD = date('d',$dateInt);
+		$this->dobM = date('m',$dateInt);
+		$this->dobY = date('Y',$dateInt);
 	}
 	
 	function validateName($field, $params)
@@ -92,7 +103,6 @@
 		$js = <<<JS
 var firstName = $('#{$iFirstName}').val();
 var lastName = $('#{$iLastName}').val();
-
 if (!firstName.length || !lastName.length) {
 	messages.push('{$emptyMessage}');
 	return;
@@ -121,7 +131,7 @@ JS;
 			$js = <<<JS
 var dobD = $('#{$dobD}').val();
 var dobM = $('#{$dobM}').val();
-var dobY = $('#{$dobY}').val();		
+var dobY = $('#{$dobY}').val();
 if (!dobD.length || !dobM.length || !dobY.length) {
 	messages.push('{$emptyMessage}');
 	return;
@@ -140,9 +150,6 @@ JS;
 			array('address, city_id', 'required',
 				'message'=>Yii::t('view', 'Bạn cần điền {attribute}'),
 			),
-			array('address', 'validateName', 'clientValidate'=>'clientValidateName',
-				'emptyMessage'=>Yii::t('view', 'Bạn cần điền tên.'),
-			),
 			array('gender', 'in', 'range'=>array(Acc::GENDER_MALE, Acc::GENDER_FEMALE, Acc::GENDER_OTHER), 'allowEmpty'=>false,
 				'message'=>Yii::t('view', 'Bạn cần chọn giới tính.')
 			),
@@ -150,8 +157,7 @@ JS;
 				'emptyMessage'=>Yii::t('view', 'Bạn cần điền tên.'),
 				'invalidMessage'=>Yii::t('view', 'Bạn cần điền đúng tên.')
 			),
-			array('dob', 'validateDate','clientValidate'=>'clientValidateDate'),
-			array('dobB, dobM, dobD', 'validateDate','clientValidate'=>'clientValidateDate'),
+			array('dobB, dobM, dobD, dob', 'validateDate','clientValidate'=>'clientValidateDate'),
 			array('dob', 'date', 'allowEmpty'=>false, 'format'=>'yyyy/MM/dd',
 				'message'=>Yii::t('view', 'bạn điền ngày sinh chưa đúng.')
 			),

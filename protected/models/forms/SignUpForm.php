@@ -25,7 +25,12 @@ class SignUpForm extends CFormModel
 	{
 		return implode(' ', array(trim($this->first_name), trim($this->last_name)));
 	}
-
+	
+	function setDoB()
+	{
+		return;
+	}
+	
 	function getDoB()
 	{
 		return sprintf('%04d/%02d/%02d', $this->dobY, $this->dobM, $this->dobD);
@@ -92,7 +97,6 @@ class SignUpForm extends CFormModel
 		$js = <<<JS
 var firstName = $('#{$iFirstName}').val();
 var lastName = $('#{$iLastName}').val();
-
 if (!firstName.length || !lastName.length) {
 	messages.push('{$emptyMessage}');
 	return;
@@ -157,6 +161,27 @@ JS;
 			return;
 		}
 	}
+	
+	function clientValidateDate()
+	{
+		$dobD= get_class($this).'_dobD';
+		$dobM = get_class($this).'_dobM';
+		$dobY = get_class($this).'_dobY';
+		$emptyMessage = Yii::t('view','Bạn cần điền Ngày sinh');
+			$js = <<<JS
+var dobD = $('#{$dobD}').val();
+var dobM = $('#{$dobM}').val();
+var dobY = $('#{$dobY}').val();
+if (!dobD.length || !dobM.length || !dobY.length) {
+	messages.push('{$emptyMessage}');
+	return;
+}
+JS;
+
+		return $js;
+	}
+	
+	
 
 	function rules()
 	{
@@ -180,7 +205,7 @@ JS;
 				'emptyMessage'=>Yii::t('view', 'Bạn không thể để trống tên.'),
 				'invalidMessage'=>Yii::t('view', 'Bạn cần điền đúng tên.')
 			),
-			array('dob', 'validateDate'),
+			array('dob, dobM, dobD, dobY', 'validateDate','clientValidate'=>'clientValidateDate'),
 			array('dob', 'date', 'allowEmpty'=>false, 'format'=>'yyyy/MM/dd',
 				'message'=>Yii::t('view', 'Có vẻ bạn điền ngày sinh chưa đúng.')
 			),

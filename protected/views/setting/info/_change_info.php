@@ -96,3 +96,47 @@
 	</div>
 
 <?php $this->endWidget(); ?>
+<script language="JavaScript">
+<!--
+jQuery(function($) {
+	var iName = $("#<?php $attr='name'; echo CHtml::getIdByName(CHtml::resolveName($infoModel, $attr)); ?>");
+	var iFirstName = $("#<?php $attr='first_name'; echo CHtml::getIdByName(CHtml::resolveName($infoModel, $attr)); ?>");
+	var iLastName = $("#<?php $attr='last_name'; echo CHtml::getIdByName(CHtml::resolveName($infoModel, $attr)); ?>");
+
+	onNamesChange = function() {
+		iName.val(iFirstName.val() + ' ' + iLastName.val());
+		iName.trigger('change');
+	};
+
+	onNamesBlur = function() {
+		iName.trigger('blur');
+	}
+
+	iFirstName.change(onNamesChange);
+	iLastName.change(onNamesChange);
+
+	iFirstName.blur(onNamesBlur);
+	iLastName.blur(onNamesBlur);
+	
+	// validate date
+	var iDobD = $("#<?php $attr='dobD'; echo CHtml::getIdByName(CHtml::resolveName($infoModel, $attr)); ?>");
+	var iDobM = $("#<?php $attr='dobM'; echo CHtml::getIdByName(CHtml::resolveName($infoModel, $attr)); ?>");
+	var iDobY = $("#<?php $attr='dobY'; echo CHtml::getIdByName(CHtml::resolveName($infoModel, $attr)); ?>"); 
+	var iDoB = $("#<?php $attr='dob'; echo CHtml::getIdByName(CHtml::resolveName($infoModel, $attr)); ?>"); 
+	
+	onDateChange = function(){
+		iDoB.val(iDobY.val() + '/' + iDobM.val() + '/'+ iDobD.val());
+		iDoB.trigger('change');
+	}
+	
+	iDobD.change(onDateChange);
+	iDobM.change(onDateChange);
+	iDobY.change(onDateChange);
+
+	iDobD.blur(onDateChange);
+	iDobM.blur(onDateChange);
+	iDobY.blur(onDateChange);
+});
+
+//-->
+</script>

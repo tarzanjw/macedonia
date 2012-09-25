@@ -102,6 +102,10 @@ $this->pageHeader = Yii::t('view', 'Tạo mới tài khoản Vật Giá');
 			'placeholder'=>Yii::t('view', 'Năm')
 			));
 		?>
+		
+		<?= $form->hiddenField($model, 'dob', array(
+				'class'=>'span5',
+			)); ?> 
 		<?= $form->error($model, 'dob'); ?>
 	</div>
 
@@ -118,7 +122,8 @@ $this->pageHeader = Yii::t('view', 'Tạo mới tài khoản Vật Giá');
 	)); ?>
 
 	<?php echo $form->label($model, 'captcha'); ?>
-	<?php $this->widget('ext.common.recaptcha.EReCaptcha', array(
+	<?php 
+	$this->widget('ext.common.recaptcha.EReCaptcha', array(
 		'model'=>$model,
 		'attribute'=>'captcha',
 		'theme'=>'custom',
@@ -157,6 +162,25 @@ jQuery(function($) {
 
 	iFirstName.blur(onNamesBlur);
 	iLastName.blur(onNamesBlur);
+	
+	// validate date
+	var iDobD = $("#<?php $attr='dobD'; echo CHtml::getIdByName(CHtml::resolveName($model, $attr)); ?>");
+	var iDobM = $("#<?php $attr='dobM'; echo CHtml::getIdByName(CHtml::resolveName($model, $attr)); ?>");
+	var iDobY = $("#<?php $attr='dobY'; echo CHtml::getIdByName(CHtml::resolveName($model, $attr)); ?>"); 
+	var iDoB = $("#<?php $attr='dob'; echo CHtml::getIdByName(CHtml::resolveName($model, $attr)); ?>"); 
+	
+	onDateChange = function(){
+		iDoB.val(iDobY.val() + '/' + iDobM.val() + '/'+ iDobD.val());
+		iDoB.trigger('change');
+	}
+	
+	iDobD.change(onDateChange);
+	iDobM.change(onDateChange);
+	iDobY.change(onDateChange);
+
+	iDobD.blur(onDateChange);
+	iDobM.blur(onDateChange);
+	iDobY.blur(onDateChange);
 });
 //-->
 </script>
