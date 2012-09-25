@@ -1,4 +1,4 @@
-	<p class="lead"><?= Yii::t('view', 'Thay đổi thông tin cá nhân'); ?></p> 
+	<p class="lead"><?= Yii::t('view', 'Thông tin tài khoản'); ?></p> 
 	
 	<?php /** @var TbActiveForm */$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'edit-info-form',
@@ -53,12 +53,24 @@
 			'placeholder'=>Yii::t('view', 'Ngày')
 			));
 		?>
-		<?php echo $form->textField($infoModel,'dobM',array(
+		 <?php echo $form->dropDownList($infoModel,'dobM',array(
+			1	=>	Yii::t('view','Tháng 1'),
+			2	=>	Yii::t('view','Tháng 2'),
+			3	=>	Yii::t('view','Tháng 3'),
+			4	=>	Yii::t('view','Tháng 4'),
+			5	=>	Yii::t('view','Tháng 5'),
+			6	=>	Yii::t('view','Tháng 6'),
+			7	=>	Yii::t('view','Tháng 7'),
+			8	=>	Yii::t('view','Tháng 8'),
+			9	=>	Yii::t('view','Tháng 9'),
+			10	=>	Yii::t('view','Tháng 10'),
+			11	=>	Yii::t('view','Tháng 11'),
+			12	=>	Yii::t('view','Tháng 12'),),
+			array(
 			'class'=>'span2 input-birthday',
 			'style'=>'text-align: right;',
-			'placeholder'=>Yii::t('view', 'Tháng')
-			));
-		?>
+			)); ?>
+		
 		<?php echo $form->textField($infoModel,'dobY',array(
 			'class'=>'span2 input-birthday',
 			'style'=>'text-align: right;',

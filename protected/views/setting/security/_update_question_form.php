@@ -74,7 +74,6 @@
 					$('#SecretQuestionForm_secret_answer').attr('disabled','disabled');
 				}else{
 					$('#SecretQuestionForm_secret_answer').removeAttr('disabled');
-					$('#SecretQuestionForm_secret_answer').val('');		
 				}
 				
 		});
@@ -87,7 +86,30 @@
 		$('#create_question_label').click(function(e) {
         	$('#create-question-form').toggle('fast');
         	return false;
-		});			
+		});
+		
+		var iSecretAnswer = $("#<?php $attr='secret_answer'; echo CHtml::getIdByName(CHtml::resolveName($formModel, $attr)); ?>");
+		var iSecretQuestion = $("#<?php $attr='secret_question'; echo CHtml::getIdByName(CHtml::resolveName($formModel, $attr)); ?>");			
+		
+		iSecretQuestion.change(function(){
+			var controlGroup = iSecretAnswer.parent().parent(); 
+			if(iSecretQuestion.val() == '0'){
+				if(controlGroup.hasClass('error')){
+				iSecretAnswer.data('lastStatus', 'error');
+          		}else if(controlGroup.hasClass('success')){
+					iSecretAnswer.data('lastStatus', 'success');	
+          		}else iSecretAnswer.data('lastStatus', '');
+				
+				controlGroup.removeClass('error');	
+				controlGroup.removeClass('success');
+				$('#SecretQuestionForm_secret_answer_em_').hide();
+			}else{
+				controlGroup.addClass(iSecretAnswer.data('lastStatus'));
+				if(iSecretAnswer.data('lastStatus') == 'error'){
+					$('#SecretQuestionForm_secret_answer_em_').show();	
+				}
+			}
+		});
 	});
 		
 	//-->

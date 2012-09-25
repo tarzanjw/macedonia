@@ -109,7 +109,6 @@ JS;
 		$js = <<<JS
 var secret_question = $('#{$secret_question}').val();
 var secret_answer = $('#{$secret_answer}').val();
-
 if (secret_question != '0' && secret_answer.length < 1) messages.push('{$invalidMessage}');
 JS;
 

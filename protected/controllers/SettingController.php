@@ -54,8 +54,10 @@ class SettingController extends Controller
 				$accModel->dob = $infoModel->dob;
 				$accModel->address = $infoModel->address;
 				$accModel->city_id = $infoModel->city_id;
-				if($accModel->save())
+				if($accModel->save()){
+					Yii::app()->user->setFlash('success', Yii::t('view','Cập nhật thông tin thành công'));	
 					$this->redirect('/setting/info');
+				}
 			}                                                 
 		}
 		

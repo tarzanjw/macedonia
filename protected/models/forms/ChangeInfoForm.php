@@ -77,7 +77,7 @@
 		$this->address = $this->_accModel->address;
 		
 		$this->dobD = date('d',$dateInt);
-		$this->dobM = date('m',$dateInt);
+		$this->dobM = date('n',$dateInt);
 		$this->dobY = date('Y',$dateInt);
 	}
 	
