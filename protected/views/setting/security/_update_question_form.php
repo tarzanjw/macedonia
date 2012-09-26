@@ -23,7 +23,9 @@
 
 	<?php echo $form->passwordFieldRow($formModel,'password', array(
 		'maxlength'=>255,
-		'placeholder'=>Yii::t('view', 'Mật khẩu của bạn'),)); ?>	
+		'placeholder'=>Yii::t('view', 'Mật khẩu của bạn'),
+		'class'=>'question-form-input',
+		)); ?>	
 	
 	<?php echo $form->dropDownListRow($formModel, 'secret_question', $formModel->secret_question_list,array(
 		'class'=>'select-question',
@@ -31,7 +33,7 @@
 	<div class="another-question" style="display: none;">
 		<?= $form->textFieldRow($formModel, 'another_question',array(
 		'placeholder'=>Yii::t('view', 'Câu hỏi của bạn'),
-		'class'=>'another-question-input',
+		'class'=>'another-question-input question-form-input',
 		 )); ?>		
 	 </div>	 
 	<?php 
@@ -41,7 +43,8 @@
 	}
 	echo $form->textFieldRow($formModel,'secret_answer', array(
 			'maxlength'=>255,
-			'placeholder'=>$placeholderAnswer, 
+			'placeholder'=>$placeholderAnswer,
+			'class' =>'question-form-input',
 			)); ?>	
     
     <div class="controls">
