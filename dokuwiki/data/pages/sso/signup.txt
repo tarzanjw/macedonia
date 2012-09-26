@@ -1,0 +1,6 @@
+====== Đăng ký tập trung ======
+
+Cho phép các dịch vụ của Vật Giá đăng ký tài khoản tại cùng một địa chỉ.
+<code>http://id.vatgia.vn/SignUp/?_cont={contUrl}</code>
+
+Trong đó **_cont** là tham số để chỉ định url sẽ được redirect lại sau khi quá trình đăng ký kết thúc.

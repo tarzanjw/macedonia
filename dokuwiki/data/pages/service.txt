@@ -1,0 +1,24 @@
+====== Tham gia hệ thống SSO ======
+
+Mỗi dịch vụ khi tham gia vào SSO sẽ trải qua 2 giai đoạn:
+  - Giai đoạn chuyển đổi dần. 
+  - Giai đoạn kết nối.
+
+Trong đó, giai đoạn chuyển đổi dần để chuyển dần việc sử dụng SSO sang dịch vụ thành viên. Giai đoạn này sẽ kết thúc khi kết nối hoàn toàn với id.vatgia.com.
+
+Giai đoạn kết nối nhằm kết nối dịch vụ với id.vatgia.com.
+
+===== Giai đoạn chuyển đổi dần =====
+
+Giai đoạn này sẽ chỉ chuyển đổi quá trình đăng nhập/xuất với id.vatgia.vn.
+
+Một dịch vụ sẽ chuyển hoàn toàn sang giai đoạn 2 nếu đã kết nối thành công và chuyển được hoàn toàn cơ sở dữ liệu từ dịch vụ sang id.vatgia.com.
+
+Hoàn thành giai đoạn này, dịch vụ cần thực hiện thành công 2 URL:
+  * [[service:Authenticate|Authenticate]]: phục vụ việc xác thực người dùng.
+  * [[service:SetSID|Set SID]]: cho việc đăng nhập.
+  * [[service:ClearSID|Clear SID]]: cho việc đăng ký.
+
+===== Giai đoạn kết nối =====
+
+//Editing// ...

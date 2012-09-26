@@ -1,0 +1,76 @@
+
+<h1 class="sectionedit1" id="clear_sid">Clear SID</h1>
+<div class="level1">
+
+<p>
+<abbr title="Uniform Resource Locator">URL</abbr> này sẽ được truy cập khi người sử dụng logout khỏi hệ thống.
+</p>
+
+<p>
+Khi <abbr title="Uniform Resource Locator">URL</abbr> này được request,  các dịch vụ cần tiến hành kiểm tra tính hợp lệ của request, sau đó xóa session.
+</p>
+
+<p>
+Đây là 1 Request <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> thông thường, được thực hiện từ trình duyệt của người dùng. Sẽ là 1 request của thẻ IMG.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Clear SID" [1-393] -->
+<h2 class="sectionedit2" id="chi_tiết">Chi tiết</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT2 SECTION "Chi tiết" [394-417] -->
+<h3 class="sectionedit3" id="input">Input</h3>
+<div class="level3">
+
+<p>
+Request sẽ có dạng sau:
+</p>
+<pre class="code">http://domain/path/to/api/?gsn=...</pre>
+
+<p>
+Trong đó <em>gsn</em> là mã số session chung chung cho các dịch vụ.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Input" [418-587] -->
+<h3 class="sectionedit4" id="output">Output</h3>
+<div class="level3">
+<ul>
+<li class="level1"><div class="li"> Xóa session cho người dùng hiện tại (tương ứng với gsn)</div>
+</li>
+<li class="level1"><div class="li"> Trả về 1 ảnh, mime bất kỳ, size = 1&times;1 pixel. Recommend ảnh có giá trị: <pre class="code">data:image/gif;base64,R0lGODdhAQABAPAAAL6+vgAAACwAAAAAAQABAAACAkQBADs=</pre>
+</div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT4 SECTION "Output" [588-856] -->
+<h3 class="sectionedit5" id="quy_trinh">Quy trình</h3>
+<div class="level3">
+<ol>
+<li class="level1"><div class="li"> Kiểm tra referer, nếu là từ 1 nơi khác ngoài <a href="http://id.vatgia.com/sso" class="urlextern" title="http://id.vatgia.com/sso"  rel="nofollow">http://id.vatgia.com/sso</a> thì fail. Đến bươc 4.</div>
+</li>
+<li class="level1"><div class="li"> Kiểm tra gsn trên query với gsn ở cookie, nếu khác thì fail. Đến bước 4.</div>
+</li>
+<li class="level1"><div class="li"> Xóa session tương ứng với gsn, xóa gsn.</div>
+</li>
+<li class="level1"><div class="li"> Trả về ảnh.</div>
+</li>
+</ol>
+
+</div>
+<!-- EDIT5 SECTION "Quy trình" [857-1159] -->
+<h2 class="sectionedit6" id="triển_khai">Triển khai</h2>
+<div class="level2">
+
+<p>
+File <a href="/wiki/doku.php?id=service:ssohelper.php" class="wikilink1" title="service:ssohelper.php">SSOHelper.php</a> được viết để hỗ trợ các dịch vụ tham gia hệ thống. Để sử dụng, cần như sau:
+</p>
+<pre class="code php">	<span class="co1">// TODO logout here</span>
+	SSOHelper<span class="sy0">::</span><span class="me2">clearGSN</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	SSOHelper<span class="sy0">::</span><span class="me2">returnImage</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT6 SECTION "Triển khai" [1160-] -->

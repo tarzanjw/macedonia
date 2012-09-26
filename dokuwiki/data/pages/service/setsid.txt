@@ -1,0 +1,55 @@
+====== SetSID ======
+
+Đây là 1 URL được truy cập khi người sử dụng đăng nhập vào hệ thống.
+
+Khi URL này được request, các dịch vụ sẽ cần phải kiểm tra tính hợp lệ của request, sau đó tiến hành đánh dấu session hệ thống là đã có tài khoản đăng nhập.
+
+Đây là 1 Request HTTP thông thường, được thực hiện từ trình duyệt của người dùng. Sẽ là 1 request của thẻ IMG.
+
+===== Chi tiết =====
+
+==== Input ====
+
+Request sẽ có dạng sau:
+<code>http://domain/path/to/api/?token=...</code>
+
+Trong đó //token// là tham số được mã hóa bằng RSA, sử dụng private key của id.vatgia.com. Khi giải mã các dịch vụ sẽ có:
+  * gsn: mã số session chung chung cho các dịch vụ.
+  * timestamp: thời điểm mà request SetSID được tạo ra.
+  * email: email của tài khoản vừa đăng nhập.
+  * data: thông tin bổ sung của tài khoản.
+
+Trong các tham số trên, timestamp là tham số dùng để kiểm tra tính hợp lệ của request thường xuyên nhất. Mỗi request thường chỉ nên hợp lệ trong vòng 1 phút, sau đó nó bị hủy.
+
+Tham số data chứa thông tin bổ sung cho tài khoản, do hạn chế của việc mã hóa = RSA nên số lượng thông tin chưa được nhiều. Hiện tại có ‘last_modified_time’.
+
+==== Output ====
+
+  * Ghi nhận người dùng đã đăng nhập thông qua email.
+  * Lưu lại gsn vào cookie để dùng sau này.
+  * Trả về 1 ảnh, mime bất kỳ, size = 1x1 pixel. Recommend ảnh có giá trị: <code>data:image/gif;base64,R0lGODdhAQABAPAAAL6+vgAAACwAAAAAAQABAAACAkQBADs=</code>
+
+==== Quy trình ====
+  - Kiểm tra từ timestamp xem expire hay chưa? Nếu expire rồi thì fail. Đến bước 6.
+  - Kiểm tra referer, nếu là từ 1 nơi khác ngoài http://id.vatgia.com/sso thì fail. Đến bươc 6.
+  - Giải mã sid sử dụng public-key, nếu fail cho fail luôn. Đến bước 6.
+Sau khi giải mã sẽ có 'token'.
+Từ token sẽ có được các thông tin: email, gsn.
+  - Nếu gsn và email trùng với session hiện tại, bỏ qua. Đến bước 6
+  - Đăng nhập cho email, lưu lại gsn vào cookie.
+  - Trả về ảnh.
+ 
+===== Triển khai =====
+
+File [[SSOHelper.php]] được viết để hỗ trợ các dịch vụ tham gia hệ thống. Để sử dụng, cần như sau:
+<code php>
+    if (SSOHelper::decodeSetSIDRequest($email, $gsn, $data) == SSOHelper::ERROR_NONE) {
+      $user = your_code_to_get_user_info_by_email($email); # Lấy thông tin của người dùng hiện tại bằng email.
+      if (!is_null($user)) {
+        // TODO thực hiện việc login, 
+        SSOHelper::saveGSN($gsn);
+      }
+    }
+
+    SSOHelper::returnImage();
+</code>

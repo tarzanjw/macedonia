@@ -1,0 +1,15 @@
+playground:playground
+wiki:dokuwiki
+rest_api
+wiki:navigation
+sso:tutorial
+wiki:site_notice
+sso:signup
+sso:signin
+sso:signout
+sso:editinfo
+service
+service:authenticate
+service:setsid
+service:ssohelper.php
+service:clearsid

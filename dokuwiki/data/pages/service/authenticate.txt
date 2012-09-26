@@ -1,0 +1,37 @@
+====== Authenticate ======
+
+Đây là 1 [[:rest_api|RESTful API]] cho phép id.vatgia.com thực hiện việc xác thực người dùng thông qua các dịch vụ thành viên.
+
+Vì quá trình đầu tiên, chưa import được toàn bộ dữ liệu nên tận dụng quá trình này để chuyển dần dữ liệu từ các dịch vụ thành viên sang hệ thống id.vatgia.com.
+
+** API này sử dụng HTTP Digest Authentication và IP block **.
+
+===== INPUT =====
+
+Input bao gồm thông tin định danh (email **hoặc** phone)
+
+|email|email của người dùng|
+|phone|phone của người dùng|
+
+
+===== OUTPUT =====
+
+Output là thông tin của người dùng và thông tin xác thực của người dùng.
+
+^Response Code^Ý nghĩa^
+|200|OK|
+|404|Tài khoản không tìm thấy/không hợp lệ|
+
+Nếu status là 200, dữ liệu trả về sẽ là 1 mảng bao gồm các thông tin sau đây:
+
+^Field^Bắt buộc^Chuẩn^Ý nghĩa^
+|first_name|Có| |Họ đệm|
+|last_name|Có| |Tên|
+|email|Có| |
+|phone|Không| |phone|
+|avatar|Không| |url của avatar|
+|gender|Không|String: MALE, FEMALE, OTHER|giới tính|
+|dob|Không|yyyy-mm-dd|ngày sinh|
+|address|Không| |địa chỉ|
+|city_id|Không|[[:city|City]].id|thành phố|
+|auth|Có|//tùy dịch vụ//|Thông tin dùng để so sánh mật khẩu người dùng vừa nhập vào|

@@ -1,0 +1,6 @@
+====== Đăng nhập tập trung ======
+
+Cho phép các dịch vụ của Vật Giá đăng nhập tài khoản tại cùng một địa chỉ.
+<code>http://id.vatgia.vn/SignIn/?_cont={contUrl}</code>
+
+Trong đó **_cont** là tham số để chỉ định url sẽ được redirect lại sau khi quá trình đăng nhập kết thúc.

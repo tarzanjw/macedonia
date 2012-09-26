@@ -15,8 +15,6 @@
 	<script language="JavaScript">
 	<!--
 	function doRedirect() {
-//		console.log('done');
-//		return;
 		location.replace(<?= CJavaScript::encode($cont); ?>);
     }
 	//-->

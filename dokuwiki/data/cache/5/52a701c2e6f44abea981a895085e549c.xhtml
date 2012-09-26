@@ -1,0 +1,94 @@
+
+<h1 class="sectionedit1" id="restful_api">RESTful API</h1>
+<div class="level1">
+
+<p>
+Đưa ra chuẩn, các thứ các kiểu về <abbr title="Application Programming Interface">API</abbr> RESTful.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "RESTful API" [1-87] -->
+<h2 class="sectionedit2" id="request">REQUEST</h2>
+<div class="level2">
+
+<p>
+RESTful <abbr title="Application Programming Interface">API</abbr> là một dạng <abbr title="Application Programming Interface">API</abbr> dựa trên <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> Request. Mỗi 1 request đến REST <abbr title="Application Programming Interface">API</abbr> thường có các thành phần sau :
+</p>
+<ol>
+<li class="level1"><div class="li"> <strong>REQUEST METHOD</strong>: Lệnh của request <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> : GET, POST, PUT, DELETE. Với <abbr title="Hypertext Preprocessor">PHP</abbr> nó là <pre class="code php"><span class="re0">$_SERVER</span><span class="br0">&#91;</span><span class="st_h">'REQUEST_METHOD'</span><span class="br0">&#93;</span></pre>
+</div>
+</li>
+<li class="level1"><div class="li"> <strong>Request <abbr title="Uniform Resource Identifier">URI</abbr></strong>: Địa chỉ của <abbr title="Application Programming Interface">API</abbr>. Với <abbr title="Hypertext Preprocessor">PHP</abbr> nó là <pre class="code php"><span class="re0">$_SERVER</span><span class="br0">&#91;</span><span class="st_h">'REQUEST_URI'</span><span class="br0">&#93;</span></pre>
+</div>
+</li>
+<li class="level1"><div class="li"> <strong>Data</strong>: Phần dữ liệu trong <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> Body được gửi lên server. Với <abbr title="Hypertext Preprocessor">PHP</abbr> nó sẽ nằm trong mảng <pre class="code php"><span class="re0">$_POST</span></pre>
+</div>
+</li>
+</ol>
+
+<p>
+Thông thường, các <abbr title="Application Programming Interface">API</abbr> theo RESTful được tạo ra theo các nguyên tắc cơ bản sau :
+</p>
+<ol>
+<li class="level1"><div class="li"> Request <abbr title="Uniform Resource Identifier">URI</abbr> đặc trưng cho đối tượng bị tác động bởi <abbr title="Application Programming Interface">API</abbr>.</div>
+</li>
+<li class="level1"><div class="li"> Query string đặc trưng cho việc tìm kiếm đối tượng bị tác động.</div>
+</li>
+<li class="level1"><div class="li"> POST data đặc trưng cho thông tin của đối tượng bị tác động trong quá trình tạo mới/sửa đổi.</div>
+</li>
+<li class="level1"><div class="li"> REQUEST METHOD sử dụng theo ý nghĩa sau:</div>
+<ul>
+<li class="level2"><div class="li"> Điểm trong danh sách có thứ tựĐiểm trong danh sách không đánh số <em>GET</em> dùng cho việc tìm kiếm/lấy thông tin của đối tượng: <pre class="code sql"><span class="kw1">SELECT</span> <span class="sy0">*</span> <span class="kw1">FROM</span> <span class="st0">`object`</span> <span class="kw1">WHERE</span> <span class="br0">&#123;</span>query string<span class="br0">&#125;</span></pre>
+</div>
+</li>
+<li class="level2"><div class="li"> <em>POST</em> dùng cho việc sửa đổi thông tin của đối tượng: <pre class="code sql"><span class="kw1">UPDATE</span> <span class="st0">`object`</span> <span class="kw1">SET</span> <span class="br0">&#123;</span>post <span class="kw1">DATA</span><span class="br0">&#125;</span> <span class="kw1">WHERE</span> <span class="br0">&#123;</span>query string<span class="br0">&#125;</span></pre>
+</div>
+</li>
+<li class="level2"><div class="li"> <em>PUT</em> dùng cho việc tạo mới đối tượng: <pre class="code sql"><span class="kw1">INSERT</span> <span class="kw1">INTO</span> <span class="st0">`object`</span> <span class="kw1">VALUES</span> <span class="br0">&#123;</span>post <span class="kw1">DATA</span><span class="br0">&#125;</span></pre>
+</div>
+</li>
+<li class="level2"><div class="li"> <em>DELETE</em> dùng cho việc xóa đối tượng: <pre class="code sql"><span class="kw1">DELETE</span> <span class="kw1">FROM</span> <span class="st0">`object`</span><span class="kw1">WHERE</span> <span class="br0">&#123;</span>query string<span class="br0">&#125;</span></pre>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+
+</div>
+<!-- EDIT2 SECTION "REQUEST" [88-1672] -->
+<h2 class="sectionedit3" id="response">RESPONSE</h2>
+<div class="level2">
+
+<p>
+Dữ liệu trả về của RESTful <abbr title="Application Programming Interface">API</abbr> được căn cứ vào các thông số sau:
+</p>
+<ol>
+<li class="level1"><div class="li"> <strong>RESPONSE CODE</strong>: Chính là <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> Response code. Mã này thường mang chính ý nghĩa như <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes" class="urlextern" title="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes"  rel="nofollow">HTTP Status Code</a> vốn có. Ví dụ: 200 “thành công” …</div>
+</li>
+<li class="level1"><div class="li"> <strong>RESPONSE MESSAGE</strong>: Chính alf <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> Response message. Thông số này có ý nghĩa với lập trình viên (để đọc hiểu) nhiều hơn là với code (vì code căn cứ vào RESPONSE CODE).</div>
+</li>
+<li class="level1"><div class="li"> <strong>DATA</strong>: Chính là <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> Response Body. Thông thường dữ liệu sẽ đc truyền theo chuẩn JSON encoded, lúc này trong <abbr title="Hyper Text Transfer Protocol">HTTP</abbr> Headers trả về có thêm &#039;Content-Type: application/json&#039; sẽ giúp các chương trình nhận ra mã JSON dễ dàng hơn.</div>
+</li>
+</ol>
+
+</div>
+<!-- EDIT3 SECTION "RESPONSE" [1673-2478] -->
+<h2 class="sectionedit4" id="xac_thực">Xác thực</h2>
+<div class="level2">
+
+<p>
+RESTful <abbr title="Application Programming Interface">API</abbr> được xác thực thông qua <a href="http://en.wikipedia.org/wiki/Digest_access_authentication#HTTP_digest_authentication_considerations" class="urlextern" title="http://en.wikipedia.org/wiki/Digest_access_authentication#HTTP_digest_authentication_considerations"  rel="nofollow">HTTP Digest Authentication</a> và IP.
+</p>
+
+<p>
+Để xác thực cấp cao thì cần một cớ chế checksum dữ liệu, có thể lựa chọn một trong các phương thức sau:
+</p>
+<ol>
+<li class="level1"><div class="li"> HMAC dựa trên MD5 hoặc SHA1: key sẽ dùng chung, không có tính quy kết trách nhiệm.</div>
+</li>
+<li class="level1"><div class="li"> Digital Signature (RSA hoặc DSA): key dùng riêng, bảo mật cao, quy kết trách nhiệm tuyệt đối.</div>
+</li>
+</ol>
+
+</div>
+<!-- EDIT4 SECTION "Xác thực" [2479-] -->
