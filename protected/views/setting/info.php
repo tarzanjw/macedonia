@@ -1,4 +1,4 @@
- <p class="lead"><?= Yii::t('view', 'Thông tin tài khoản'); ?> <a href="/setting/info?action=edit" class="btn btn-small"><i class="icon-pencil"></i> Thay đổi</a></p> 
+ <p class="lead"><?= Yii::t('view', 'Thông tin tài khoản'); ?> </p> 
  <?php 
 $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
@@ -9,7 +9,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         ),
     ));
  ?>
- <?php $gender = 'nam';
+ <?php
 	switch ($infoModel->gender) {
 			case Acc::GENDER_MALE:
 				$gender = Yii::t('view', 'Nam'); break;
@@ -38,6 +38,13 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 			'label'=>Yii::t("view","Thành phố"),
 			'type'=>'raw',
 			'value'=>$accModel->city->name,
+		),
+		'city_id'=>array(
+			'label'=>'',
+			'type'=>'raw',
+			'value'=>CHtml::link('<i class="icon-pencil"></i> '.Yii::t('view','Thay đổi'),$this->createUrl('',array('a'=>'edit')),array(
+				'class'=>'btn btn-small',
+			)),
 		),
 	),
 )); ?>

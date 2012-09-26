@@ -3,7 +3,7 @@
 class SettingController extends Controller
 {
 	public $layout = '//setting/_layout';
-	public $defaultAction = 'index';
+	public $defaultAction = 'info';
 	
 	function actions()
 	{
@@ -29,11 +29,11 @@ class SettingController extends Controller
 		$this->render('index');
 	}
 
-	public function actionInfo($action=null)
+	public function actionInfo($a=null)
 	{               
 		$accModel = $this->getCurrentAccount();
 		$infoModel = new ChangeInfoForm();
-		if(!empty($action) && $action == 'edit'){
+		if(!empty($a) && $a == 'edit'){
 			$this->editInfo($accModel,$infoModel);
 			return;
 		}
