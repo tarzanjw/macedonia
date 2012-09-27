@@ -112,7 +112,9 @@ $cfg = array(
 		),	
 		
 		'user'=>array(
+			'class'=>'VatgiaIDUser',
 			'allowAutoLogin'=>true,
+			'loginUrl'=>array('/signIn'),
 		),
 
 		'urlManager'=>array(

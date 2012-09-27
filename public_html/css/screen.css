@@ -120,6 +120,9 @@ i.icon-activate {background-image: url('images/verify.jpg') !important;backgroun
 .checkbox{
 	margin-top:10px;
 }
+.remember .checkbox{
+	margin-top:0;
+}
 .btn-resend-sms{margin-top:10px;}
 .activate-label{margin-bottom: 10px;text-align: center;}
 .tbAlert-email{

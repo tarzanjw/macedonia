@@ -8,14 +8,27 @@ class SignInController extends Controller
 
 	protected function onSignedIn()
 	{
+		$isActivated = Yii::app()->user->hasActivated();
+		if(!$isActivated){
+			$this->redirect($this->createUrl('setting/Activate'));
+		}
 		$this->redirect($this->createUrl('/sso/signIn', array('_cont'=>$this->getContUrl($this->createUrl('/setting')))));
 	}
-
+	
 	protected function doSignIn(SignInForm $form)
 	{
 		$identify = new AccountIdentify($form->username, $form->password);
-
-		if (($code =$identify->authenticate()) == AccountIdentify::ERROR_NONE) {
+		$code = $identify->authenticate();
+		
+		if ($code == AccountIdentify::ERROR_NOT_ACTIVATED_YET){
+//			$lifetime = $form->remember ? $this->staySignedInSessionLifetime:$this->sessionLifetime;
+//			echo '<pre>', print_r($lifetime, true), '</pre>';die;
+//			Yii::app()->user->login($identify, $lifetime);
+			Yii::app()->user->login($identify);
+			$this->onSignedIn();
+			return true;						
+		}
+		if ($code == AccountIdentify::ERROR_NONE) {
 			$lifetime = $form->remember ? $this->staySignedInSessionLifetime:$this->sessionLifetime;
 			Yii::app()->user->login($identify, $lifetime);
 			$this->onSignedIn();

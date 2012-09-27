@@ -42,7 +42,7 @@
 		<div class="span5">
 			<button type="submit" name="btnSignIn" class="btn btn-primary"><?= Yii::t('view', 'Đăng nhập'); ?></button>
 		</div>
-		<div class="span7">
+		<div class="span7 remember">
 		<?= $this->widget(TbActiveForm::INPUT_HORIZONTAL, array(
 			'type'=>TbInput::TYPE_CHECKBOX,
 			'form'=>$form,

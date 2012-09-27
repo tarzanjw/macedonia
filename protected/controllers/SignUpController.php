@@ -1,5 +1,4 @@
 <?php
-
 class SignUpController extends Controller
 {
     public $layout='//signUp/_layout';
@@ -56,8 +55,10 @@ class SignUpController extends Controller
 			$model->setAttributes($_POST['SignUpForm'], false);
 
 			if ($model->validate()) {
-//				$model->phone = TextHelper::normalizePhoneNumber($model->phone);
-				if ($acc = $this->doCreateAccount($model)) $this->redirect(array('/SignIn'));
+				if ($acc = $this->doCreateAccount($model)){
+					Yii::app()->user->logout();
+					$this->redirect(array('/SignIn'));
+				} 
 			}
 		}
 

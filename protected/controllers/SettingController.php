@@ -13,6 +13,31 @@ class SettingController extends Controller
 			),
 		);
 	}
+	
+	function filters()
+	{
+		return array(
+			'accessControl',
+		);
+	}
+	
+	public function accessRules()
+	{
+		return array(
+			array('allow', 
+                	'actions'=>array(),
+               		'expression'=>array($this, 'checkAccess'),
+            ),
+            array('deny'),
+		);
+	}
+	
+	public function checkAccess(VatgiaIDUser $user)
+	{
+		if(empty($user->currAcc) || $user->currAcc->status == Acc::STATUS_LOCKED)
+			return false;
+		else return true;
+	}
 
 	public function actionBaokim()
 	{

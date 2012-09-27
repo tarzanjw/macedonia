@@ -195,7 +195,10 @@ JS;
 			array('phone', 'filter', 'filter'=>array('TextHelper','normalizePhoneNumber')),
 			array('phone, email', 'unique', 'className'=>'Acc'),
 			array('email', 'email', 'checkMX'=>true,),
-			array('email, phone, address, city_id, password, confirmed_password', 'required',
+			array('phone','required',
+				'message'=>Yii::t('view','Bạn phải điền đúng số điện thoại')
+			),
+			array('email, address, city_id, password, confirmed_password', 'required',
 				'message'=>Yii::t('view', 'Bạn không thể để trống {attribute}'),
 			),
 			array('gender', 'in', 'range'=>array(Acc::GENDER_MALE, Acc::GENDER_FEMALE, Acc::GENDER_OTHER), 'allowEmpty'=>false,
