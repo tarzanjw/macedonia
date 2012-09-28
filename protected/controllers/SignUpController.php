@@ -2,7 +2,7 @@
 class SignUpController extends Controller
 {
     public $layout='//signUp/_layout';
-
+    public $sessionLifetime = 3600;
     /**
     * @param SignUpForm $form
     * @return Acc
@@ -57,7 +57,12 @@ class SignUpController extends Controller
 			if ($model->validate()) {
 				if ($acc = $this->doCreateAccount($model)){
 					Yii::app()->user->logout();
-					$this->redirect(array('/SignIn'));
+					$identify = new AccountIdentify($model->email, $model->password);
+					$identify->authenticate();
+					$lifetime = $this->sessionLifetime;
+					Yii::app()->user->login($identify, $lifetime);
+					$this->onSignedIn();
+					return true;	
 				} 
 			}
 		}

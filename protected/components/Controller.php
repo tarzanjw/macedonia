@@ -86,4 +86,13 @@ class Controller extends CController
 
 		return parent::createUrl($route, $params, $ampersand);
 	}
+	
+	protected function onSignedIn()
+	{
+		$isActivated = Yii::app()->user->hasActivated();
+		if(!$isActivated){
+			return $this->redirect($this->createUrl('setting/Activate'));
+		}
+		$this->redirect($this->createUrl('/sso/signIn', array('_cont'=>$this->getContUrl($this->createUrl('/setting')))));
+	}
 }

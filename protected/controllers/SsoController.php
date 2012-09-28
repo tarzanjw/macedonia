@@ -20,6 +20,33 @@ class SsoController extends Controller
 	);
 
 	private $_gsn;
+	
+	function filters()
+	{
+		return array(
+			'accessControl',
+		);
+	}
+
+	public function accessRules()
+	{
+		return array(
+			array('deny', 
+					'actions'=>array('signIn'),
+					'expression'=>array($this, 'checkAccess'),
+		),
+		);
+	}
+	
+	public function checkAccess(VatgiaIDUser $user)
+	{
+		if(!empty($user->currAcc) && $user->currAcc->status == Acc::STATUS_NORMAL)
+			return false;
+		throw new CHttpException('invalid request',400);	
+		return true;
+	}
+	
+	
 	function getGsn()
 	{
         if (!isset($this->_gsn)) {
