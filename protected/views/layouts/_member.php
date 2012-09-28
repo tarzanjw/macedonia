@@ -4,8 +4,10 @@
 	/** @var Acc */$acc = Acc::model()->findByPk($user->id);
 ?>
 <?php if ($user->getIsGuest()): ?>
-	<?php if ($this->getId() != 'SignIn'): ?>
-	<a class="btn btn-signin" href="<?= $this->createUrl('/SignIn', array('_cont'=>$this->getCurrentUrl())); ?>"><i class="icon-arrow-right"></i> <?= Yii::t('label', 'Đăng nhập'); ?></a>
+	<?php if ($this->getId() == 'signIn' || $this->getId() == 'SignIn' || $this->getId() == 'signin' ||  $this->getId() == 'Signin'): ?>
+		<a class="btn btn-signin" href="<?= $this->createUrl('/SignUp'); ?>"><i class="icon-arrow-right"></i> <?= Yii::t('label', 'Đăng ký'); ?></a>		
+	<?php else: ?>
+		<a class="btn btn-signin" href="<?= $this->createUrl('/SignIn', array('_cont'=>$this->getCurrentUrl())); ?>"><i class="icon-arrow-right"></i> <?= Yii::t('label', 'Đăng nhập'); ?></a>
 	<?php endif; ?>
 <?php else: ?>
 	<a id="account-popover" class="account-popover">

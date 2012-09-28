@@ -1,5 +1,5 @@
 <div class="page-header">
-	<h1 class="redtext">Tên dịch vụ</h1>
+	<h1 class="redtext" style="float:none">Tên dịch vụ</h1>
 	<h2>Slogan của dịch vụ, dài một chút là đẹp.</h2>
 </div>
 
